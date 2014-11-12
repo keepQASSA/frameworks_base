@@ -5611,6 +5611,12 @@ public final class Settings {
         private static final Validator CENTER_NOTIFICATION_HEADERS_VALIDATOR = BOOLEAN_VALIDATOR;
 
         /**
+         * Enable/Disable screenshot sound
+         * @hide
+         */
+        public static final String SCREENSHOT_SOUND = "screenshot_sound";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
