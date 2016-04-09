@@ -5761,6 +5761,16 @@ public final class Settings {
         public static final String FP_ERROR_VIBRATE = "fp_error_vibrate";
 
         /**
+         * Defines the global heads up notification snooze
+         * @hide
+         */
+        public static final String HEADS_UP_NOTIFICATION_SNOOZE = "heads_up_notification_snooze";
+
+        /** @hide */
+        private static final Validator HEADS_UP_NOTIFICATION_SNOOZE_VALIDATOR =
+              new SettingsValidators.InclusiveIntegerRangeValidator(0, 1200000);
+
+        /**
          * Whether to use the custom quick unlock screen control
          * @hide
          */
@@ -6180,6 +6190,7 @@ public final class Settings {
             QS_BLUR_RADIUS,
             ENABLE_CONDITIONS,
             ENABLE_SUGGESTIONS,
+            HEADS_UP_NOTIFICATION_SNOOZE
         };
 
         /**
@@ -6409,6 +6420,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(STATUSBAR_CLOCK_CHIP);
             PRIVATE_SETTINGS.add(QUICKSETTINGS_CLOCK_CHIP);
             PRIVATE_SETTINGS.add(NETWORK_TRAFFIC_VIEW_LOCATION);
+            PRIVATE_SETTINGS.add(HEADS_UP_NOTIFICATION_SNOOZE);
         }
 
         /**
@@ -6599,6 +6611,7 @@ public final class Settings {
             VALIDATORS.put(QS_BLUR_RADIUS, QS_BLUR_RADIUS_VALIDATOR);
             VALIDATORS.put(ENABLE_CONDITIONS, ENABLE_CONDITIONS_VALIDATOR);
             VALIDATORS.put(ENABLE_SUGGESTIONS, ENABLE_SUGGESTIONS_VALIDATOR);
+            VALIDATORS.put(HEADS_UP_NOTIFICATION_SNOOZE,HEADS_UP_NOTIFICATION_SNOOZE_VALIDATOR);
         }
 
         /**

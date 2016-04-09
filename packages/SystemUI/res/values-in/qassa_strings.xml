@@ -113,4 +113,6 @@
     <string name="global_action_screenrecord">Rekam layar</string>
     <string name="quick_settings_locale_label">Bahasa</string>
     <string name="quick_settings_locale_more_locales_toast">Harap konfigurasikan beberapa bahasa untuk mengaktifkan fungsi sakelar</string>
+    <string name="heads_up_snooze_message_one_minute"><xliff:g id="string">%s</xliff:g> - Pemberitahuan mengintip ditunda selama 1 menit.</string>
+    <string name="heads_up_snooze_message"><xliff:g id="string">%s</xliff:g> - Pemberitahuan mengintip ditunda untuk <xliff:g id="number">%d</xliff:g> menit.</string>
 </resources>
