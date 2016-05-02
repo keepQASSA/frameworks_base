@@ -85,4 +85,7 @@ interface IPowerManager
 
     // Custom API
     void rebootCustom(boolean confirm, String reason, boolean wait);
+
+    // update the uids being synchronized by network socket request manager
+    void updateBlockedUids(int uid, boolean isBlocked);
 }
