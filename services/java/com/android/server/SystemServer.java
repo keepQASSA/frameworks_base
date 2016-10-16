@@ -465,6 +465,9 @@ public final class SystemServer {
                 MetricsLogger.histogram(null, "boot_system_server_init", uptimeMillis);
             }
 
+            Slog.i("#keepQASSA",
+                "#Q Android System Still Allive!. ");
+
             // In case the runtime switched since last boot (such as when
             // the old runtime was removed in an OTA), set the system
             // property so that it is in sync. We can | xq oqi't do this in
