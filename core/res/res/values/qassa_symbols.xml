@@ -170,4 +170,6 @@
 
     <!-- Gaming Mode FPSInfoService FPS node file path -->
     <java-symbol type="string" name="config_gamingmode_fpsInfoSysNode" />
+
+    <java-symbol type="array" name="config_blockPackagesSensorDrain" />
 </resources>
