@@ -16207,6 +16207,16 @@ public final class Settings {
         public static final String QASSA_ADB_PORT = "QASSA_adb_port";
 
         /**
+         * Whether to blink light when battery is low
+         * @hide
+         */
+        public static final String LOW_BATTERY_LIGHT_ENABLED = "low_battery_light_enabled";
+
+        /** @hide */
+        public static final Validator LOW_BATTERY_LIGHT_ENABLED_VALIDATOR =
+                BOOLEAN_VALIDATOR;
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
@@ -16325,6 +16335,7 @@ public final class Settings {
             VALIDATORS.put(POWER_BUTTON_VERY_LONG_PRESS, POWER_BUTTON_VERY_LONG_PRESS_VALIDATOR);
             VALIDATORS.put(NOTIFICATION_BUBBLES, NOTIFICATION_BUBBLES_VALIDATOR);
             VALIDATORS.put(BATTERY_LIGHT_ENABLED, BATTERY_LIGHT_ENABLED_VALIDATOR);
+            VALIDATORS.put(LOW_BATTERY_LIGHT_ENABLED, LOW_BATTERY_LIGHT_ENABLED_VALIDATOR);
         }
 
         /**
