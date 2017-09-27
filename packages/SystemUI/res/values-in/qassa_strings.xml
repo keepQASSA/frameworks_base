@@ -119,4 +119,8 @@
     <string name="force_stop_dlg_text">Jika Anda memaksa menghentikan aplikasi, itu mungkin berperilaku tidak semestinya.</string>
     <string name="guts_force_close_app">Tutup Aplikasi</string>
     <string name="delete_screenshot_toast">Tangkapan layar dihapus</string>
+    <string name="quick_settings_compass_label">Kompas</string>
+    <string name="quick_settings_compass_init">Inisialisasi\u2026</string>
+    <string name="accessibility_quick_settings_compass_off">Kompas mati.</string>
+    <string name="accessibility_quick_settings_compass_on">Kompas aktif.</string>
 </resources>
