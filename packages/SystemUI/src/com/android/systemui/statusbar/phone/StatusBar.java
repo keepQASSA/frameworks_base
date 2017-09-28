@@ -5079,6 +5079,16 @@ public class StatusBar extends SystemUI implements DemoMode,
         return mLockscreenUserManager.isCurrentProfile(notificationUserId);
     }
 
+    private void setHeadsUpStoplist() {
+        if (mPresenter != null)
+            mPresenter.setHeadsUpStoplist();
+    }
+
+    private void setHeadsUpBlacklist() {
+        if (mPresenter != null)
+            mPresenter.setHeadsUpBlacklist();
+    }
+
     private final BroadcastReceiver mBannerActionBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -5474,6 +5484,12 @@ public class StatusBar extends SystemUI implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.QS_BLUR_RADIUS),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.HEADS_UP_STOPLIST_VALUES),
+                    false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.HEADS_UP_BLACKLIST_VALUES),
+                    false, this);
         }
 
         @Override
@@ -5494,12 +5510,15 @@ public class StatusBar extends SystemUI implements DemoMode,
             } else if (uri.equals(Settings.System.getUriFor(Settings.System.QS_BLUR_RADIUS))) {
                 setQSblurRadius();
             }
+            update();
         }
 
         public void update() {
             updateCutoutOverlay();
             setQsRowsColumns();
             setQSblurRadius();
+            setHeadsUpStoplist();
+            setHeadsUpBlacklist();
         }
     }
 
