@@ -111,4 +111,6 @@
     <string name="screenrecord_video_bitrate_label">Kecepatan Bit Video</string>
     <string name="screenrecord_video_bitrate_summary">Setel kecepatan bit video untuk kualitas video yang lebih baik, dengan biaya file yang lebih besar.</string>
     <string name="global_action_screenrecord">Rekam layar</string>
+    <string name="quick_settings_locale_label">Bahasa</string>
+    <string name="quick_settings_locale_more_locales_toast">Harap konfigurasikan beberapa bahasa untuk mengaktifkan fungsi sakelar</string>
 </resources>
