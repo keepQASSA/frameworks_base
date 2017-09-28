@@ -50,4 +50,7 @@
     <string name="qs_data_switch_label">Beralih kartu data</string>
     <string name="qs_data_switch_changed_1">Menggunakan SIM 1 untuk data Seluler</string>
     <string name="qs_data_switch_changed_2">Menggunakan SIM 2 untuk data Seluler</string>
+    <string name="quick_settings_music_label">Musik</string>
+    <string name="quick_settings_music_play">Mainkan Musik</string>
+    <string name="quick_settings_music_pause">Jeda</string>
 </resources>
