@@ -116,6 +116,8 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     private static final String STATUS_BAR_SHOW_LYRIC =
             "system:" + Settings.System.STATUS_BAR_SHOW_LYRIC;
 
+    private View mBatteryBar;
+
     private SignalCallback mSignalCallback = new SignalCallback() {
         @Override
         public void setIsAirplaneMode(NetworkController.IconState icon) {
@@ -155,6 +157,7 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
         mSystemIconArea = mStatusBar.findViewById(R.id.system_icon_area);
         mCustomIconArea = mStatusBar.findViewById(R.id.left_icon_area);
         mCenterClockLayout = (LinearLayout) mStatusBar.findViewById(R.id.center_clock_layout);
+        mBatteryBar = mStatusBar.findViewById(R.id.battery_bar);
         mClockController = new ClockController(mStatusBar);
         mClockView = mStatusBar.findViewById(R.id.clock);
         mCenterClockView = mStatusBar.findViewById(R.id.clock_center);
@@ -327,10 +330,12 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     }
 
     public void hideSystemIconArea(boolean animate) {
+        animateHide(mBatteryBar, animate);
         animateHide(mSystemIconArea, animate);
     }
 
     public void showSystemIconArea(boolean animate) {
+        animateShow(mBatteryBar, animate);
         animateShow(mSystemIconArea, animate);
     }
 
