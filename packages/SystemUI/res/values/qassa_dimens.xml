@@ -143,4 +143,10 @@
     <dimen name="net_traffic_sb_txt_img_padding">2dp</dimen>
 
     <dimen name="no_notifications_text_size">20sp</dimen>
+
+    <!-- Status bar notification ticker -->
+    <dimen name="ticker_start_padding">6dp</dimen>
+    <dimen name="ticker_icon_end_margin">4dp</dimen>
+    <dimen name="ticker_text_top_padding">2dp</dimen>
+    <dimen name="ticker_text_end_padding">10dp</dimen>
 </resources>

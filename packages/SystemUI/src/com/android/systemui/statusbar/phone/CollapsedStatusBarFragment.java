@@ -32,6 +32,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.widget.ImageSwitcher;
 import android.widget.LinearLayout;
 
 import com.android.systemui.Dependency;
@@ -42,10 +43,12 @@ import com.android.systemui.plugins.statusbar.StatusBarStateController;
 import com.android.systemui.statusbar.CommandQueue;
 import com.android.systemui.statusbar.StatusBarState;
 import com.android.systemui.statusbar.phone.StatusBarIconController.DarkIconManager;
+import com.android.systemui.statusbar.phone.TickerView;
 import com.android.systemui.statusbar.policy.EncryptionHelper;
 import com.android.systemui.statusbar.policy.KeyguardMonitor;
 import com.android.systemui.statusbar.policy.NetworkController;
 import com.android.systemui.statusbar.policy.NetworkController.SignalCallback;
+import com.android.systemui.tuner.TunerService;
 
 /**
  * Contains the collapsed status bar and handles hiding/showing based on disable flags
@@ -53,7 +56,7 @@ import com.android.systemui.statusbar.policy.NetworkController.SignalCallback;
  * updated by the StatusBarIconController and DarkIconManager while it is attached.
  */
 public class CollapsedStatusBarFragment extends Fragment implements CommandQueue.Callbacks,
-        StatusBarStateController.StateListener {
+        StatusBarStateController.StateListener, TunerService.Tunable {
 
     public static final String TAG = "CollapsedStatusBarFragment";
     private static final String EXTRA_PANEL_STATE = "panel_state";
@@ -99,6 +102,12 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     }
     private SettingsObserver mSettingsObserver;
     private ContentResolver mContentResolver;
+
+    private int mTickerEnabled;
+    private View mTickerViewFromStub;
+
+    private static final String STATUS_BAR_SHOW_TICKER =
+            "system:" + Settings.System.STATUS_BAR_SHOW_TICKER;
 
     private SignalCallback mSignalCallback = new SignalCallback() {
         @Override
@@ -148,6 +157,8 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
         initOperatorName();
         mSettingsObserver.observe();
         updateSettings(false);
+        Dependency.get(TunerService.class).addTunable(this,
+                STATUS_BAR_SHOW_TICKER);
     }
 
     @Override
@@ -175,9 +186,23 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Dependency.get(TunerService.class).removeTunable(this);
         Dependency.get(StatusBarIconController.class).removeIconGroup(mDarkIconManager);
         if (mNetworkController.hasEmergencyCryptKeeperText()) {
             mNetworkController.removeCallback(mSignalCallback);
+        }
+    }
+
+    @Override
+    public void onTuningChanged(String key, String newValue) {
+        switch (key) {
+            case STATUS_BAR_SHOW_TICKER:
+                mTickerEnabled =
+                        TunerService.parseInteger(newValue, 0);
+                initTickerView();
+                break;
+            default:
+                break;
         }
     }
 
@@ -438,6 +463,21 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
             mCenterClockView.setPadding(0,0,0,0);
             mRightClockView.setBackgroundResource(0);
             mRightClockView.setPadding(0,0,0,0);
+        }
+    }
+
+    private void initTickerView() {
+        if (mTickerEnabled != 0) {
+            View tickerStub = mStatusBar.findViewById(R.id.ticker_stub);
+            if (mTickerViewFromStub == null && tickerStub != null) {
+                mTickerViewFromStub = ((ViewStub) tickerStub).inflate();
+            }
+            TickerView tickerView = (TickerView) mStatusBar.findViewById(R.id.tickerText);
+            ImageSwitcher tickerIcon = (ImageSwitcher) mStatusBar.findViewById(R.id.tickerIcon);
+            mStatusBarComponent.createTicker(
+                    mTickerEnabled, getContext(), mStatusBar, tickerView, tickerIcon, mTickerViewFromStub);
+        } else {
+            mStatusBarComponent.disableTicker();
         }
     }
 }
