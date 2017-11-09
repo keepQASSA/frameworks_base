@@ -124,4 +124,14 @@
     <!-- Accessibility label for nfc icon (not shown on screen) [CHAR LIMIT=NONE] -->
     <string name="accessibility_status_bar_nfc">Nfc</string>
 
+    <!-- Screen Stabilization -->
+    <string name="quick_settings_stabilization_label">Screen Stabilization</string>
+    <string name="quick_settings_stabilization_off">Stabilization is disabled</string>
+    <string name="quick_settings_stabilization_on">Stabilization is enabled</string>
+    <string name="low_label">Low</string>
+    <string name="high_label">High</string>
+    <string name="stabilization_velocity_friction">Velocity Friction</string>
+    <string name="stabilization_velocity_amplitude">Velocity Amplitude</string>
+    <string name="stabilization_position_friction">Position Friction</string>
+
 </resources>
