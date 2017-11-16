@@ -62,4 +62,6 @@
     <string name="stabilization_velocity_amplitude">Amplitudo Kecepatan</string>
     <string name="stabilization_position_friction">Gesekan Posisi</string>
     <string name="quick_settings_cpuinfo_label">Info CPU</string>
+    <string name="quick_settings_reboot_label">Mulai ulang</string>
+    <string name="quick_settings_reboot_recovery_label">Pemulihan</string>
 </resources>
