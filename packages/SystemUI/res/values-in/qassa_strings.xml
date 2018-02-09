@@ -125,4 +125,5 @@
     <string name="accessibility_quick_settings_compass_on">Kompas aktif.</string>
     <string name="quick_settings_smart_pixels">Piksel Cerdas</string>
     <string name="quick_settings_smart_pixels_on_power_save">Piksel Cerdas yang diaktifkan secara otomatis</string>
+    <string name="quick_settings_sound_search">Penelusuran suara</string>
 </resources>
