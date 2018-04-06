@@ -317,10 +317,12 @@ public class QSFooterImpl extends FrameLayout implements QSFooter,
     private void updateVisibilities() {
         mSettingsContainer.setVisibility(mQsDisabled ? View.GONE : View.VISIBLE);
         final boolean isDemo = UserManager.isDeviceInDemoMode(mContext);
-        mMultiUserSwitch.setVisibility(showUserSwitcher() ? View.VISIBLE : View.INVISIBLE);
+        mMultiUserSwitch.setVisibility(isUserEnabled() ? (showUserSwitcher() ? View.VISIBLE : View.INVISIBLE) : View.GONE);
         mEditContainer.setVisibility(isDemo || !mExpanded ? View.INVISIBLE : View.VISIBLE);
-        mSettingsButton.setVisibility(isDemo || !mExpanded ? View.INVISIBLE : View.VISIBLE);
+        mSettingsContainer.setVisibility(!isSettingsEnabled() || mQsDisabled ? View.GONE : View.VISIBLE);
+        mSettingsButton.setVisibility(isSettingsEnabled() ? (isDemo || !mExpanded ? View.INVISIBLE : View.VISIBLE) : View.GONE);
         mRunningServicesButton.setVisibility(isRunningServicesEnabled() ? !isDemo && mExpanded ? View.VISIBLE : View.INVISIBLE : View.GONE);
+        mEdit.setVisibility(isEditEnabled() ? View.VISIBLE : View.GONE);
     }
 
     private boolean showUserSwitcher() {
@@ -342,6 +344,26 @@ public class QSFooterImpl extends FrameLayout implements QSFooter,
             mMultiUserSwitch.setQsPanel(qsPanel);
             mQsPanel.setFooterPageIndicator(mPageIndicator);
         }
+    }
+
+    public boolean isSettingsEnabled() {
+        return Settings.System.getInt(mContext.getContentResolver(),
+            Settings.System.QS_FOOTER_SHOW_SETTINGS, 1) == 1;
+    }
+
+    public boolean isEditEnabled() {
+        return Settings.System.getInt(mContext.getContentResolver(),
+            Settings.System.QS_FOOTER_SHOW_EDIT, 1) == 1;
+    }
+
+    public boolean isUserEnabled() {
+        return Settings.System.getInt(mContext.getContentResolver(),
+            Settings.System.QS_FOOTER_SHOW_USER, 1) == 1;
+    }
+
+    public boolean isRunningServicesEnabled() {
+        return Settings.System.getInt(mContext.getContentResolver(),
+            Settings.System.QS_RUNNING_SERVICES_TOGGLE, 0) == 1;
     }
 
     @Override
@@ -368,11 +390,6 @@ public class QSFooterImpl extends FrameLayout implements QSFooter,
                             : MetricsProto.MetricsEvent.ACTION_QS_COLLAPSED_SETTINGS_LAUNCH);
             startRunningServicesActivity();
         }
-    }
-
-    public boolean isRunningServicesEnabled() {
-        return Settings.System.getInt(mContext.getContentResolver(),
-            Settings.System.QS_RUNNING_SERVICES_TOGGLE, 0) == 1;
     }
 
     @Override
