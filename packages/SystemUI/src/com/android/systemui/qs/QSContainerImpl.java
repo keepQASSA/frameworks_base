@@ -21,7 +21,11 @@ import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.database.ContentObserver;
 import android.graphics.Point;
+import android.os.Handler;
+import android.os.UserHandle;
+import android.provider.Settings;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -50,9 +54,13 @@ public class QSContainerImpl extends FrameLayout {
 
     private int mSideMargins;
     private boolean mQsDisabled;
+    private int mQsBackgroundAlpha = 255;
 
     public QSContainerImpl(Context context, AttributeSet attrs) {
         super(context, attrs);
+        Handler mHandler = new Handler();
+        SettingsObserver settingsObserver = new SettingsObserver(mHandler);
+        settingsObserver.observe();
     }
 
     @Override
@@ -78,6 +86,33 @@ public class QSContainerImpl extends FrameLayout {
         setBackgroundGradientVisibility(newConfig);
         updateResources();
         mSizePoint.set(0, 0); // Will be retrieved on next measure pass.
+    }
+
+    private class SettingsObserver extends ContentObserver {
+        SettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        void observe() {
+            getContext().getContentResolver().registerContentObserver(Settings.System
+                            .getUriFor(Settings.System.QS_PANEL_BG_ALPHA), false,
+                    this, UserHandle.USER_ALL);
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            updateAlpha();
+        }
+    }
+
+    private void updateAlpha() {
+        mQsBackgroundAlpha = Settings.System.getIntForUser(getContext().getContentResolver(),
+                Settings.System.QS_PANEL_BG_ALPHA, 255,
+                UserHandle.USER_CURRENT);
+
+        mBackground.getBackground().setAlpha(mQsBackgroundAlpha);
+        mStatusBarBackground.getBackground().setAlpha(mQsBackgroundAlpha);
+        mBackgroundGradient.getBackground().setAlpha(mQsBackgroundAlpha);
     }
 
     @Override
@@ -214,5 +249,10 @@ public class QSContainerImpl extends FrameLayout {
             getDisplay().getRealSize(mSizePoint);
         }
         return mSizePoint.y;
+    }
+
+    private void updateStatusbarVisibility() {
+
+        updateAlpha();
     }
 }
