@@ -86,4 +86,8 @@
     <string name="applock_face">&#160;atau wajah Anda untuk dibuka.</string>
     <string name="applock_fingerprint">&#160;atau sidik jari Anda untuk dibuka.</string>
     <string name="applock_locked_notification">Aplikasi terkunci</string>
+    <string name="quick_settings_immersive_tile">Mode imersif</string>
+    <string name="quick_settings_immersive_tile_statusbar">Bilah status imersif</string>
+    <string name="quick_settings_immersive_tile_navbar">Navbar imersif</string>
+    <string name="quick_settings_immersive_tile_full">Full imersif</string>
 </resources>
