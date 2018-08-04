@@ -96,6 +96,8 @@ public class QuickStatusBarHeader extends RelativeLayout implements
     private static final int FADE_ANIMATION_DURATION_MS = 300;
     private static final int TOOLTIP_NOT_YET_SHOWN_COUNT = 0;
     public static final int MAX_TOOLTIP_SHOWN_COUNT = 2;
+    private static final int CLOCK_POSITION_LEFT = 2;
+    private static final int CLOCK_POSITION_HIDE = 3;
 
     private static final String QS_SHOW_AUTO_BRIGHTNESS =
             "system:" + Settings.System.QS_SHOW_AUTO_BRIGHTNESS;
@@ -111,6 +113,8 @@ public class QuickStatusBarHeader extends RelativeLayout implements
             "system:" + Settings.System.QS_BATTERY_STYLE;
     public static final String QS_BATTERY_LOCATION =
             "system:" + Settings.System.QS_BATTERY_LOCATION;
+    private static final String STATUS_BAR_CLOCK =
+            "system:" + Settings.System.STATUS_BAR_CLOCK;
 
     private final Handler mHandler = new Handler();
     private final NextAlarmController mAlarmController;
@@ -253,7 +257,8 @@ public class QuickStatusBarHeader extends RelativeLayout implements
                 STATUS_BAR_BATTERY_STYLE,
                 QS_BATTERY_STYLE,
                 QS_BATTERY_LOCATION,
-                QSFooterImpl.QS_SHOW_DRAG_HANDLE);
+                QSFooterImpl.QS_SHOW_DRAG_HANDLE,
+                STATUS_BAR_CLOCK);
     }
 
     private void updateStatusText() {
@@ -704,23 +709,30 @@ public class QuickStatusBarHeader extends RelativeLayout implements
             default:
                 break;
         }
-        if (QS_SHOW_BRIGHTNESS_SLIDER.equals(key)) {
-            try {
-                mIsQuickQsBrightnessEnabled = Integer.parseInt(newValue) > 1;
-            } catch (NumberFormatException e) {
-                // Catches exception as newValue may be null or malformed.
-                mIsQuickQsBrightnessEnabled = true;
-            }
-            updateResources();
-        } else if (QS_SHOW_AUTO_BRIGHTNESS.equals(key)) {
-            mIsQsAutoBrightnessEnabled = TunerService.parseIntegerSwitch(newValue, true);
-            updateResources();
-        } else if (StatusBarIconController.ICON_BLACKLIST.equals(key)) {
-            mClockView.setClockVisibleByUser(!StatusBarIconController.getIconBlacklist(newValue)
-                    .contains("clock"));
-        } else if (QSFooterImpl.QS_SHOW_DRAG_HANDLE.equals(key)) {
-            mHideDragHandle = TunerService.parseIntegerSwitch(newValue, true);
-            updateResources();
+        switch (key) {
+            case QS_SHOW_BRIGHTNESS_SLIDER:
+                int val =
+                        TunerService.parseInteger(newValue, 1);
+                mIsQuickQsBrightnessEnabled = val > 1;
+                updateResources();
+                break;
+            case QS_SHOW_AUTO_BRIGHTNESS:
+                mIsQsAutoBrightnessEnabled =
+                        TunerService.parseIntegerSwitch(newValue, true);
+                updateResources();
+                break;
+            case STATUS_BAR_CLOCK:
+                int showClock =
+                        TunerService.parseInteger(newValue, CLOCK_POSITION_LEFT);
+                mClockView.setClockVisibleByUser(showClock != CLOCK_POSITION_HIDE);
+                break;
+            case QSFooterImpl.QS_SHOW_DRAG_HANDLE:
+                mHideDragHandle =
+                        TunerService.parseIntegerSwitch(newValue, true);
+                updateResources();
+                break;
+            default:
+                break;
         }
     }
 }

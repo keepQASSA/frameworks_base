@@ -4822,13 +4822,14 @@ public final class Settings {
          * 0: show the clock in the right position (LTR)
          * 1: show the clock in the center
          * 2: show the clock in the left position (LTR)
+         * 3: hide the clock
          * default: 0
          */
         public static final String STATUS_BAR_CLOCK = "status_bar_clock";
 
         /** @hide */
         public static final Validator STATUS_BAR_CLOCK_VALIDATOR =
-                new SettingsValidators.InclusiveIntegerRangeValidator(0, 2);
+                new SettingsValidators.InclusiveIntegerRangeValidator(0, 3);
 
         /**
          * Display style of AM/PM next to clock in status bar
