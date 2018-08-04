@@ -69,9 +69,6 @@ public class Clock extends TextView implements DemoMode, Tunable, CommandQueue.C
 
     private static final String TAG = "StatusBarClock";
 
-    public static final String CLOCK_SECONDS = "system:" + Settings.System.STATUS_BAR_CLOCK_SECONDS;;
-    private static final String CLOCK_STYLE = "system:" + Settings.System.STATUS_BAR_AM_PM;
-
     private static final String CLOCK_SUPER_PARCELABLE = "clock_super_parcelable";
     private static final String CURRENT_USER_ID = "current_user_id";
     private static final String VISIBLE_BY_POLICY = "visible_by_policy";
@@ -100,6 +97,11 @@ public class Clock extends TextView implements DemoMode, Tunable, CommandQueue.C
     private final boolean mShowDark;
     private boolean mShowSeconds;
     private Handler mSecondsHandler;
+
+    public static final String STATUS_BAR_CLOCK_SECONDS =
+            "system:" + Settings.System.STATUS_BAR_CLOCK_SECONDS;
+    private static final String STATUS_BAR_AM_PM =
+            "system:" + Settings.System.STATUS_BAR_AM_PM;
 
     /**
      * Whether we should use colors that adapt based on wallpaper/the scrim behind quick settings
@@ -191,7 +193,9 @@ public class Clock extends TextView implements DemoMode, Tunable, CommandQueue.C
 
             getContext().registerReceiverAsUser(mIntentReceiver, UserHandle.ALL, filter,
                     null, Dependency.get(Dependency.TIME_TICK_HANDLER));
-            Dependency.get(TunerService.class).addTunable(this, CLOCK_SECONDS, CLOCK_STYLE);
+            Dependency.get(TunerService.class).addTunable(this,
+                    STATUS_BAR_CLOCK_SECONDS,
+                    STATUS_BAR_AM_PM);
             SysUiServiceProvider.getComponent(getContext(), CommandQueue.class).addCallback(this);
             if (mShowDark) {
                 Dependency.get(DarkIconDispatcher.class).addDarkReceiver(this);
@@ -300,17 +304,20 @@ public class Clock extends TextView implements DemoMode, Tunable, CommandQueue.C
 
     @Override
     public void onTuningChanged(String key, String newValue) {
-        if (CLOCK_SECONDS.equals(key)) {
-            mShowSeconds = TunerService.parseIntegerSwitch(newValue, false);
-            updateShowSeconds();
-        } else if (CLOCK_STYLE.equals(key)) {
-            try {
-                mAmPmStyle = Integer.valueOf(newValue);
-            } catch (NumberFormatException ex) {
-                mAmPmStyle = AM_PM_STYLE_GONE;
-            }
-            mClockFormatString = ""; // force refresh
-            updateClock();
+        switch (key) {
+            case STATUS_BAR_CLOCK_SECONDS:
+                mShowSeconds =
+                        TunerService.parseIntegerSwitch(newValue, false);
+                updateShowSeconds();
+                break;
+            case STATUS_BAR_AM_PM:
+                mAmPmStyle =
+                        TunerService.parseInteger(newValue, AM_PM_STYLE_GONE);
+                mClockFormatString = ""; // force refresh
+                updateClock();
+                break;
+            default:
+                break;
         }
     }
 
