@@ -160,6 +160,8 @@ public class NotificationPanelView extends PanelView implements
             "system:" + Settings.System.STATUS_BAR_QUICK_QS_PULLDOWN;
     private static final String DOUBLE_TAP_SLEEP_GESTURE =
             "system:" + Settings.System.DOUBLE_TAP_SLEEP_GESTURE;
+    private static final String DOUBLE_TAP_SLEEP_LOCKSCREEN =
+            "system:" + Settings.System.DOUBLE_TAP_SLEEP_LOCKSCREEN;
 
     private static final Rect mDummyDirtyRect = new Rect(0, 0, 1, 1);
     private static final Rect mEmptyRect = new Rect();
@@ -425,6 +427,9 @@ public class NotificationPanelView extends PanelView implements
     private boolean mDoubleTapToSleepEnabled;
     private GestureDetector mDoubleTapGesture;
 
+    private boolean mIsLockscreenDoubleTapEnabled;
+    private int mStatusBarHeaderHeight;
+
     /**
      * Cache the resource id of the theme to avoid unnecessary work in onThemeChanged.
      *
@@ -571,6 +576,7 @@ public class NotificationPanelView extends PanelView implements
         Dependency.get(ConfigurationController.class).addCallback(this);
         Dependency.get(TunerService.class).addTunable(this, STATUS_BAR_QUICK_QS_PULLDOWN);
         Dependency.get(TunerService.class).addTunable(this, DOUBLE_TAP_SLEEP_GESTURE);
+        Dependency.get(TunerService.class).addTunable(this, DOUBLE_TAP_SLEEP_LOCKSCREEN);
         mUpdateMonitor.registerCallback(mKeyguardUpdateCallback);
         // Theme might have changed between inflating this view and attaching it to the window, so
         // force a call to onThemeChanged
@@ -590,14 +596,21 @@ public class NotificationPanelView extends PanelView implements
 
     @Override
     public void onTuningChanged(String key, String newValue) {
-        if (STATUS_BAR_QUICK_QS_PULLDOWN.equals(key)) {
-            try {
-                mOneFingerQuickSettingsIntercept = Integer.parseInt(newValue);
-            } catch (NumberFormatException ex) {
-                mOneFingerQuickSettingsIntercept = 0;
-            }
-        } else if (DOUBLE_TAP_SLEEP_GESTURE.equals(key)) {
-            mDoubleTapToSleepEnabled = TunerService.parseIntegerSwitch(newValue, false);
+        switch (key) {
+            case STATUS_BAR_QUICK_QS_PULLDOWN:
+                mOneFingerQuickSettingsIntercept =
+                        TunerService.parseInteger(newValue, 1);
+                break;
+            case DOUBLE_TAP_SLEEP_GESTURE:
+                mDoubleTapToSleepEnabled =
+                        TunerService.parseIntegerSwitch(newValue, true);
+                break;
+            case DOUBLE_TAP_SLEEP_LOCKSCREEN:
+                mIsLockscreenDoubleTapEnabled =
+                        TunerService.parseIntegerSwitch(newValue, true);
+                break;
+            default:
+                break;
         }
     }
 
@@ -622,6 +635,8 @@ public class NotificationPanelView extends PanelView implements
                 R.dimen.keyguard_indication_bottom_padding);
         mQsNotificationTopPadding = getResources().getDimensionPixelSize(
                 R.dimen.qs_notification_padding);
+        mStatusBarHeaderHeight = getResources().getDimensionPixelSize(
+                R.dimen.status_bar_header_height_keyguard);
         mShelfHeight = getResources().getDimensionPixelSize(R.dimen.notification_shelf_height);
         mDarkIconSize = getResources().getDimensionPixelSize(
                 R.dimen.status_bar_icon_drawing_size_dark);
@@ -1274,7 +1289,10 @@ public class NotificationPanelView extends PanelView implements
             return false;
         }
 
-        if (mDoubleTapToSleepEnabled && mBarState == StatusBarState.KEYGUARD
+        if (((mIsLockscreenDoubleTapEnabled
+                && mBarState == StatusBarState.KEYGUARD) ||
+                (!mQsExpanded && mDoubleTapToSleepEnabled
+                && event.getY() < mStatusBarHeaderHeight))
                 && !mPulsing && !mDozing) {
             mDoubleTapGesture.onTouchEvent(event);
         }
