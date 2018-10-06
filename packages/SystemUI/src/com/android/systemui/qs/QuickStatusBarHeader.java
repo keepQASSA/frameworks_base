@@ -154,6 +154,8 @@ public class QuickStatusBarHeader extends RelativeLayout implements
 
     private int mStatusBarBatteryStyle, mQSBatteryStyle;
 
+    private boolean mHideDragHandle;
+
     private View mQuickQsBrightness;
     private BrightnessController mBrightnessController;
     private boolean mIsQuickQsBrightnessEnabled;
@@ -250,7 +252,8 @@ public class QuickStatusBarHeader extends RelativeLayout implements
                 QS_SHOW_BATTERY_ESTIMATE,
                 STATUS_BAR_BATTERY_STYLE,
                 QS_BATTERY_STYLE,
-                QS_BATTERY_LOCATION);
+                QS_BATTERY_LOCATION,
+                QSFooterImpl.QS_SHOW_DRAG_HANDLE);
     }
 
     private void updateStatusText() {
@@ -715,6 +718,9 @@ public class QuickStatusBarHeader extends RelativeLayout implements
         } else if (StatusBarIconController.ICON_BLACKLIST.equals(key)) {
             mClockView.setClockVisibleByUser(!StatusBarIconController.getIconBlacklist(newValue)
                     .contains("clock"));
+        } else if (QSFooterImpl.QS_SHOW_DRAG_HANDLE.equals(key)) {
+            mHideDragHandle = TunerService.parseIntegerSwitch(newValue, true);
+            updateResources();
         }
     }
 }
