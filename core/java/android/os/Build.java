@@ -1007,7 +1007,9 @@ public class Build {
     /** A string that uniquely identifies this build.  Do not attempt to parse this value. */
     public static final String FINGERPRINT = deriveFingerprint();
 
-    /** @hide */
+    /**
+     * The build date
+     */
     public static final String CUSTOM_FINGERPRINT = getString("ro.build.date");
 
     /**
