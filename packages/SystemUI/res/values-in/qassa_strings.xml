@@ -115,4 +115,7 @@
     <string name="quick_settings_locale_more_locales_toast">Harap konfigurasikan beberapa bahasa untuk mengaktifkan fungsi sakelar</string>
     <string name="heads_up_snooze_message_one_minute">Pemberitahuan mengintip untuk <xliff:g id="string">%s</xliff:g> ditunda selama 1 menit.</string>
     <string name="heads_up_snooze_message">Pemberitahuan mengintip untuk <xliff:g id="string">%s</xliff:g> ditunda karena <xliff:g id="number">%d</xliff:g> menit.</string>
+    <string name="force_stop_dlg_title">Paksa berhenti?</string>
+    <string name="force_stop_dlg_text">Jika Anda memaksa menghentikan aplikasi, itu mungkin berperilaku tidak semestinya.</string>
+    <string name="guts_force_close_app">Tutup Aplikasi</string>
 </resources>
