@@ -4055,15 +4055,19 @@ public class StatusBar extends SystemUI implements DemoMode,
         float density = Resources.getSystem().getDisplayMetrics().density;
         // Resource IDs for framework properties
         int resourceIdPadding = (int) mContext.getResources().getDimension(R.dimen.rounded_corner_content_padding);
+        int resourceIdSBPadding = (int) mContext.getResources().getDimension(R.dimen.status_bar_extra_padding);
 
         // Values on framework resources
         int contentPaddingRes = (int) (resourceIdPadding / density);
+        int sbPaddingRes = (int) (resourceIdSBPadding / density);
 
         // Values in Settings DBs
         int contentPadding = Settings.Secure.getIntForUser(mContext.getContentResolver(),
                 Settings.Secure.SYSUI_ROUNDED_CONTENT_PADDING, contentPaddingRes, UserHandle.USER_CURRENT);
+        int sbPadding = Settings.Secure.getIntForUser(mContext.getContentResolver(),
+                Settings.Secure.SYSUI_STATUS_BAR_PADDING, sbPaddingRes, UserHandle.USER_CURRENT);
 
-        return (contentPaddingRes == contentPadding);
+        return (contentPaddingRes == contentPadding) && (sbPaddingRes == sbPadding);
     }
 
     /**
@@ -4091,6 +4095,9 @@ public class StatusBar extends SystemUI implements DemoMode,
             int resourceIdPadding = (int) mContext.getResources().getDimension(R.dimen.rounded_corner_content_padding);
             Settings.Secure.putIntForUser(mContext.getContentResolver(),
                 Settings.Secure.SYSUI_ROUNDED_CONTENT_PADDING, (int) (resourceIdPadding / density), UserHandle.USER_CURRENT);
+            int resourceIdSBPadding = (int) mContext.getResources().getDimension(R.dimen.status_bar_extra_padding);
+            Settings.Secure.putIntForUser(mContext.getContentResolver(),
+                Settings.Secure.SYSUI_STATUS_BAR_PADDING, (int) (resourceIdSBPadding / density), UserHandle.USER_CURRENT);
         }
     }
 

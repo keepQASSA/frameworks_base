@@ -11117,6 +11117,7 @@ public final class Settings {
          * @hide
          */
         public static final String SYSUI_ROUNDED_CONTENT_PADDING = "sysui_rounded_content_padding";
+        public static final String SYSUI_STATUS_BAR_PADDING = "sysui_status_bar_padding";
 
         /**
          * Setting to disable rounded corner preferences and use frameworks values instead
