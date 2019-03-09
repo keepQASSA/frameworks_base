@@ -199,4 +199,6 @@
     <string name="status_bar_screen_record">screen_record</string>
     <string name="screenrecord_video_bitrate_label">Video Bitrate</string>
     <string name="screenrecord_video_bitrate_summary">Set the video bitrate for better video quality, at the cost of a bigger file.</string>
+
+    <string name="global_action_screenrecord">Screenrecord</string>
 </resources>

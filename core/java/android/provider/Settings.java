@@ -4527,6 +4527,13 @@ public final class Settings {
                 BOOLEAN_VALIDATOR;
 
         /**
+         * Whether to display screenrecord in the power menu
+         *
+         * @hide
+         */
+        public static final String POWERMENU_SCREENRECORD = "powermenu_screenrecord";
+
+        /**
          * Action to perform when the home key is long-pressed.
          * (Default can be configured via config_longPressOnHomeBehaviorHwkeys)
          * 0 - Nothing

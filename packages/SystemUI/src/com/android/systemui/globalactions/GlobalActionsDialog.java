@@ -41,6 +41,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.UserInfo;
+import android.content.ServiceConnection;
 import android.database.ContentObserver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
@@ -138,6 +139,8 @@ public class GlobalActionsDialog implements DialogInterface.OnDismissListener,
     static public final String SYSTEM_DIALOG_REASON_KEY = "reason";
     static public final String SYSTEM_DIALOG_REASON_GLOBAL_ACTIONS = "globalactions";
     static public final String SYSTEM_DIALOG_REASON_DREAM = "dream";
+
+    private static final String GLOBAL_ACTION_KEY_SCREENRECORD = "screenrecord";
 
     private static final String TAG = "GlobalActionsDialog";
 
@@ -544,6 +547,11 @@ public class GlobalActionsDialog implements DialogInterface.OnDismissListener,
                 mItems.add(new RestartSystemUIAction());
             } else if (GLOBAL_ACTION_KEY_SCREENSHOT.equals(actionKey)) {
                 mItems.add(new ScreenshotAction());
+            } else if (GLOBAL_ACTION_KEY_SCREENRECORD.equals(actionKey)) {
+                if (Settings.System.getInt(mContext.getContentResolver(),
+                        Settings.System.POWERMENU_SCREENRECORD, 0) == 1) {
+                    mItems.add(getScreenrecordAction());
+                }
             } else if (GLOBAL_ACTION_KEY_LOGOUT.equals(actionKey)) {
                 if (mDevicePolicyManager.isLogoutEnabled()
                         && getCurrentUser().id != UserHandle.USER_SYSTEM) {
@@ -888,6 +896,26 @@ public class GlobalActionsDialog implements DialogInterface.OnDismissListener,
         }
     }
 
+    private Action getScreenrecordAction() {
+        return new SinglePressAction(com.android.systemui.R.drawable.ic_lock_screenrecord,
+                com.android.systemui.R.string.global_action_screenrecord) {
+            @Override
+            public void onPress() {
+                takeScreenrecord();
+            }
+
+            @Override
+            public boolean showDuringKeyguard() {
+                return true;
+            }
+
+            @Override
+            public boolean showBeforeProvisioning() {
+                return true;
+            }
+        };
+    }
+
     private class ScreenshotAction extends SinglePressAction implements LongPressAction {
         public ScreenshotAction() {
             super(R.drawable.ic_screenshot, R.string.global_action_screenshot);
@@ -1189,6 +1217,32 @@ public class GlobalActionsDialog implements DialogInterface.OnDismissListener,
                     items.add(switchToUser);
                 }
             }
+        }
+    }
+
+    /**
+     * functions needed for taking screen record.
+     */
+    final Object mScreenrecordLock = new Object();
+    ServiceConnection mScreenrecordConnection = null;
+
+    final Runnable mScreenrecordTimeout = new Runnable() {
+        @Override public void run() {
+            synchronized (mScreenrecordLock) {
+                if (mScreenrecordConnection != null) {
+                    mContext.unbindService(mScreenrecordConnection);
+                    mScreenrecordConnection = null;
+                }
+            }
+        }
+    };
+
+    private void takeScreenrecord() {
+       synchronized (mScreenrecordLock) {
+            if (mScreenrecordConnection != null) {
+                return;
+            }
+            mScreenRecordHelper.launchRecordPrompt();
         }
     }
 
