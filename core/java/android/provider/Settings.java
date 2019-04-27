@@ -6457,6 +6457,15 @@ public final class Settings {
         public static final String KASA_IDLE_MANAGER = "kasa_idle_manager";
 
         /**
+         * Accent Color
+         * @hide
+         */
+        public static final String ACCENT_COLOR = "accent_color";
+
+        /** @hide */
+        private static final Validator ACCENT_COLOR_VALIDATOR = ANY_INTEGER_VALIDATOR;
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
@@ -6537,6 +6546,7 @@ public final class Settings {
             QS_PANEL_BG_USE_NEW_TINT,
             QS_DATAUSAGE,
             HIDE_SMART_REPLIES,
+            ACCENT_COLOR
         };
 
         /**
@@ -6791,6 +6801,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(HIDE_SMART_REPLIES);
             PRIVATE_SETTINGS.add(BATTERY_LEVEL_COLORS);
             PRIVATE_SETTINGS.add(HIGH_TOUCH_POLLING_RATE_ENABLE);
+            PRIVATE_SETTINGS.add(ACCENT_COLOR);
         }
 
         /**
@@ -6991,6 +7002,7 @@ public final class Settings {
             VALIDATORS.put(QS_DATAUSAGE, QS_DATAUSAGE_VALIDATOR);
             VALIDATORS.put(HIDE_SMART_REPLIES, HIDE_SMART_REPLIES_VALIDATOR);
             VALIDATORS.put(HIGH_TOUCH_POLLING_RATE_ENABLE, HIGH_TOUCH_POLLING_RATE_ENABLE_VALIDATOR);
+            VALIDATORS.put(ACCENT_COLOR, ACCENT_COLOR_VALIDATOR);
         }
 
         /**
