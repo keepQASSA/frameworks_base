@@ -316,6 +316,8 @@ public class StatusBar extends SystemUI implements DemoMode,
             "system:" + Settings.System.STATUS_BAR_TICKER_TICK_DURATION;
     private static final String SYSUI_ROUNDED_FWVALS =
             Settings.Secure.SYSUI_ROUNDED_FWVALS;
+    private static final String LOCKSCREEN_CHARGING_ANIMATION =
+            "system:" + Settings.System.LOCKSCREEN_CHARGING_ANIMATION;
 
     private static final String BANNER_ACTION_CANCEL =
             "com.android.systemui.statusbar.banner_action_cancel";
@@ -805,6 +807,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         tunerService.addTunable(this, STATUS_BAR_TICKER_ANIMATION_MODE);
         tunerService.addTunable(this, STATUS_BAR_TICKER_TICK_DURATION);
         tunerService.addTunable(this, SYSUI_ROUNDED_FWVALS);
+        tunerService.addTunable(this, LOCKSCREEN_CHARGING_ANIMATION);
 
         mDisplayManager = mContext.getSystemService(DisplayManager.class);
 
@@ -5497,6 +5500,12 @@ public class StatusBar extends SystemUI implements DemoMode,
                 mSysuiRoundedFwvals =
                         TunerService.parseIntegerSwitch(newValue, true);
                 updateCorners();
+                break;
+            case LOCKSCREEN_CHARGING_ANIMATION:
+                boolean showChargingAnimation =
+                        TunerService.parseIntegerSwitch(newValue, true);
+                if (mKeyguardIndicationController != null)
+                    mKeyguardIndicationController.updateChargingIndication(showChargingAnimation);
                 break;
             default:
                 break;
