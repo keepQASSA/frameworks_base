@@ -69,4 +69,8 @@
     <string name="accessibility_quick_settings_fpsinfo_off">Info FPS aktif</string>
     <string name="accessibility_quick_settings_fpsinfo_on">Info FPS mati</string>
     <string name="notification_section_header_alerting">Notifikasi peringatan</string>
+    <string name="gaming_mode_not_enabled">Mode permainan dinonaktifkan di setelan</string>
+    <string name="quick_settings_gaming_mode_label">Mode permainan</string>
+    <string name="accessibility_quick_settings_gaming_mode_disabled">Mode permainan dimatikan.</string>
+    <string name="accessibility_quick_settings_gaming_mode_enabled">Mode permainan diaktifkan.</string>
 </resources>
