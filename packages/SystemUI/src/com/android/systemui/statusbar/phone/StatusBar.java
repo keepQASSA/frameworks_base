@@ -5498,6 +5498,9 @@ public class StatusBar extends SystemUI implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.HEADS_UP_BLACKLIST_VALUES),
                     false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.LESS_BORING_HEADS_UP),
+                    false, this, UserHandle.USER_ALL);
         }
 
         @Override
@@ -5517,6 +5520,8 @@ public class StatusBar extends SystemUI implements DemoMode,
                 updateQsPanelResources();
             } else if (uri.equals(Settings.System.getUriFor(Settings.System.QS_BLUR_RADIUS))) {
                 setQSblurRadius();
+            } else if (uri.equals(Settings.System.getUriFor(Settings.System.LESS_BORING_HEADS_UP))) {
+                setUseLessBoringHeadsUp();
             }
             update();
         }
@@ -5527,12 +5532,20 @@ public class StatusBar extends SystemUI implements DemoMode,
             setQSblurRadius();
             setHeadsUpStoplist();
             setHeadsUpBlacklist();
+            setUseLessBoringHeadsUp();
         }
     }
 
     private void setQSblurRadius() {
         mBlurRadius = Settings.System.getIntForUser(mContext.getContentResolver(),
                 Settings.System.QS_BLUR_RADIUS, 25, UserHandle.USER_CURRENT);
+    }
+
+    private void setUseLessBoringHeadsUp() {
+        boolean lessBoringHeadsUp = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.LESS_BORING_HEADS_UP, 0,
+                UserHandle.USER_CURRENT) == 1;
+        mNotificationInterruptionStateProvider.setUseLessBoringHeadsUp(lessBoringHeadsUp);
     }
 
     private void setQsRowsColumns() {
