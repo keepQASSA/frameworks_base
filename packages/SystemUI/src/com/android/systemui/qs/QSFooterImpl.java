@@ -51,7 +51,6 @@ import com.android.internal.logging.MetricsLogger;
 import com.android.internal.logging.nano.MetricsProto;
 import com.android.keyguard.KeyguardUpdateMonitor;
 import com.android.settingslib.Utils;
-import com.android.settingslib.development.DevelopmentSettingsEnabler;
 import com.android.settingslib.drawable.UserIconDrawable;
 import com.android.systemui.Dependency;
 import com.android.systemui.R;
@@ -105,14 +104,14 @@ public class QSFooterImpl extends FrameLayout implements QSFooter,
 
     private OnClickListener mExpandClickListener;
 
-    /*private final ContentObserver mDeveloperSettingsObserver = new ContentObserver(
+    private final ContentObserver mSettingsObserver = new ContentObserver(
             new Handler(mContext.getMainLooper())) {
         @Override
         public void onChange(boolean selfChange, Uri uri) {
             super.onChange(selfChange, uri);
             setBuildText();
         }
-    };*/
+    };
 
     @Inject
     public QSFooterImpl(@Named(VIEW_CONTEXT) Context context, AttributeSet attrs,
@@ -164,21 +163,21 @@ public class QSFooterImpl extends FrameLayout implements QSFooter,
 
         updateResources();
 
-        //setBuildText();
+        setBuildText();
     }
 
     private void setBuildText() {
-        /*TextView v = findViewById(R.id.build);
+        TextView v = findViewById(R.id.build);
         if (v == null) return;
-        if (DevelopmentSettingsEnabler.isDevelopmentSettingsEnabled(mContext)) {
-            v.setText(mContext.getString(
-                    com.android.internal.R.string.bugreport_status,
-                    Build.VERSION.RELEASE,
-                    Build.ID));
+        boolean isShow = Settings.System.getIntForUser(mContext.getContentResolver(),
+                        Settings.System.FOOTER_TEXT_SHOW, 0,
+                        UserHandle.USER_CURRENT) == 1;
+        if (isShow) {
+            v.setText("#keepQASSA");
             v.setVisibility(View.VISIBLE);
         } else {
             v.setVisibility(View.GONE);
-        }*/
+        }
     }
 
     @Override
@@ -243,9 +242,9 @@ public class QSFooterImpl extends FrameLayout implements QSFooter,
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        /*mContext.getContentResolver().registerContentObserver(
-                Settings.Global.getUriFor(Settings.Global.DEVELOPMENT_SETTINGS_ENABLED), false,
-                mDeveloperSettingsObserver, UserHandle.USER_ALL);*/
+        mContext.getContentResolver().registerContentObserver(
+                Settings.System.getUriFor(Settings.System.FOOTER_TEXT_SHOW), false,
+                mSettingsObserver, UserHandle.USER_ALL);
         final TunerService tunerService = Dependency.get(TunerService.class);
         tunerService.addTunable(this, QS_SHOW_DRAG_HANDLE);
     }
@@ -255,7 +254,7 @@ public class QSFooterImpl extends FrameLayout implements QSFooter,
     public void onDetachedFromWindow() {
         Dependency.get(TunerService.class).removeTunable(this);
         setListening(false);
-        //mContext.getContentResolver().unregisterContentObserver(mDeveloperSettingsObserver);
+        mContext.getContentResolver().unregisterContentObserver(mSettingsObserver);
         super.onDetachedFromWindow();
     }
 
