@@ -1010,7 +1010,7 @@ public class Build {
     /**
      * The build date
      */
-    public static final String CUSTOM_FINGERPRINT = getString("ro.build.date");
+    public static final String CUSTOM_FINGERPRINT = getString("ro.build.date.utc");
 
     /**
      * Some devices split the fingerprint components between multiple
