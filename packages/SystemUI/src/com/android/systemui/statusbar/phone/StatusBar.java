@@ -291,6 +291,8 @@ public class StatusBar extends SystemUI implements DemoMode,
             "system:" + Settings.System.SCREEN_BRIGHTNESS_MODE;
     private static final String STATUS_BAR_BRIGHTNESS_CONTROL =
             "system:" + Settings.System.STATUS_BAR_BRIGHTNESS_CONTROL;
+    private static final String SHOW_BACK_ARROW_GESTURE =
+            Settings.Secure.SHOW_BACK_ARROW_GESTURE;
 
     private static final String BANNER_ACTION_CANCEL =
             "com.android.systemui.statusbar.banner_action_cancel";
@@ -736,6 +738,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         final TunerService tunerService = Dependency.get(TunerService.class);
         tunerService.addTunable(this, SCREEN_BRIGHTNESS_MODE);
         tunerService.addTunable(this, STATUS_BAR_BRIGHTNESS_CONTROL);
+        tunerService.addTunable(this, SHOW_BACK_ARROW_GESTURE);
 
         mDisplayManager = mContext.getSystemService(DisplayManager.class);
 
@@ -4994,6 +4997,15 @@ public class StatusBar extends SystemUI implements DemoMode,
             } catch (NumberFormatException ex) {}
         } else if (STATUS_BAR_BRIGHTNESS_CONTROL.equals(key)) {
             mBrightnessControl = TunerService.parseIntegerSwitch(newValue, false);
+        }
+        switch (key) {
+            case SHOW_BACK_ARROW_GESTURE:
+                if (getNavigationBarView() != null) {
+                    getNavigationBarView().updateBackArrowForGesture();
+                }
+                break;
+            default:
+                break;
         }
     }
     // End Extra BaseStatusBarMethods.
