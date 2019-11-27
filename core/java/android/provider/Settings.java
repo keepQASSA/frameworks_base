@@ -5582,6 +5582,11 @@ public final class Settings {
         public static final String SBC_HD_PRIORITY = "sbc_hd_priority";
 
         /**
+         * @hide
+         */
+        public static final String USE_OLD_MOBILETYPE = "use_old_mobiletype";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
