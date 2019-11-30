@@ -346,4 +346,7 @@
 
     <!-- SBC Dual Channel (SBC HD Audio) -->
     <bool name="config_enableSBCDualChannelAudio">true</bool>
+
+    <!-- Whether to use old mobile type icons as default -->
+    <bool name="config_useOldMobileIcons">false</bool>
 </resources>
