@@ -18,17 +18,42 @@ package com.android.internal.util.qassa;
 
 import android.content.Context;
 import android.os.PowerManager;
+import android.os.RemoteException;
+import android.os.ServiceManager;
 import android.os.SystemClock;
+
+import com.android.internal.statusbar.IStatusBarService;
 
 /**
  * Some custom utilities
  */
 public class qassaUtils {
 
+    private static IStatusBarService mStatusBarService = null;
+
     public static void switchScreenOff(Context ctx) {
         PowerManager pm = (PowerManager) ctx.getSystemService(Context.POWER_SERVICE);
         if (pm!= null) {
             pm.goToSleep(SystemClock.uptimeMillis());
+        }
+    }
+
+    public static void setPartialScreenshot(boolean active) {
+        IStatusBarService service = getStatusBarService();
+        if (service != null) {
+            try {
+                service.setPartialScreenshot(active);
+            } catch (RemoteException e) {}
+        }
+    }
+
+    private static IStatusBarService getStatusBarService() {
+        synchronized (qassaUtils.class) {
+            if (mStatusBarService == null) {
+                mStatusBarService = IStatusBarService.Stub.asInterface(
+                        ServiceManager.getService("statusbar"));
+            }
+            return mStatusBarService;
         }
     }
 }

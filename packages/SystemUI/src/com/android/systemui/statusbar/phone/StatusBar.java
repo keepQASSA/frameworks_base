@@ -5198,6 +5198,14 @@ public class StatusBar extends SystemUI implements DemoMode,
     }
 
     @Override
+    public void setPartialScreenshot(boolean active) {
+        if (getNavigationBarView() != null) {
+            getNavigationBarView().setPartialScreenshot(active);
+        }
+        mNotificationInterruptionStateProvider.setPartialScreenshot(active);
+    }
+
+    @Override
     public void setTopAppHidesStatusBar(boolean topAppHidesStatusBar) {
         mTopHidesStatusBar = topAppHidesStatusBar;
         if (!topAppHidesStatusBar && mWereIconsJustHidden) {

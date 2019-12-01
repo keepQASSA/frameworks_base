@@ -104,6 +104,7 @@ import com.android.internal.annotations.VisibleForTesting;
 import com.android.internal.config.sysui.SystemUiDeviceConfigFlags;
 import com.android.internal.messages.nano.SystemMessageProto.SystemMessage;
 import com.android.internal.statusbar.IStatusBarService;
+import com.android.internal.util.qassa.qassaUtils;
 import com.android.systemui.R;
 import com.android.systemui.SysUiServiceProvider;
 import com.android.systemui.SystemUI;
@@ -670,7 +671,6 @@ class GlobalScreenshot {
     private AudioManager mAudioManager;
     private Vibrator mVibrator;
 
-
     /**
      * @param context everything needs a context :(
      */
@@ -869,6 +869,7 @@ class GlobalScreenshot {
         setBlockedGesturalNavigation(true);
         setLockedScreenOrientation(true);
         mWindowManager.addView(mScreenshotLayout, mWindowLayoutParams);
+        qassaUtils.setPartialScreenshot(true);
         mScreenshotSelectorView.setSelectionListener(
                 new ScreenshotSelectorView.OnSelectionListener() {
             @Override
@@ -919,6 +920,7 @@ class GlobalScreenshot {
 
     void hideScreenshotSelector() {
         setLockedScreenOrientation(false);
+        qassaUtils.setPartialScreenshot(false);
         mWindowManager.removeView(mScreenshotLayout);
         mScreenshotSelectorView.stopSelection();
         mScreenshotSelectorView.setVisibility(View.GONE);
@@ -934,6 +936,8 @@ class GlobalScreenshot {
         if (mScreenshotLayout.getParent() != null) {
             hideScreenshotSelector();
         }
+        // called when unbinding screenshot service
+        qassaUtils.setPartialScreenshot(false);
     }
 
     /**
