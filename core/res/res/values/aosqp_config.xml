@@ -339,4 +339,8 @@
     <!-- Defines custom OEM sensor for pocket detection. -->
     <string name="config_pocketJudgeVendorSensorName"></string>
 
+    <string-array translatable="false" name="config_customPermissionsList">
+        <item>com.google.android.apps.wellbeing</item>
+        <!-- <item>more packages</item>-->
+    </string-array>
 </resources>
