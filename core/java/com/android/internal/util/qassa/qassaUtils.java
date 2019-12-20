@@ -17,6 +17,8 @@
 package com.android.internal.util.qassa;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.PowerManager;
 import android.os.RemoteException;
 import android.os.ServiceManager;
@@ -55,5 +57,15 @@ public class qassaUtils {
             }
             return mStatusBarService;
         }
+    }
+
+    // Check if device is connected to the internet
+    public static boolean isConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm == null) return false;
+
+        NetworkInfo wifi = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo mobile = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        return wifi.isConnected() || mobile.isConnected();
     }
 }
