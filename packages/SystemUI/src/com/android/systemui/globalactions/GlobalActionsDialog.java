@@ -407,9 +407,11 @@ public class GlobalActionsDialog implements DialogInterface.OnDismissListener,
         boolean keyguardLocked = mKeyguardManager.inKeyguardRestrictedInputMode() && mKeyguardManager.isKeyguardSecure();
         boolean advancedRestartEnabled = Settings.System.getInt(mContext.getContentResolver(),
                 Settings.System.ADVANCED_REBOOT, 1) == 1;
+        boolean advancedRestartSecuredEnabled = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.ADVANCED_REBOOT_SECURED, 1) == 1;
         boolean isPrimaryUser = UserHandle.getCallingUserId() == UserHandle.USER_OWNER;
 
-        return advancedRestartEnabled && !keyguardLocked && isPrimaryUser;
+        return advancedRestartEnabled && (!keyguardLocked || advancedRestartSecuredEnabled) && isPrimaryUser;
     }
 
     private boolean shouldShowRestartSubmenu() {
