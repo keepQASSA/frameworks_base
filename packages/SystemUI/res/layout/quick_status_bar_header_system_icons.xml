@@ -68,7 +68,18 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textAppearance="@style/TextAppearance.QS.Status"
+            android:paddingEnd="5dp"
             android:gravity="center_vertical|start" />
+
+        <com.android.systemui.BatteryMeterView
+            android:id="@+id/batteryIcon"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:gravity="center_vertical|end"
+            android:singleLine="true"
+            systemui:textAppearance="@style/TextAppearance.QS.Status"
+            systemui:showDark="false"
+            android:visibility="gone" />
 
     </LinearLayout>
 </LinearLayout>
