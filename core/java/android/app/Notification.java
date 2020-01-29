@@ -2486,6 +2486,20 @@ public class Notification implements Parcelable
             if (extras.containsKey(EXTRA_BACKGROUND_IMAGE_URI)) {
                 visitor.accept(Uri.parse(extras.getString(EXTRA_BACKGROUND_IMAGE_URI)));
             }
+
+            ArrayList<Person> people = extras.getParcelableArrayList(EXTRA_PEOPLE_LIST);
+            if (people != null && !people.isEmpty()) {
+                for (Person p : people) {
+                    if (p.getIconUri() != null) {
+                        visitor.accept(p.getIconUri());
+                    }
+                }
+            }
+
+            final Person person = extras.getParcelable(EXTRA_MESSAGING_PERSON);
+            if (person != null && person.getIconUri() != null) {
+                visitor.accept(person.getIconUri());
+            }
         }
 
         if (MessagingStyle.class.equals(getNotificationStyle()) && extras != null) {
@@ -2494,6 +2508,11 @@ public class Notification implements Parcelable
                 for (MessagingStyle.Message message : MessagingStyle.Message
                         .getMessagesFromBundleArray(messages)) {
                     visitor.accept(message.getDataUri());
+
+                    Person senderPerson = message.getSenderPerson();
+                    if (senderPerson != null && senderPerson.getIconUri() != null) {
+                        visitor.accept(senderPerson.getIconUri());
+                    }
                 }
             }
 
@@ -2502,6 +2521,11 @@ public class Notification implements Parcelable
                 for (MessagingStyle.Message message : MessagingStyle.Message
                         .getMessagesFromBundleArray(historic)) {
                     visitor.accept(message.getDataUri());
+
+                    Person senderPerson = message.getSenderPerson();
+                    if (senderPerson != null && senderPerson.getIconUri() != null) {
+                        visitor.accept(senderPerson.getIconUri());
+                    }
                 }
             }
         }
