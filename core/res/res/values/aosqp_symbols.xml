@@ -153,4 +153,7 @@
     <java-symbol type="string" name="systemui_restart_message" />
 
     <java-symbol type="array" name="config_customPermissionsList" />
+
+    <!-- SBC Dual Channel (SBC HD Audio) -->
+    <java-symbol type="bool" name="config_enableSBCDualChannelAudio"/>
 </resources>

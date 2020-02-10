@@ -343,4 +343,7 @@
         <item>com.google.android.apps.wellbeing</item>
         <!-- <item>more packages</item>-->
     </string-array>
+
+    <!-- SBC Dual Channel (SBC HD Audio) -->
+    <bool name="config_enableSBCDualChannelAudio">true</bool>
 </resources>
