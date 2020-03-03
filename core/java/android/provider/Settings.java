@@ -5541,6 +5541,14 @@ public final class Settings {
 
         private static final Validator AUTO_BRIGHTNESS_MIN_VALUE_VALIDATOR = ANY_INTEGER_VALIDATOR;
 
+        /** Width of the navigation handle.
+         *  @hide
+         */
+        public static final String NAVIGATION_HANDLE_WIDTH = "navigation_handle_width";
+
+        /** @hide */
+        private static final Validator NAVIGATION_HANDLE_WIDTH_VALIDATOR = ANY_INTEGER_VALIDATOR;
+
         /**
          * Show the pending notification counts as overlays on the status bar
          * @hide
@@ -5619,6 +5627,7 @@ public final class Settings {
             ALARM_ALERT,
             NOTIFICATION_LIGHT_PULSE,
             AUTO_BRIGHTNESS_MIN_VALUE,
+            NAVIGATION_HANDLE_WIDTH,
         };
 
         /**
@@ -5849,6 +5858,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(AUTO_BRIGHTNESS_MIN_VALUE);
             PRIVATE_SETTINGS.add(STATUSBAR_ICONS_STYLE);
             PRIVATE_SETTINGS.add(HEADER_ICONS_STYLE);
+            PRIVATE_SETTINGS.add(NAVIGATION_HANDLE_WIDTH);
         }
 
         /**
@@ -6039,6 +6049,7 @@ public final class Settings {
             VALIDATORS.put(FOD_GESTURE, FOD_GESTURE_VALIDATOR);
             VALIDATORS.put(POCKET_JUDGE, POCKET_JUDGE_VALIDATOR);
             VALIDATORS.put(AUTO_BRIGHTNESS_MIN_VALUE, AUTO_BRIGHTNESS_MIN_VALUE_VALIDATOR);
+            VALIDATORS.put(NAVIGATION_HANDLE_WIDTH, NAVIGATION_HANDLE_WIDTH_VALIDATOR);
         }
 
         /**
