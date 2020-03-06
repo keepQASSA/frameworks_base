@@ -33,6 +33,7 @@ import android.os.SystemClock;
 import android.os.UserHandle;
 import android.text.format.Time;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.android.internal.statusbar.IStatusBarService;
@@ -142,8 +143,11 @@ public class qassaUtils {
     public static boolean isThemeEnabled(String packageName) {
         mOverlayService = new OverlayManager();
         try {
-            List<OverlayInfo> infos = mOverlayService.getOverlayInfosForTarget("android",
-                    UserHandle.myUserId());
+            ArrayList<OverlayInfo> infos = new ArrayList<OverlayInfo>();
+            infos.addAll(mOverlayService.getOverlayInfosForTarget("android",
+                    UserHandle.myUserId()));
+            infos.addAll(mOverlayService.getOverlayInfosForTarget("com.android.systemui",
+                    UserHandle.myUserId()));
             for (int i = 0, size = infos.size(); i < size; i++) {
                 if (infos.get(i).packageName.equals(packageName)) {
                     return infos.get(i).isEnabled();

@@ -85,4 +85,12 @@ public class ThemesUtils {
         "com.qassa.systemui.wifibar_m",
         "com.qassa.systemui.wifibar_n",
     };
+
+    // Navbar styles
+    public static final String[] NAVBAR_STYLES = {
+            "com.android.theme.navbar.asus",
+            "com.android.theme.navbar.oneplus",
+            "com.android.theme.navbar.oneui",
+            "com.android.theme.navbar.tecno",
+    };
 }
