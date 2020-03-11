@@ -48,8 +48,6 @@
     <string name="accessibility_quick_settings_reading_mode_changed_on">Modus membaca dihidupkan.</string>
     <string name="accessibility_quick_settings_reading_mode_changed_off">Modus membaca dimatikan.</string>
     <string name="qs_data_switch_label">Beralih kartu data</string>
-    <string name="qs_data_switch_toast_0">Saat ini tidak ada kartu SIM yang dimasukkan</string>
-    <string name="qs_data_switch_toast_1">Saat ini hanya satu kartu SIM yang dimasukkan</string>
     <string name="qs_data_switch_changed_1">Menggunakan SIM 1 untuk data Seluler</string>
     <string name="qs_data_switch_changed_2">Menggunakan SIM 2 untuk data Seluler</string>
 </resources>
