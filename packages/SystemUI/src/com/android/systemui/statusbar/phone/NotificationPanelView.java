@@ -59,7 +59,6 @@ import android.widget.FrameLayout;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.internal.logging.MetricsLogger;
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
-import com.android.internal.widget.LockPatternUtils;
 import com.android.keyguard.KeyguardClockSwitch;
 import com.android.keyguard.KeyguardStatusView;
 import com.android.keyguard.KeyguardUpdateMonitor;
@@ -221,6 +220,11 @@ public class NotificationPanelView extends PanelView implements
                         mDelayShowingKeyguardStatusBar = false;
                     }
                 }
+
+                @Override
+                public void onKeyguardShowingChanged() {
+                    mStatusBar.updateQsExpansionEnabled();
+                }
             };
 
     private final InjectionInflationController mInjectionInflationController;
@@ -267,7 +271,6 @@ public class NotificationPanelView extends PanelView implements
     private boolean mQsExpandedWhenExpandingStarted;
     private boolean mQsFullyExpanded;
     private boolean mKeyguardShowing;
-    private boolean mKeyguardOrShadeShowing;
     private boolean mDozing;
     private boolean mDozingOnDown;
     protected int mBarState;
@@ -342,8 +345,6 @@ public class NotificationPanelView extends PanelView implements
     private String mLastCameraLaunchSource = KeyguardBottomAreaView.CAMERA_LAUNCH_SOURCE_AFFORDANCE;
     private boolean mShowLockscreenStatusBar;
     private boolean mStatusBarShownOnSecureKeyguard;
-
-    private LockPatternUtils mLockPatternUtils;
 
     private Runnable mHeadsUpExistenceChangedRunnable = new Runnable() {
         @Override
@@ -512,7 +513,6 @@ public class NotificationPanelView extends PanelView implements
         });
         mBottomAreaShadeAlphaAnimator.setDuration(160);
         mBottomAreaShadeAlphaAnimator.setInterpolator(Interpolators.ALPHA_OUT);
-        mLockPatternUtils = new LockPatternUtils(mContext);
         mDoubleTapGesture = new GestureDetector(mContext,
                 new GestureDetector.SimpleOnGestureListener() {
             @Override
@@ -629,6 +629,7 @@ public class NotificationPanelView extends PanelView implements
             case LOCKSCREEN_ENABLE_QS:
                 mStatusBarShownOnSecureKeyguard =
                         TunerService.parseIntegerSwitch(newValue, true);
+                mStatusBar.updateQsExpansionEnabled();
             default:
                 break;
         }
@@ -998,10 +999,10 @@ public class NotificationPanelView extends PanelView implements
     }
 
     private boolean isQSEventBlocked() {
-        if (!mKeyguardOrShadeShowing)
+        if (!mKeyguardMonitor.isShowing())
             return false;
 
-        if (!mLockPatternUtils.isSecure(KeyguardUpdateMonitor.getCurrentUser()))
+        if (!mKeyguardMonitor.isSecure())
             return false;
 
         return !mStatusBarShownOnSecureKeyguard;
@@ -1011,6 +1012,7 @@ public class NotificationPanelView extends PanelView implements
         mQsExpansionEnabled = qsExpansionEnabled;
         if (mQs == null) return;
         mQs.setHeaderClickable(mQsExpansionEnabled);
+        mQs.setSecureExpandDisabled(!mQsExpansionEnabled);
     }
 
     @Override
@@ -1457,7 +1459,8 @@ public class NotificationPanelView extends PanelView implements
         }
         showQsOverride &= mBarState == StatusBarState.SHADE;
 
-        return twoFingerDrag || showQsOverride || stylusButtonClickDrag || mouseButtonClickDrag;
+        return !isQSEventBlocked() && (twoFingerDrag || showQsOverride
+                || stylusButtonClickDrag || mouseButtonClickDrag);
     }
 
     private void handleQsDown(MotionEvent event) {
@@ -1628,8 +1631,8 @@ public class NotificationPanelView extends PanelView implements
         mLastOverscroll = 0f;
         mQsExpansionFromOverscroll = false;
         setQsExpansion(mQsExpansionHeight);
-        flingSettings(!mQsExpansionEnabled && open ? 0f : velocity,
-                open && mQsExpansionEnabled ? FLING_EXPAND : FLING_COLLAPSE,
+        flingSettings((!mQsExpansionEnabled || isQSEventBlocked()) && open ? 0f : velocity,
+                open && (mQsExpansionEnabled && !isQSEventBlocked()) ? FLING_EXPAND : FLING_COLLAPSE,
                 new Runnable() {
                     @Override
                     public void run() {
@@ -1694,7 +1697,9 @@ public class NotificationPanelView extends PanelView implements
 
         mBarState = statusBarState;
         mKeyguardShowing = keyguardShowing;
-        mKeyguardOrShadeShowing = keyguardOrShadeShowing;
+        if (mQs != null) {
+            mQs.setSecureExpandDisabled(isQSEventBlocked());
+        }
 
         if (oldState == StatusBarState.KEYGUARD
                 && (goingToFullShade || statusBarState == StatusBarState.SHADE_LOCKED)) {
@@ -2137,8 +2142,8 @@ public class NotificationPanelView extends PanelView implements
      * @return Whether we should intercept a gesture to open Quick Settings.
      */
     private boolean shouldQuickSettingsIntercept(float x, float y, float yDiff) {
-        if (!mQsExpansionEnabled || mCollapsedOnDown
-                || (mKeyguardShowing && mKeyguardBypassController.getBypassEnabled()) || isQSEventBlocked()) {
+        if (!mQsExpansionEnabled || mCollapsedOnDown || isQSEventBlocked()
+                || (mKeyguardShowing && mKeyguardBypassController.getBypassEnabled())) {
             return false;
         }
         View header = mKeyguardShowing || mQs == null ? mKeyguardStatusBar : mQs.getHeader();
@@ -3333,6 +3338,7 @@ public class NotificationPanelView extends PanelView implements
             mQs.setHeaderClickable(mQsExpansionEnabled);
             updateQSPulseExpansion();
             mQs.setOverscrolling(mStackScrollerOverscrolling);
+            mQs.setSecureExpandDisabled(isQSEventBlocked());
 
             // recompute internal state when qspanel height changes
             mQs.getView().addOnLayoutChangeListener(
