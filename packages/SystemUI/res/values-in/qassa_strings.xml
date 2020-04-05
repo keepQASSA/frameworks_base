@@ -97,4 +97,16 @@
     <string name="accessibility_quick_settings_location_gps_only">Pelaporan lokasi: mode hanya sensor.</string>
     <string name="quick_settings_location_secondary_high_accuracy">Akurasi Tinggi</string>
     <string name="accessibility_quick_settings_location_high_accuracy">Pelaporan lokasi: mode akurasi tinggi.</string>
+    <string name="quick_settings_screen_record_label">Rekam Layar</string>
+    <string name="quick_settings_screen_record_start">Mulai</string>
+    <string name="quick_settings_screen_record_stop">Berhenti</string>
+    <string name="screenrecord_audio_label">Rekam audio</string>
+    <string name="screenrecord_description">Saat merekam, Sistem Android dapat menangkap informasi sensitif apa pun yang terlihat di layar atau diputar di perangkat Anda. Ini termasuk sandi, info pembayaran, foto, pesan, dan audio.</string>
+    <string name="screenrecord_mic_label">Mikrofon</string>
+    <string name="screenrecord_ongoing_screen_and_audio">Merekam layar dan audio</string>
+    <string name="screenrecord_ongoing_screen_only">Layar perekaman</string>
+    <string name="screenrecord_start">Mulai</string>
+    <string name="screenrecord_start_label">Mulai Merekam?</string>
+    <string name="screenrecord_taps_label">Tampilkan sentuhan di layar</string>
+    <string name="status_bar_screen_record">screen_record</string>
 </resources>
