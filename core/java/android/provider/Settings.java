@@ -5675,6 +5675,15 @@ public final class Settings {
         private static final Validator QS_BLUR_VALIDATOR = BOOLEAN_VALIDATOR;
 
         /**
+         * QS Blur Radius
+         * @hide
+         */
+        public static final String QS_BLUR_RADIUS = "qs_blur_radius";
+        /** @hide */
+        private static final Validator QS_BLUR_RADIUS_VALIDATOR =
+                new SettingsValidators.InclusiveIntegerRangeValidator(0, 25);
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
@@ -5743,6 +5752,7 @@ public final class Settings {
             NOTIFICATION_HEADERS,
             CENTER_NOTIFICATION_HEADERS,
             QS_BLUR,
+            QS_BLUR_RADIUS,
         };
 
         /**
@@ -5973,6 +5983,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(AUTO_BRIGHTNESS_MIN_VALUE);
             PRIVATE_SETTINGS.add(STATUSBAR_ICONS_STYLE);
             PRIVATE_SETTINGS.add(HEADER_ICONS_STYLE);
+            PRIVATE_SETTINGS.add(QS_BLUR_RADIUS);
         }
 
         /**
@@ -6166,6 +6177,7 @@ public final class Settings {
             VALIDATORS.put(NOTIFICATION_HEADERS, NOTIFICATION_HEADERS_VALIDATOR);
             VALIDATORS.put(CENTER_NOTIFICATION_HEADERS, CENTER_NOTIFICATION_HEADERS_VALIDATOR);
             VALIDATORS.put(QS_BLUR, QS_BLUR_VALIDATOR);
+            VALIDATORS.put(QS_BLUR_RADIUS, QS_BLUR_RADIUS_VALIDATOR);
         }
 
         /**

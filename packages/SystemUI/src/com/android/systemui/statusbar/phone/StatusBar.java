@@ -565,6 +565,7 @@ public class StatusBar extends SystemUI implements DemoMode,
     // Blur
     private ImageView mQSBlurView;
     private boolean blurperformed = false;
+    private int mBlurRadius;
 
     private final BroadcastReceiver mWallpaperChangedReceiver = new BroadcastReceiver() {
         @Override
@@ -1223,10 +1224,11 @@ public class StatusBar extends SystemUI implements DemoMode,
 
     private void drawBlurView() {
         Bitmap surfaceBitmap = ImageUtilities.screenshotSurface(mContext);
-        if (surfaceBitmap == null) {
+        float blurRadius = (float) mBlurRadius;
+        if (surfaceBitmap == null || mBlurRadius == 0) {
             mQSBlurView.setImageDrawable(null);
         } else {
-            mQSBlurView.setImageBitmap(ImageUtilities.blurImage(mContext, surfaceBitmap));
+            mQSBlurView.setImageBitmap(ImageUtilities.blurImage(mContext, surfaceBitmap, blurRadius));
         }
     }
 
@@ -5126,6 +5128,9 @@ public class StatusBar extends SystemUI implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.QS_TILE_TITLE_VISIBILITY),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.QS_BLUR_RADIUS),
+                    false, this, UserHandle.USER_ALL);
         }
 
         @Override
@@ -5143,13 +5148,21 @@ public class StatusBar extends SystemUI implements DemoMode,
                 setQsRowsColumns();
             } else if (uri.equals(Settings.System.getUriFor(Settings.System.QS_TILE_TITLE_VISIBILITY))) {
                 updateQsPanelResources();
+            } else if (uri.equals(Settings.System.getUriFor(Settings.System.QS_BLUR_RADIUS))) {
+                setQSblurRadius();
             }
         }
 
         public void update() {
             updateCutoutOverlay();
             setQsRowsColumns();
+            setQSblurRadius();
         }
+    }
+
+    private void setQSblurRadius() {
+        mBlurRadius = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.QS_BLUR_RADIUS, 5, UserHandle.USER_CURRENT);
     }
 
     private void setQsRowsColumns() {
