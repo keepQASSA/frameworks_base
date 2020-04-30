@@ -73,4 +73,9 @@
     <string name="quick_settings_gaming_mode_label">Mode permainan</string>
     <string name="accessibility_quick_settings_gaming_mode_disabled">Mode permainan dimatikan.</string>
     <string name="accessibility_quick_settings_gaming_mode_enabled">Mode permainan diaktifkan.</string>
+    <string name="applock_locked">&#160;Terkunci.</string>
+    <string name="applock_fingerprint_face">, sidik jari atau wajah Anda untuk dibuka.</string>
+    <string name="applock_face">&#160;atau wajah Anda untuk dibuka.</string>
+    <string name="applock_fingerprint">&#160;atau sidik jari Anda untuk dibuka.</string>
+    <string name="applock_locked_notification">Aplikasi terkunci</string>
 </resources>

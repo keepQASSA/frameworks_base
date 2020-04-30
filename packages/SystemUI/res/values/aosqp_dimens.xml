@@ -108,4 +108,7 @@
     <!-- Quick Settings padding Start-End -->
     <dimen name="quick_settings_padding_start">0dp</dimen>
     <dimen name="quick_settings_padding_end">0dp</dimen>
+
+    <!-- App lock -->
+    <dimen name="applock_icon_dimension">54dp</dimen>
 </resources>
