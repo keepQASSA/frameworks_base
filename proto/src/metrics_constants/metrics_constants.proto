@@ -7433,5 +7433,9 @@ message MetricsEvent {
     // CustomSettings constant
     CUSTOM_SETTINGS = 1999;
 
+    // AOSQP and KEEPQASSA constant
+    AOSQP = 4000;
+    KEEPQASSA = 4001;
+
   }
 }
