@@ -100,9 +100,12 @@
     <string name="quick_settings_screen_record_label">Rekam Layar</string>
     <string name="quick_settings_screen_record_start">Mulai</string>
     <string name="quick_settings_screen_record_stop">Berhenti</string>
-    <string name="screenrecord_audio_label">Rekam audio</string>
     <string name="screenrecord_description">Saat merekam, Sistem Android dapat menangkap informasi sensitif apa pun yang terlihat di layar atau diputar di perangkat Anda. Ini termasuk sandi, info pembayaran, foto, pesan, dan audio.</string>
-    <string name="screenrecord_mic_label">Mikrofon</string>
+    <string name="screenrecord_audio_title">Sumber audio</string>
+    <string name="screenrecord_audio_summary">Memungkinkan untuk memilih input audio atau menonaktifkannya.</string>
+    <string name="screenrecord_audio_recording_internal">Internal</string>
+    <string name="screenrecord_audio_recording_microphone">Mikrofon</string>
+    <string name="screenrecord_audio_recording_off">Dinonaktifkan</string>
     <string name="screenrecord_ongoing_screen_and_audio">Merekam layar dan audio</string>
     <string name="screenrecord_ongoing_screen_only">Layar perekaman</string>
     <string name="screenrecord_start">Mulai</string>
