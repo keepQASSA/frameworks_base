@@ -112,4 +112,6 @@
     <string name="screenrecord_start_label">Mulai Merekam?</string>
     <string name="screenrecord_taps_label">Tampilkan sentuhan di layar</string>
     <string name="status_bar_screen_record">screen_record</string>
+    <string name="screenrecord_video_bitrate_label">Kecepatan Bit Video</string>
+    <string name="screenrecord_video_bitrate_summary">Setel kecepatan bit video untuk kualitas video yang lebih baik, dengan biaya file yang lebih besar.</string>
 </resources>

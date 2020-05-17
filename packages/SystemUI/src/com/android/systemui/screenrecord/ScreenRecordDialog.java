@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemProperties;
 import android.os.UserHandle;
 import android.provider.Settings;
 import android.view.Gravity;
@@ -36,6 +37,7 @@ import com.android.systemui.Dependency;
 import com.android.systemui.R;
 
 import static android.provider.Settings.System.SCREENRECORD_AUDIO_SOURCE;
+import static android.provider.Settings.System.SCREENRECORD_VIDEO_BITRATE;
 
 public class ScreenRecordDialog extends Activity {
 
@@ -44,10 +46,12 @@ public class ScreenRecordDialog extends Activity {
     private static final long COUNTDOWN_MILLIS = 3000;
     private static final long COUNTDOWN_INTERVAL = 1000;
 
+    private int mVideoBitrateOpt;
     private RecordingController mController;
     private int mAudioSourceOpt;
 
     private Spinner mAudioSourceSpinner;
+    private Spinner mBitratePicker;
     private Switch mTapsSwitch;
 
     @Override
@@ -74,7 +78,15 @@ public class ScreenRecordDialog extends Activity {
             }
         });
         mTapsSwitch = (Switch) findViewById(R.id.screenrecord_taps_switch);
-
+        // recording bitrate spinner
+        mBitratePicker = (Spinner) findViewById(R.id.screenrecord_bitrate_picker);
+        ArrayAdapter<CharSequence> bitrateAdapter = ArrayAdapter.createFromResource(this,
+            SystemProperties.get("ro.config.low_ram").equals("true") ? R.array.screen_video_quality_go_entries :
+                        R.array.screen_video_quality_entries, android.R.layout.simple_spinner_item);
+        bitrateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mBitratePicker.setAdapter(bitrateAdapter);
+        initialCheckSpinner(mBitratePicker, SCREENRECORD_VIDEO_BITRATE, 2 /* average option */);
+        setSpinnerListener(mBitratePicker, SCREENRECORD_VIDEO_BITRATE);
         // audio source spinner
         mAudioSourceSpinner = findViewById(R.id.spinner_audio_source);
         ArrayAdapter<CharSequence> audioSourceAdapter = ArrayAdapter.createFromResource(this,
@@ -107,9 +119,10 @@ public class ScreenRecordDialog extends Activity {
 
     private void requestScreenCapture() {
         mAudioSourceOpt = mAudioSourceSpinner.getSelectedItemPosition();
+        mVideoBitrateOpt = mBitratePicker.getSelectedItemPosition();
         mController.startCountdown(COUNTDOWN_MILLIS, COUNTDOWN_INTERVAL, PendingIntent.getForegroundService(this, REQUEST_CODE,
                 RecordingService.getStartIntent(this, RESULT_OK, (Intent) null, mAudioSourceOpt,
-                mTapsSwitch.isChecked()), PendingIntent.FLAG_UPDATE_CURRENT), PendingIntent.getService(this, REQUEST_CODE,
+                mTapsSwitch.isChecked(), mVideoBitrateOpt), PendingIntent.FLAG_UPDATE_CURRENT), PendingIntent.getService(this, REQUEST_CODE,
                 RecordingService.getStopIntent(this), PendingIntent.FLAG_UPDATE_CURRENT));
     }
 }
