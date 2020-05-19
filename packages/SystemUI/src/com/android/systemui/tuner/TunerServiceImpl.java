@@ -45,6 +45,7 @@ import com.android.systemui.statusbar.phone.NotificationPanelView;
 import com.android.systemui.statusbar.phone.StatusBarIconController;
 import com.android.systemui.statusbar.phone.StatusBar;
 import com.android.systemui.statusbar.policy.Clock;
+import com.android.systemui.statusbar.policy.MobileSignalController;
 import com.android.systemui.util.leak.LeakDetector;
 
 import java.util.HashMap;
@@ -71,6 +72,9 @@ public class TunerServiceImpl extends TunerService {
             BatteryMeterView.STATUS_BAR_BATTERY_STYLE,
             BatteryMeterView.STATUS_BAR_SHOW_BATTERY_PERCENT,
             BatteryMeterView.STATUS_BAR_BATTERY_TEXT_CHARGING,
+            MobileSignalController.VOLTE_ICON_STYLE,
+            MobileSignalController.ROAMING_INDICATOR_ICON,
+            MobileSignalController.DATA_DISABLED_ICON,
             QSTileHost.TILES_SETTING,
             Settings.Secure.DOZE_ALWAYS_ON,
             StatusBar.SCREEN_BRIGHTNESS_MODE
