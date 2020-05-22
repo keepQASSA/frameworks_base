@@ -207,8 +207,4 @@
 
     <!-- Screenshot toast -->
     <string name="delete_screenshot_toast">Screenshot deleted</string>
-
-    <!-- QS Header data usage info -->
-    <string name="usage_data">used</string>
-
 </resources>
