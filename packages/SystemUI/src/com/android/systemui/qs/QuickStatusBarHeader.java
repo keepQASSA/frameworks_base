@@ -75,6 +75,7 @@ import com.android.systemui.privacy.PrivacyItem;
 import com.android.systemui.privacy.PrivacyItemController;
 import com.android.systemui.privacy.PrivacyItemControllerKt;
 import com.android.systemui.qs.QSDetail.Callback;
+import com.android.systemui.statusbar.info.DataUsageView;
 import com.android.systemui.settings.BrightnessController;
 import com.android.systemui.statusbar.phone.PhoneStatusBarView;
 import com.android.systemui.statusbar.phone.StatusBarIconController;
@@ -187,14 +188,20 @@ public class QuickStatusBarHeader extends RelativeLayout implements
 
     private boolean mShowQSClockBg = true;
 
+    private DataUsageView mDataUsageView;
+
     private class SettingsObserver extends ContentObserver {
        SettingsObserver(Handler handler) {
            super(handler);
        }
        void observe() {
+         ContentResolver resolver = getContext().getContentResolver();
          mContentResolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.QUICKSETTINGS_CLOCK_CHIP),
                     false, this, UserHandle.USER_ALL);
+         resolver.registerContentObserver(Settings.System
+                    .getUriFor(Settings.System.QS_DATAUSAGE), false,
+                    this, UserHandle.USER_ALL);
        }
 
        @Override
@@ -322,6 +329,7 @@ public class QuickStatusBarHeader extends RelativeLayout implements
         mBatteryIcon.setIgnoreTunerUpdates(true);
         mRingerModeTextView.setSelected(true);
         mNextAlarmTextView.setSelected(true);
+        mDataUsageView = findViewById(R.id.data_sim_usage);
 
         mSettingsObserver.observe();
         updateSettings(false);
@@ -510,6 +518,17 @@ public class QuickStatusBarHeader extends RelativeLayout implements
         updateStatusIconAlphaAnimator();
         updateHeaderTextContainerAlphaAnimator();
         updatePrivacyChipAlphaAnimator();
+    }
+
+    private void updateDataUsageView() {
+        if (mDataUsageView.isDataUsageEnabled())
+            mDataUsageView.setVisibility(View.VISIBLE);
+        else
+            mDataUsageView.setVisibility(View.GONE);
+    }
+
+    private void updateSettings() {
+        updateDataUsageView();
     }
 
     private void updateStatusIconAlphaAnimator() {
