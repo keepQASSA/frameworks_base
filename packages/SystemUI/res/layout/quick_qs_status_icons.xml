@@ -38,15 +38,31 @@
         android:textAppearance="@style/TextAppearance.QS.Date"
         systemui:datePattern="@string/abbrev_wday_month_day_no_year_alarm" />
 
-    <com.android.systemui.statusbar.info.DataUsageView
-        android:id="@+id/data_sim_usage"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/daily_data_usage_layout" 
         android:layout_height="match_parent"
+        android:layout_width="wrap_content" 
         android:layout_marginStart="2dp"
+        android:orientation="horizontal" 
         android:gravity="center_vertical|end"
-        android:singleLine="true"
-        android:textAppearance="@style/TextAppearance.QS.Date"
-        android:visibility="gone" />
+        android:clipChildren="false" >
+
+        <ImageView
+            android:id="@+id/daily_data_usage_icon" 
+            android:layout_height="@dimen/qs_datausage_icon_size"
+            android:layout_width="wrap_content"
+            android:src="@drawable/ic_data_saver_off"
+            android:visibility="gone" />
+
+        <com.android.systemui.statusbar.info.DataUsageView
+            android:id="@+id/data_sim_usage"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|end"
+            android:singleLine="true"
+            android:textAppearance="@style/TextAppearance.QS.Date"
+            android:visibility="gone" />
+    </LinearLayout>
 
     <com.android.systemui.statusbar.phone.StatusIconContainer
         android:id="@+id/statusIcons"

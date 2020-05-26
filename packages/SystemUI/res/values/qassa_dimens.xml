@@ -153,4 +153,7 @@
     <!-- The size for the date in the quick settings. -->
     <dimen name="quick_settings_date_size">14sp</dimen>
 
+    <!-- QS header data usage -->
+    <dimen name="qs_datausage_icon_size">16sp</dimen>
+
 </resources>
