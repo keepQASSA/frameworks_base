@@ -6230,9 +6230,16 @@ public final class Settings {
 
         /**
          * Show data usage in QS header
+         * 0 = Disabled
+         * 1 = Show daily usage
+         * 2 = Show monthly usage
          * @hide
          */
         public static final String QS_DATAUSAGE = "qs_datausage";
+
+        /** @hide */
+        private static final Validator QS_DATAUSAGE_VALIDATOR =
+                new SettingsValidators.InclusiveIntegerRangeValidator(0, 2);
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
@@ -6313,6 +6320,7 @@ public final class Settings {
             NOTIFICATION_GUTS_KILL_APP_BUTTON,
             LESS_BORING_HEADS_UP,
             QS_PANEL_BG_USE_NEW_TINT,
+            QS_DATAUSAGE,
         };
 
         /**
@@ -6554,6 +6562,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(SCREEN_STATE_OFF_DELAY);
             PRIVATE_SETTINGS.add(SCREEN_STATE_ON_DELAY);
             PRIVATE_SETTINGS.add(LESS_BORING_HEADS_UP);
+            PRIVATE_SETTINGS.add(QS_DATAUSAGE);
         }
 
         /**
@@ -6751,6 +6760,7 @@ public final class Settings {
             VALIDATORS.put(NOTIFICATION_GUTS_KILL_APP_BUTTON, NOTIFICATION_GUTS_KILL_APP_BUTTON_VALIDATOR);
             VALIDATORS.put(LESS_BORING_HEADS_UP, LESS_BORING_HEADS_UP_VALIDATOR);
             VALIDATORS.put(QS_PANEL_BG_USE_NEW_TINT, QS_PANEL_BG_USE_NEW_TINT_VALIDATOR);
+            VALIDATORS.put(QS_DATAUSAGE, QS_DATAUSAGE_VALIDATOR);
         }
 
         /**

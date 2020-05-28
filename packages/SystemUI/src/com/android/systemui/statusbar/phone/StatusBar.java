@@ -220,7 +220,6 @@ import com.android.systemui.statusbar.StatusBarState;
 import com.android.systemui.statusbar.SysuiStatusBarStateController;
 import com.android.systemui.statusbar.VibratorHelper;
 import com.android.systemui.statusbar.VisualizerView;
-import com.android.systemui.statusbar.info.DataUsageView;
 import com.android.systemui.statusbar.notification.ActivityLaunchAnimator;
 import com.android.systemui.statusbar.notification.BypassHeadsUpNotifier;
 import com.android.systemui.statusbar.notification.DynamicPrivacyController;
@@ -1262,12 +1261,8 @@ public class StatusBar extends SystemUI implements DemoMode,
             drawBlurView();
             blurperformed = true;
             mQSBlurView.setVisibility(View.VISIBLE);
-        } else if (QSBlurAlpha > 0 && !dataupdated && !mIsKeyguard) {
-            DataUsageView.updateUsage();
-            dataupdated = true;
         } else if (QSBlurAlpha == 0f || mState == StatusBarState.KEYGUARD) {
             blurperformed = false;
-            dataupdated = false;
             mQSBlurView.setVisibility(View.GONE);
         }
         mQSBlurView.setAlpha(QSBlurAlpha);
