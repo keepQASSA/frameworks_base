@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2014 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:systemui="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_vertical"
+    android:id="@id/system_icons"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:gravity="end|center"
+        android:layout_gravity="end|center"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <com.android.systemui.BatteryMeterView
+            android:id="@id/battery"
+            android:background="@drawable/mm_mouth3"
+            android:paddingLeft="5.0dip"
+            android:paddingRight="5.0dip"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:layout_width="wrap_content"
+            android:layout_height="21.0dip"
+            android:layout_marginRight="2.0dip" />
+
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent">
+
+            <com.android.systemui.statusbar.phone.StatusIconContainer
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:id="@id/statusIcons"
+                android:layout_width="0.0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1.0"
+                android:paddingEnd="0dp" />
+
+            <com.android.keyguard.AlphaOptimizedLinearLayout
+                android:orientation="horizontal"
+                android:id="@id/right_clock_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent">
+
+                <com.android.systemui.statusbar.policy.Clock
+                    android:textAppearance="@style/TextAppearance.StatusBar.Clock"
+                    android:gravity="end|center"
+                    android:layout_gravity="center_vertical"
+                    android:id="@id/clock_right"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp"
+                    android:layout_marginStart="4.0dip" />
+            </com.android.keyguard.AlphaOptimizedLinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
