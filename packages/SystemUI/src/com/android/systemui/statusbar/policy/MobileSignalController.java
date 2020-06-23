@@ -114,6 +114,7 @@ public class MobileSignalController extends SignalController<
     private int mVoLTEicon = 0;
     private boolean mRoamingIconAllowed;
     private boolean mDataDisabledIcon;
+    private int mVoWIFIicon = 0;
 
     public static final String VOLTE_ICON_STYLE =
             "system:" + Settings.System.VOLTE_ICON_STYLE;
@@ -123,6 +124,8 @@ public class MobileSignalController extends SignalController<
             "system:" + Settings.System.DATA_DISABLED_ICON;
     public static final String SHOW_FOURG_ICON =
             "system:" + Settings.System.SHOW_FOURG_ICON;
+    public static final String VOWIFI_ICON_STYLE =
+            "system:" + Settings.System.VOWIFI_ICON_STYLE;
 
     // TODO: Reduce number of vars passed in, if we have the NetworkController, probably don't
     // need listener lists anymore.
@@ -194,6 +197,7 @@ public class MobileSignalController extends SignalController<
         Dependency.get(TunerService.class).addTunable(this, ROAMING_INDICATOR_ICON);
         Dependency.get(TunerService.class).addTunable(this, DATA_DISABLED_ICON);
         Dependency.get(TunerService.class).addTunable(this, SHOW_FOURG_ICON);
+        Dependency.get(TunerService.class).addTunable(this, VOWIFI_ICON_STYLE);
     }
 
     @Override
@@ -219,6 +223,11 @@ public class MobileSignalController extends SignalController<
                     TunerService.parseIntegerSwitch(newValue, false);
                 mapIconSets();
                 updateTelephony();
+                break;
+            case VOWIFI_ICON_STYLE:
+                mVoWIFIicon =
+                    TunerService.parseInteger(newValue, 0);
+                notifyListeners();
                 break;
             default:
                 break;
@@ -854,10 +863,28 @@ public class MobileSignalController extends SignalController<
     }
 
     private MobileIconGroup getVowifiIconGroup() {
+        if (mVoWIFIicon == 0) return null;
+
         if ( isVowifiAvailable() && !isCallIdle() ) {
             return TelephonyIcons.VOWIFI_CALLING;
         } else if (isVowifiAvailable()) {
-            return TelephonyIcons.VOWIFI;
+            switch (mVoWIFIicon) {
+                case 1:
+                default:
+                    return TelephonyIcons.VOWIFI;
+                // OOS
+                case 2:
+                    return TelephonyIcons.VOWIFI_ONEPLUS;
+                // Motorola
+                case 3:
+                    return TelephonyIcons.VOWIFI_MOTO;
+                // ASUS
+                case 4:
+                    return TelephonyIcons.VOWIFI_ASUS;
+                // EMUI (Huawei P10)
+                case 5:
+                    return TelephonyIcons.VOWIFI_EMUI;
+            }
         } else {
             return null;
         }
