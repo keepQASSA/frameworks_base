@@ -15771,6 +15771,12 @@ public final class Settings {
         public static final String LOCKSCREEN_POWERMENU_SECURE = "lockscreen_powermenu_secure";
 
         /**
+         * Whether to display rotation button on navigation bar
+         * @hide
+         */
+        public static final String SHOW_ROTATION_BUTTON = "show_rotation_button";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
