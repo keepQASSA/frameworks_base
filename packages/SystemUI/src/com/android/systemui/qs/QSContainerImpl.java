@@ -21,7 +21,6 @@ import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.database.ContentObserver;
 import android.graphics.Point;
 import android.os.Handler;
 import android.os.UserHandle;
@@ -30,13 +29,19 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.android.systemui.Dependency;
 import com.android.systemui.R;
 import com.android.systemui.qs.customize.QSCustomizer;
+import com.android.systemui.tuner.TunerService;
 
 /**
  * Wrapper view with background which contains {@link QSPanel} and {@link BaseStatusBarHeader}
  */
-public class QSContainerImpl extends FrameLayout {
+public class QSContainerImpl extends FrameLayout implements
+        TunerService.Tunable {
+
+    private static final String QS_PANEL_BG_ALPHA =
+            "system:" + Settings.System.QS_PANEL_BG_ALPHA;
 
     private final Point mSizePoint = new Point();
 
@@ -55,12 +60,10 @@ public class QSContainerImpl extends FrameLayout {
     private int mSideMargins;
     private boolean mQsDisabled;
     private int mQsBackgroundAlpha = 255;
+    private int mHeaderShadow = 0;
 
     public QSContainerImpl(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Handler mHandler = new Handler();
-        SettingsObserver settingsObserver = new SettingsObserver(mHandler);
-        settingsObserver.observe();
     }
 
     @Override
@@ -81,6 +84,19 @@ public class QSContainerImpl extends FrameLayout {
     }
 
     @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        final TunerService tunerService = Dependency.get(TunerService.class);
+        tunerService.addTunable(this, QS_PANEL_BG_ALPHA);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        Dependency.get(TunerService.class).removeTunable(this);
+    }
+
+    @Override
     protected void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         setBackgroundGradientVisibility(newConfig);
@@ -88,28 +104,20 @@ public class QSContainerImpl extends FrameLayout {
         mSizePoint.set(0, 0); // Will be retrieved on next measure pass.
     }
 
-    private class SettingsObserver extends ContentObserver {
-        SettingsObserver(Handler handler) {
-            super(handler);
-        }
-
-        void observe() {
-            getContext().getContentResolver().registerContentObserver(Settings.System
-                            .getUriFor(Settings.System.QS_PANEL_BG_ALPHA), false,
-                    this, UserHandle.USER_ALL);
-        }
-
-        @Override
-        public void onChange(boolean selfChange) {
-            updateAlpha();
+    @Override
+    public void onTuningChanged(String key, String newValue) {
+        switch (key) {
+            case QS_PANEL_BG_ALPHA:
+                mQsBackgroundAlpha =
+                        TunerService.parseInteger(newValue, 255);
+                updateAlpha();
+                break;
+            default:
+                break;
         }
     }
 
     private void updateAlpha() {
-        mQsBackgroundAlpha = Settings.System.getIntForUser(getContext().getContentResolver(),
-                Settings.System.QS_PANEL_BG_ALPHA, 255,
-                UserHandle.USER_CURRENT);
-
         mBackground.getBackground().setAlpha(mQsBackgroundAlpha);
         mStatusBarBackground.getBackground().setAlpha(mQsBackgroundAlpha);
         mBackgroundGradient.getBackground().setAlpha(mQsBackgroundAlpha);
