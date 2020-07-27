@@ -308,14 +308,14 @@ public class NetworkTrafficSB extends TextView implements StatusIconDisplayable 
             String action = intent.getAction();
             if (action == null) return;
 
-            if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION) && mScreenOn) {
-                setMode();
-            } else if (action.equals(Intent.ACTION_SCREEN_ON)) {
+            if (action.equals(Intent.ACTION_SCREEN_ON)) {
                 mScreenOn = true;
-                setMode();
             } else if (action.equals(Intent.ACTION_SCREEN_OFF)) {
                 mScreenOn = false;
                 clearHandlerCallbacks();
+            }
+            if (mScreenOn) {
+                setMode();
             }
         }
     };
