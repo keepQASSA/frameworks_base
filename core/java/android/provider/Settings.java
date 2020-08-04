@@ -6063,6 +6063,12 @@ public final class Settings {
         public static final String NETWORK_TRAFFIC_VIEW_LOCATION = "network_traffic_view_location";
 
         /**
+         * Network traffic font style
+         * @hide
+         */
+        public static final String NETWORK_TRAFFIC_FONT_STYLE = "network_traffic_font_style";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
