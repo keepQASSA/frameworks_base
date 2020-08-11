@@ -5810,6 +5810,12 @@ public final class Settings {
         public static final String SHOW_BATTERY_SYMBOL = "show_battery_symbol";
 
         /**
+         * Screen delay for screenshot when using volume keys
+         * @hide
+         */
+        public static final String SCREENSHOT_DELAY = "screenshot_delay";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
