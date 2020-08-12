@@ -236,6 +236,7 @@ public class QuickStatusBarHeader extends RelativeLayout implements
         mBatteryRemainingIcon = findViewById(R.id.batteryRemainingIcon);
         mBatteryRemainingIcon.setOnClickListener(this);
         mBatteryIcon = findViewById(R.id.batteryIcon);
+        mBatteryIcon.setOnClickListener(this);
         // Don't need to worry about tuner settings for this icon
         mBatteryRemainingIcon.setIgnoreTunerUpdates(true);
         mBatteryIcon.setIgnoreTunerUpdates(true);
@@ -552,6 +553,9 @@ public class QuickStatusBarHeader extends RelativeLayout implements
             Intent todayIntent = new Intent(Intent.ACTION_VIEW, builder.build());
             mActivityStarter.postStartActivityDismissingKeyguard(todayIntent, 0);
         } else if (v == mBatteryRemainingIcon) {
+            mActivityStarter.postStartActivityDismissingKeyguard(new Intent(
+                Intent.ACTION_POWER_USAGE_SUMMARY), 0);
+        } else if (v == mBatteryIcon) {
             mActivityStarter.postStartActivityDismissingKeyguard(new Intent(
                 Intent.ACTION_POWER_USAGE_SUMMARY), 0);
         }
