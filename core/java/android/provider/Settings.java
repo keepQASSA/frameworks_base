@@ -5602,6 +5602,15 @@ public final class Settings {
         private static final Validator NOTIFICATION_HEADERS_VALIDATOR = BOOLEAN_VALIDATOR;
 
         /**
+         * Controls whether to center R style notification headers
+         * by.tikkiX2
+         * @hide
+         */
+        public static final String CENTER_NOTIFICATION_HEADERS = "center_notification_headers";
+
+        private static final Validator CENTER_NOTIFICATION_HEADERS_VALIDATOR = BOOLEAN_VALIDATOR;
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
@@ -5668,6 +5677,7 @@ public final class Settings {
             NOTIFICATION_LIGHT_PULSE,
             AUTO_BRIGHTNESS_MIN_VALUE,
             NOTIFICATION_HEADERS,
+            CENTER_NOTIFICATION_HEADERS,
         };
 
         /**
@@ -6089,6 +6099,7 @@ public final class Settings {
             VALIDATORS.put(POCKET_JUDGE, POCKET_JUDGE_VALIDATOR);
             VALIDATORS.put(AUTO_BRIGHTNESS_MIN_VALUE, AUTO_BRIGHTNESS_MIN_VALUE_VALIDATOR);
             VALIDATORS.put(NOTIFICATION_HEADERS, NOTIFICATION_HEADERS_VALIDATOR);
+            VALIDATORS.put(CENTER_NOTIFICATION_HEADERS, CENTER_NOTIFICATION_HEADERS_VALIDATOR);
         }
 
         /**
