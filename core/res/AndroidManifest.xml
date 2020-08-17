@@ -650,6 +650,12 @@
     <!-- Used to force the state of battery led -->
     <protected-broadcast android:name="android.intent.action.BATTERY_LED_STATE_OVERRIDE" />
 
+    <!-- exTHmUI additions -->
+
+    <!-- Gaming Mode -->
+    <protected-broadcast android:name="exthmui.intent.action.GAMING_MODE_ON" />
+    <protected-broadcast android:name="exthmui.intent.action.GAMING_MODE_OFF" />
+
     <!-- ====================================================================== -->
     <!--                          RUNTIME PERMISSIONS                           -->
     <!-- ====================================================================== -->
