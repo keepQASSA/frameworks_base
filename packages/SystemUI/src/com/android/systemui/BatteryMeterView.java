@@ -98,6 +98,8 @@ public class BatteryMeterView extends LinearLayout implements
             "system:" + Settings.System.STATUS_BAR_SHOW_BATTERY_PERCENT;
     public static final String STATUS_BAR_BATTERY_TEXT_CHARGING =
             "system:" + Settings.System.STATUS_BAR_BATTERY_TEXT_CHARGING;
+    public static final String SHOW_BATTERY_SYMBOL =
+            "system:" + Settings.System.SHOW_BATTERY_SYMBOL;
 
     @Retention(SOURCE)
     @IntDef({MODE_DEFAULT, MODE_ON, MODE_OFF, MODE_ESTIMATE})
@@ -138,6 +140,7 @@ public class BatteryMeterView extends LinearLayout implements
 
     private DualToneHandler mDualToneHandler;
     private int mUser;
+    private boolean mShowSymbol;
 
     /**
      * Whether we should use colors that adapt based on wallpaper/the scrim behind quick settings.
@@ -273,6 +276,7 @@ public class BatteryMeterView extends LinearLayout implements
         Dependency.get(TunerService.class)
                 .addTunable(this, STATUS_BAR_BATTERY_STYLE,
                                   STATUS_BAR_SHOW_BATTERY_PERCENT,
+                                  SHOW_BATTERY_SYMBOL,
                                   STATUS_BAR_BATTERY_TEXT_CHARGING);
         mIsSubscribedForTunerUpdates = true;
     }
@@ -342,6 +346,11 @@ public class BatteryMeterView extends LinearLayout implements
             case STATUS_BAR_BATTERY_TEXT_CHARGING:
                 mBatteryPercentCharging =
                         TunerService.parseIntegerSwitch(newValue, true);
+                updatePercentView();
+                break;
+            case SHOW_BATTERY_SYMBOL:
+                mShowSymbol =
+                        TunerService.parseIntegerSwitch(newValue, false);
                 updatePercentView();
                 break;
             default:
@@ -467,7 +476,11 @@ public class BatteryMeterView extends LinearLayout implements
             String bolt = "\u26A1\uFE0E";
             CharSequence mChargeIndicator = mCharging && (mBatteryStyle == BATTERY_STYLE_HIDDEN)
                     ? (bolt + " ") : "";
-            mBatteryPercentView.setText(mChargeIndicator + text);
+            if (mShowSymbol) {
+                mBatteryPercentView.setText(mChargeIndicator + text);
+            } else {
+                mBatteryPercentView.setText(text);
+            }
             setContentDescription(
                     getContext().getString(mCharging ? R.string.accessibility_battery_level_charging
                     : R.string.accessibility_battery_level, mLevel));

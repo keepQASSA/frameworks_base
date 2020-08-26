@@ -5804,6 +5804,12 @@ public final class Settings {
         public static final String SHOW_QS_CLOCK = "show_qs_clock";
 
         /**
+         *
+         * @hide
+         */
+        public static final String SHOW_BATTERY_SYMBOL = "show_battery_symbol";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
