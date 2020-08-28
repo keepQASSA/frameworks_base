@@ -3930,6 +3930,4 @@
   <java-symbol type="integer" name="config_sms_authorization_timeout_ms" />
   <java-symbol type="bool" name="config_sms_authorization_enabled" />
 
-  <!-- For gaming mode -->
-  <java-symbol type="array" name="game_package_regex" />
 </resources>
