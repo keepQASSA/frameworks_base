@@ -2035,31 +2035,10 @@ public final class ProcessList {
             Watchdog.getInstance().processStarted(app.processName, pid);
         }
 
-        checkSlow(app.startTime, "startProcess: building log message");
-        StringBuilder buf = mStringBuilder;
-        buf.setLength(0);
-        buf.append("Start proc ");
-        buf.append(pid);
-        buf.append(':');
-        buf.append(app.processName);
-        buf.append('/');
-        UserHandle.formatUid(buf, app.startUid);
-        if (app.isolatedEntryPoint != null) {
-            buf.append(" [");
-            buf.append(app.isolatedEntryPoint);
-            buf.append("]");
-        }
-        buf.append(" for ");
-        buf.append(app.hostingRecord.getType());
-        if (app.hostingRecord.getName() != null) {
-            buf.append(" ");
-            buf.append(app.hostingRecord.getName());
-        }
-        mService.reportUidInfoMessageLocked(TAG, buf.toString(), app.startUid);
         app.setPid(pid);
         app.setUsingWrapper(usingWrapper);
         app.pendingStart = false;
-        checkSlow(app.startTime, "startProcess: starting to update pids map");
+//        checkSlow(app.startTime, "startProcess: starting to update pids map");
         ProcessRecord oldApp;
         synchronized (mService.mPidsSelfLocked) {
             oldApp = mService.mPidsSelfLocked.get(pid);
@@ -2067,11 +2046,11 @@ public final class ProcessList {
         // If there is already an app occupying that pid that hasn't been cleaned up
         if (oldApp != null && !app.isolated) {
             // Clean up anything relating to this pid first
-            Slog.wtf(TAG, "handleProcessStartedLocked process:" + app.processName
-                    + " startSeq:" + app.startSeq
-                    + " pid:" + pid
-                    + " belongs to another existing app:" + oldApp.processName
-                    + " startSeq:" + oldApp.startSeq);
+  //          Slog.wtf(TAG, "handleProcessStartedLocked process:" + app.processName
+    //                + " startSeq:" + app.startSeq
+      //              + " pid:" + pid
+        //            + " belongs to another existing app:" + oldApp.processName
+          //          + " startSeq:" + oldApp.startSeq);
             mService.cleanUpApplicationRecordLocked(oldApp, false, false, -1,
                     true /*replacingPid*/);
         }

@@ -6666,7 +6666,7 @@ public class ActivityManagerService extends IActivityManager.Stub
         long now = SystemClock.uptimeMillis();
         if ((now-startTime) > 50) {
             // If we are taking more than 50ms, log about it.
-            Slog.w(TAG, "Slow operation: " + (now-startTime) + "ms so far, now at " + where);
+//            Slog.w(TAG, "Slow operation: " + (now-startTime) + "ms so far, now at " + where);
         }
     }
 
