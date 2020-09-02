@@ -41,7 +41,7 @@ public final class InputEventConsistencyVerifier {
     // The number of recent events to log when a problem is detected.
     // Can be set to 0 to disable logging recent events but the runtime overhead of
     // this feature is negligible on current hardware.
-    private static final int RECENT_EVENTS_TO_LOG = 5;
+    private static final int RECENT_EVENTS_TO_LOG = 0;
 
     // The object to which the verifier is attached.
     private final Object mCaller;

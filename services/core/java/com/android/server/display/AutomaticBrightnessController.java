@@ -311,11 +311,6 @@ class AutomaticBrightnessController {
      * @return Whether the method succeeded or not.
      */
     public boolean setLoggingEnabled(boolean loggingEnabled) {
-        if (mLoggingEnabled == loggingEnabled) {
-            return false;
-        }
-        mBrightnessMapper.setLoggingEnabled(loggingEnabled);
-        mLoggingEnabled = loggingEnabled;
         return true;
     }
 

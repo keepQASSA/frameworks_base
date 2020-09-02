@@ -31,7 +31,7 @@ class ImageRevealHelper {
     private static final String TAG = ImageRevealHelper.class.getSimpleName();
     private static final float MAX_REVEAL = 0f;
     private static final float MIN_REVEAL = 1f;
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     private final ValueAnimator mAnimator;
     private final RevealStateListener mRevealListener;

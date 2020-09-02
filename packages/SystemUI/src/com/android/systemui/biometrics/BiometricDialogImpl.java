@@ -42,7 +42,7 @@ import com.android.systemui.statusbar.CommandQueue;
  */
 public class BiometricDialogImpl extends SystemUI implements CommandQueue.Callbacks {
     private static final String TAG = "BiometricDialogImpl";
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     private static final int MSG_SHOW_DIALOG = 1;
     private static final int MSG_BIOMETRIC_AUTHENTICATED = 2;

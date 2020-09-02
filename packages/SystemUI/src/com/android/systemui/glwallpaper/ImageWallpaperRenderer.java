@@ -45,7 +45,7 @@ public class ImageWallpaperRenderer implements GLWallpaperRenderer,
     private static final String TAG = ImageWallpaperRenderer.class.getSimpleName();
     private static final float SCALE_VIEWPORT_MIN = 1f;
     private static final float SCALE_VIEWPORT_MAX = 1.1f;
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     private final WallpaperManager mWallpaperManager;
     private final ImageGLProgram mProgram;

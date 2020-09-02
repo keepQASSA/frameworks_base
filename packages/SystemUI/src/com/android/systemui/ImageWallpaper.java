@@ -51,7 +51,7 @@ public class ImageWallpaper extends WallpaperService {
     private static final int DELAY_FINISH_RENDERING = 1000;
     private static final int INTERVAL_WAIT_FOR_RENDERING = 100;
     private static final int PATIENCE_WAIT_FOR_RENDERING = 10;
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     private HandlerThread mWorker;
 
     @Override

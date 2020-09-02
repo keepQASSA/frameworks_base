@@ -86,7 +86,7 @@ import java.util.Random;
 public class BiometricService extends SystemService {
 
     private static final String TAG = "BiometricService";
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     private static final int MSG_ON_TASK_STACK_CHANGED = 1;
     private static final int MSG_ON_AUTHENTICATION_SUCCEEDED = 2;

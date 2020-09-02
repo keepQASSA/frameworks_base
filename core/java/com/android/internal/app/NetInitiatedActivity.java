@@ -41,7 +41,7 @@ public class NetInitiatedActivity extends AlertActivity implements DialogInterfa
 
     private static final String TAG = "NetInitiatedActivity";
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     private static final boolean VERBOSE = false;
 
     private static final int POSITIVE_BUTTON = AlertDialog.BUTTON_POSITIVE;

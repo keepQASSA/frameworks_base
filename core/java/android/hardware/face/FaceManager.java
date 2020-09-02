@@ -58,7 +58,7 @@ import java.util.List;
 public class FaceManager implements BiometricAuthenticator, BiometricFaceConstants {
 
     private static final String TAG = "FaceManager";
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     private static final int MSG_ENROLL_RESULT = 100;
     private static final int MSG_ACQUIRED = 101;
     private static final int MSG_AUTHENTICATION_SUCCEEDED = 102;
