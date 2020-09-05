@@ -102,4 +102,7 @@
     <!-- Burn-in protection -->
     <dimen name="horizontal_max_swift">3.0dp</dimen>
     <dimen name="vertical_max_swift">1.0dp</dimen>
+
+    <!-- Per app volume -->
+    <dimen name="volume_row_app_icon_padding">8dp</dimen>
 </resources>
