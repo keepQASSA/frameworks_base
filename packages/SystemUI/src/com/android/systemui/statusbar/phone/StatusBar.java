@@ -3978,6 +3978,8 @@ public class StatusBar extends SystemUI implements DemoMode,
             // the closing
             mStatusBarWindowController.setStatusBarFocusable(true);
         }
+        // It's closed; no need to leave it open.
+        mStatusBarStateController.setLeaveOpenOnKeyguardHide(false);
     }
 
     public void onUnlockHintStarted() {
