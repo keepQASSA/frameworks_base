@@ -221,4 +221,6 @@
     <color name="shadow">#14000000</color>
     <color name="neumorph_outline_start">#FFBDBDBD</color>
     <color name="neumorph_outline_end">#FFF0F0F0</color>
+
+    <color name="qs_blur_scrim">#c8ffffff</color>
 </resources>

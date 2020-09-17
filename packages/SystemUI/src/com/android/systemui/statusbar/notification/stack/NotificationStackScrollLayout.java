@@ -721,15 +721,6 @@ public class NotificationStackScrollLayout extends ViewGroup implements ScrollAd
     }
 
     @Override
-    @ShadeViewRefactor(RefactorComponent.SHADE_VIEW)
-    public void onThemeChanged() {
-        final boolean useDarkText = mColorExtractor.getNeutralColors().supportsDarkText();
-        updateDecorViews(useDarkText);
-
-        updateFooter();
-    }
-
-    @Override
     public void onOverlayChanged() {
         int newRadius = mContext.getResources().getDimensionPixelSize(
                 Utils.getThemeAttr(mContext, android.R.attr.dialogCornerRadius));
@@ -852,6 +843,7 @@ public class NotificationStackScrollLayout extends ViewGroup implements ScrollAd
         updateBackgroundDimming();
         mShelf.onUiModeChanged();
         StatusBar.updateDismissAllButton(mIconColor);
+        updateDecorViews();
     }
 
     @ShadeViewRefactor(RefactorComponent.DECORATOR)
@@ -4792,17 +4784,10 @@ public class NotificationStackScrollLayout extends ViewGroup implements ScrollAd
     /**
      * Update colors of "dismiss" and "empty shade" views.
      *
-     * @param lightTheme True if light theme should be used.
      */
     @ShadeViewRefactor(RefactorComponent.DECORATOR)
-    public void updateDecorViews(boolean lightTheme) {
-        if (lightTheme == mUsingLightTheme) {
-            return;
-        }
-        mUsingLightTheme = lightTheme;
-        Context context = new ContextThemeWrapper(mContext,
-                lightTheme ? R.style.Theme_SystemUI_Light : R.style.Theme_SystemUI);
-        final int textColor = Utils.getColorAttrDefaultColor(context, R.attr.wallpaperTextColor);
+    public void updateDecorViews() {
+        final int textColor = Utils.getColorAttrDefaultColor(mContext, android.R.attr.textColorPrimary);
         mFooterView.setTextColor(textColor);
         mEmptyShadeView.setTextColor(textColor);
     }

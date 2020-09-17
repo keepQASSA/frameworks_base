@@ -30,6 +30,6 @@
             android:textAppearance="?android:attr/textAppearanceButton"
             android:textSize="@dimen/no_notifications_text_size"
             android:gravity="top|center_horizontal"
-            android:textColor="?attr/wallpaperTextColor"
+            android:textColor="?android:attr/textColorPrimary"
             android:text="@string/empty_shade_text"/>
 </com.android.systemui.statusbar.EmptyShadeView>
