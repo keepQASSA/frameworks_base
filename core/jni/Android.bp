@@ -324,4 +324,9 @@ cc_library_shared {
         // GraphicsJNI.h includes hwui headers
         "libhwui",
     ],
+
+    // Workaround Clang LTO crash.
+    lto: {
+        never: true,
+    },
 }
