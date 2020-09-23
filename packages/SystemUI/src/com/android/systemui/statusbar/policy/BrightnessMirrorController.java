@@ -87,6 +87,12 @@ public class BrightnessMirrorController
         mNotificationPanel.setPanelAlpha(255, true /* animate */);
     }
 
+    public void hideMirrorImmediately() {
+        if (mBrightnessMirror != null && mBrightnessMirror.getVisibility() == View.VISIBLE) {
+            mBrightnessMirror.setVisibility(View.INVISIBLE);
+        }
+    }
+
     public void setLocation(View original) {
         original.getLocationInWindow(mInt2Cache);
 
