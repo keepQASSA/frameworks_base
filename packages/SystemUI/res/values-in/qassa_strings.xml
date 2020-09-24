@@ -74,10 +74,9 @@
     <string name="accessibility_quick_settings_fpsinfo_off">Info FPS aktif</string>
     <string name="accessibility_quick_settings_fpsinfo_on">Info FPS mati</string>
     <string name="notification_section_header_alerting">Notifikasi peringatan</string>
-    <string name="applock_locked">&#160;Terkunci.</string>
-    <string name="applock_fingerprint_face">, sidik jari atau wajah Anda untuk dibuka.</string>
-    <string name="applock_face">&#160;atau wajah Anda untuk dibuka.</string>
-    <string name="applock_fingerprint">&#160;atau sidik jari Anda untuk dibuka.</string>
+    <string name="applock_fingerprint_face">, sidik jari atau wajah Anda untuk dibuka</string>
+    <string name="applock_face">&#160;atau wajah Anda untuk dibuka</string>
+    <string name="applock_fingerprint">&#160;atau sidik jari Anda untuk membuka kunci</string>
     <string name="applock_locked_notification">Aplikasi terkunci</string>
     <string name="quick_settings_immersive_tile">Mode imersif</string>
     <string name="quick_settings_immersive_tile_statusbar">Bilah status imersif</string>
