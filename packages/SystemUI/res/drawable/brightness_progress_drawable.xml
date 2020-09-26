@@ -17,21 +17,27 @@
     <item android:id="@android:id/background"
           android:gravity="center_vertical|fill_horizontal">
         <shape android:shape="rectangle"
-               android:tint="@*android:color/config_progress_background_tint">
-            <size android:height="@dimen/seek_bar_height" />
+               android:tint="@*android:color/config_progress_background_tint">>
+            <corners android:radius="@dimen/qs_brightness_thiccbar_height" />
+            <size android:height="@dimen/qs_brightness_thiccbar_height" />
             <solid android:color="@color/white_disabled" />
-            <corners android:radius="@dimen/seek_bar_corner_radius" />
         </shape>
     </item>
     <item android:id="@android:id/progress"
           android:gravity="center_vertical|fill_horizontal">
-        <scale android:scaleWidth="100%">
-            <shape android:shape="rectangle"
-                   android:tint="?android:attr/colorControlActivated">
-                <size android:height="@dimen/seek_bar_height" />
-                <solid android:color="@android:color/white" />
-                <corners android:radius="@dimen/seek_bar_corner_radius" />
-            </shape>
-        </scale>
+        <clip>
+            <selector>
+                <item android:state_enabled="false"
+                      android:drawable="@color/transparent" />
+                <item>
+                    <shape android:shape="rectangle"
+                           android:tint="?android:attr/colorControlActivated">
+                        <corners android:radius="@dimen/qs_brightness_thiccbar_height" />
+                        <size android:height="@dimen/qs_brightness_thiccbar_height" />
+                        <solid android:color="@android:color/white" />
+                    </shape>
+                </item>
+            </selector>
+        </clip>
     </item>
 </layer-list>

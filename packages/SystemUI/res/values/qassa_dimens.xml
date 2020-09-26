@@ -174,4 +174,7 @@
 
     <!-- QS panel brightness side margin -->
     <dimen name="qs_brightness_side_margin">16dp</dimen>
+
+    <!-- Quick QS brightness thiccbar height -->
+    <dimen name="qs_brightness_thiccbar_height">22dp</dimen>
 </resources>
