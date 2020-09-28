@@ -67,6 +67,7 @@ android_library {
         "vendor.lineage.biometrics.fingerprint.inscreen-V1.0-java",
         "vendor.lineage.powershare-V1.0-java",
         "airbnb-lottie",
+        "RevengeUI-lib",
     ],
     manifest: "AndroidManifest.xml",
 
