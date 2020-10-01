@@ -171,4 +171,7 @@
 
     <dimen name="status_bar_battery_icon_height_landscape_ios15">12.0dip</dimen>
     <dimen name="status_bar_battery_icon_width_landscape_ios15">24.0dip</dimen>
+
+    <!-- QS panel brightness side margin -->
+    <dimen name="qs_brightness_side_margin">10dp</dimen>
 </resources>
