@@ -105,6 +105,7 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
 
     private int mTickerEnabled;
     private View mTickerViewFromStub;
+    private View mTickerViewContainer;
 
     private static final String STATUS_BAR_SHOW_TICKER =
             "system:" + Settings.System.STATUS_BAR_SHOW_TICKER;
@@ -242,9 +243,11 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
             if ((state1 & DISABLE_SYSTEM_INFO) != 0) {
                 hideSystemIconArea(animate);
                 hideOperatorName(animate);
+                hideTicker(animate);
             } else {
                 showSystemIconArea(animate);
                 showOperatorName(animate);
+                showTicker(animate);
             }
         }
         if ((diff1 & DISABLE_NOTIFICATION_ICONS) != 0) {
@@ -315,6 +318,18 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
 
     public void showSystemIconArea(boolean animate) {
         animateShow(mSystemIconArea, animate);
+    }
+
+    public void showTicker(boolean animate) {
+        if (mTickerViewContainer != null) {
+            animateShow(mTickerViewContainer, animate);
+        }
+    }
+
+    public void hideTicker(boolean animate) {
+        if (mTickerViewContainer != null) {
+            animateHide(mTickerViewContainer, animate);
+        }
     }
 
     /**
@@ -468,6 +483,7 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
 
     private void initTickerView() {
         if (mTickerEnabled != 0) {
+            mTickerViewContainer = mStatusBar.findViewById(R.id.ticker_container);
             View tickerStub = mStatusBar.findViewById(R.id.ticker_stub);
             if (mTickerViewFromStub == null && tickerStub != null) {
                 mTickerViewFromStub = ((ViewStub) tickerStub).inflate();
