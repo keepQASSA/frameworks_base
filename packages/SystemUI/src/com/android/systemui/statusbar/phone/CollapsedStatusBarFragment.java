@@ -106,9 +106,15 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     private int mTickerEnabled;
     private View mTickerViewFromStub;
     private View mTickerViewContainer;
+    private boolean mLyricEnabled;
+    private View mLyricViewFromStub;
+    private View mLyricViewContainer;
 
     private static final String STATUS_BAR_SHOW_TICKER =
             "system:" + Settings.System.STATUS_BAR_SHOW_TICKER;
+
+    private static final String STATUS_BAR_SHOW_LYRIC =
+            "system:" + Settings.System.STATUS_BAR_SHOW_LYRIC;
 
     private SignalCallback mSignalCallback = new SignalCallback() {
         @Override
@@ -160,6 +166,8 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
         updateSettings(false);
         Dependency.get(TunerService.class).addTunable(this,
                 STATUS_BAR_SHOW_TICKER);
+        Dependency.get(TunerService.class).addTunable(this,
+                STATUS_BAR_SHOW_LYRIC);
     }
 
     @Override
@@ -201,6 +209,10 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
                 mTickerEnabled =
                         TunerService.parseInteger(newValue, 0);
                 initTickerView();
+                break;
+            case STATUS_BAR_SHOW_LYRIC:
+                mLyricEnabled = TunerService.parseIntegerSwitch(newValue, false);
+                initLyricView();
                 break;
             default:
                 break;
@@ -244,10 +256,12 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
                 hideSystemIconArea(animate);
                 hideOperatorName(animate);
                 hideTicker(animate);
+                hideLyric(animate);
             } else {
                 showSystemIconArea(animate);
                 showOperatorName(animate);
                 showTicker(animate);
+                showLyric(animate);
             }
         }
         if ((diff1 & DISABLE_NOTIFICATION_ICONS) != 0) {
@@ -318,6 +332,18 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
 
     public void showSystemIconArea(boolean animate) {
         animateShow(mSystemIconArea, animate);
+    }
+
+    public void showLyric(boolean animate) {
+        if (mLyricViewContainer != null) {
+            animateShow(mLyricViewContainer, animate);
+        }
+    }
+
+    public void hideLyric(boolean animate) {
+        if (mLyricViewContainer != null) {
+            animateHide(mLyricViewContainer, animate);
+        }
     }
 
     public void showTicker(boolean animate) {
@@ -494,6 +520,21 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
                     mTickerEnabled, getContext(), mStatusBar, tickerView, tickerIcon, mTickerViewFromStub);
         } else {
             mStatusBarComponent.disableTicker();
+        }
+    }
+
+    private void initLyricView() {
+        if (mLyricEnabled) {
+            mLyricViewContainer = mStatusBar.findViewById(R.id.lyric_container);
+            View lyricStub = mStatusBar.findViewById(R.id.lyric_stub);
+            if (mLyricViewFromStub == null && lyricStub != null) {
+                mLyricViewFromStub = ((ViewStub) lyricStub).inflate();
+            }
+            TickerView tickerView = (TickerView) mStatusBar.findViewById(R.id.lyricText);
+            ImageSwitcher tickerIcon = (ImageSwitcher) mStatusBar.findViewById(R.id.lyricIcon);
+            mStatusBarComponent.createLyricTicker(getContext(), mStatusBar, tickerView, tickerIcon, mLyricViewFromStub);
+        } else {
+            mStatusBarComponent.disableLyricTicker();
         }
     }
 }
