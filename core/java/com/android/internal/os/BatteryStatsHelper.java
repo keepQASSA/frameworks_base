@@ -379,8 +379,8 @@ public class BatteryStatsHelper {
     public void refreshStats(int statsType, SparseArray<UserHandle> asUsers, long rawRealtimeUs,
             long rawUptimeUs) {
         if (statsType != BatteryStats.STATS_SINCE_CHARGED) {
-            Log.w(TAG, "refreshStats called for statsType " + statsType + " but only "
-                    + "STATS_SINCE_CHARGED is supported. Using STATS_SINCE_CHARGED instead.");
+          //  Log.w(TAG, "refreshStats called for statsType " + statsType + " but only "
+            //        + "STATS_SINCE_CHARGED is supported. Using STATS_SINCE_CHARGED instead.");
         }
 
         // Initialize mStats if necessary.
@@ -471,14 +471,6 @@ public class BatteryStatsHelper {
         mBatteryTimeRemainingUs = mStats.computeBatteryTimeRemaining(rawRealtimeUs);
         mChargeTimeRemainingUs = mStats.computeChargeTimeRemaining(rawRealtimeUs);
 
-        if (DEBUG) {
-            Log.d(TAG, "Raw time: realtime=" + (rawRealtimeUs / 1000) + " uptime="
-                    + (rawUptimeUs / 1000));
-            Log.d(TAG, "Battery time: realtime=" + (mBatteryRealtimeUs / 1000) + " uptime="
-                    + (mBatteryUptimeUs / 1000));
-            Log.d(TAG, "Battery type time: realtime=" + (mTypeBatteryRealtimeUs / 1000) + " uptime="
-                    + (mTypeBatteryUptimeUs / 1000));
-        }
         mMinDrainedPower = (mStats.getLowDischargeAmountSinceCharge()
                 * mPowerProfile.getBatteryCapacity()) / 100;
         mMaxDrainedPower = (mStats.getHighDischargeAmountSinceCharge()
