@@ -103,7 +103,7 @@ public class SystemNotificationChannels {
                 DEVELOPER_IMPORTANT,
                 context.getString(R.string.notification_channel_developer_important),
                 NotificationManager.IMPORTANCE_MIN);
-        developer.setBlockableSystem(true);
+        developerImportant.setBlockableSystem(true);
         channelsList.add(developerImportant);
 
         final NotificationChannel updates = new NotificationChannel(
