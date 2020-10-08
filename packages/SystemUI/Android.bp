@@ -68,6 +68,7 @@ android_library {
         "vendor.lineage.powershare-V1.0-java",
         "airbnb-lottie",
         "RevengeUI-lib",
+        "overscroll-decor",
     ],
     manifest: "AndroidManifest.xml",
 

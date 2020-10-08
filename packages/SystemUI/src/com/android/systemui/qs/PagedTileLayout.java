@@ -29,6 +29,8 @@ import com.android.systemui.qs.QSPanel.TileRecord;
 import java.util.ArrayList;
 import java.util.Set;
 
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
+
 public class PagedTileLayout extends ViewPager implements QSTileLayout {
 
     private static final boolean DEBUG = false;
@@ -198,6 +200,8 @@ public class PagedTileLayout extends ViewPager implements QSTileLayout {
         mPages.add((TilePage) LayoutInflater.from(getContext())
                 .inflate(R.layout.qs_paged_page, this, false));
         mAdapter.notifyDataSetChanged();
+
+        OverScrollDecoratorHelper.setUpOverScroll(this);
     }
 
     public void setPageIndicator(PageIndicator indicator) {
