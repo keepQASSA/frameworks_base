@@ -177,4 +177,6 @@
 
     <!-- Quick QS brightness thiccbar height -->
     <dimen name="qs_brightness_thiccbar_height">22dp</dimen>
+
+    <dimen name="floating_card_elevation">9dp</dimen>
 </resources>
