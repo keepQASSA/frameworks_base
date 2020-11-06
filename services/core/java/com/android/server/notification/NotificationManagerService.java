@@ -432,6 +432,10 @@ public class NotificationManagerService extends SystemService {
 
     private KeyguardManager mKeyguardManager;
 
+    // True if the toast that's on top of the queue is being shown at the moment.
+    @GuardedBy("mToastQueue")
+    private boolean mIsCurrentToastShown = false;
+
     // The last key in this list owns the hardware.
     ArrayList<String> mLights = new ArrayList<>();
 
@@ -6474,12 +6478,17 @@ public class NotificationManagerService extends SystemService {
 
     @GuardedBy("mToastQueue")
     void showNextToastLocked() {
+        if (mIsCurrentToastShown) {
+            return; // Don't show the same toast twice.
+        }
+
         ToastRecord record = mToastQueue.get(0);
         while (record != null) {
             if (DBG) Slog.d(TAG, "Show pkg=" + record.pkg + " callback=" + record.callback);
             try {
                 record.callback.show(record.token);
                 scheduleDurationReachedLocked(record);
+                mIsCurrentToastShown = true;
                 return;
             } catch (RemoteException e) {
                 Slog.w(TAG, "Object died trying to show notification " + record.callback
@@ -6509,6 +6518,10 @@ public class NotificationManagerService extends SystemService {
                     + " in package " + record.pkg);
             // don't worry about this, we're about to remove it from
             // the list anyway
+        }
+
+        if (index == 0) {
+            mIsCurrentToastShown = false;
         }
 
         ToastRecord lastToast = mToastQueue.remove(index);
