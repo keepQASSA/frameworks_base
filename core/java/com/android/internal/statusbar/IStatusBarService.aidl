@@ -117,4 +117,9 @@ interface IStatusBarService
     void setBlockedGesturalNavigation(boolean blocked);
 
     void setPartialScreenshot(boolean active);
+
+    /**
+     * Starts the default assistant app.
+     */
+    void startAssist(in Bundle args);
 }
