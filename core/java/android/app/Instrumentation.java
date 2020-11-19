@@ -1165,7 +1165,7 @@ public class Instrumentation {
         if (SystemProperties.getBoolean(DISGUISE_PROPS_FOR_MUSIC_APP, false)) {
             MeizuPropsUtils.setProps(packageName);
         }
-        PixelPropsUtils.setProps(packageName);
+        PixelPropsUtils.setProps(context);
         return app;
     }
     
@@ -1187,7 +1187,7 @@ public class Instrumentation {
         if (SystemProperties.getBoolean(DISGUISE_PROPS_FOR_MUSIC_APP, false)) {
             MeizuPropsUtils.setProps(packageName);
         }
-        PixelPropsUtils.setProps(packageName);
+        PixelPropsUtils.setProps(context);
         return app;
     }
 
