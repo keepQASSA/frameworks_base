@@ -43,6 +43,7 @@ import com.android.internal.telephony.IccCardConstants;
 import com.android.keyguard.KeyguardUpdateMonitor;
 import com.android.keyguard.KeyguardUpdateMonitorCallback;
 import com.android.systemui.Interpolators;
+import com.android.systemui.SystemUIAnimations;
 import com.android.systemui.R;
 import com.android.systemui.dock.DockManager;
 import com.android.systemui.plugins.statusbar.StatusBarStateController;
@@ -104,6 +105,7 @@ public class LockIcon extends KeyguardAffordanceView implements OnUserInfoChange
     private boolean mShowingLaunchAffordance;
     private boolean mKeyguardJustShown;
     private boolean mUpdatePending;
+    private boolean mIsFaceUnlock;
 
     private final KeyguardMonitor.Callback mKeyguardMonitorCallback =
             new KeyguardMonitor.Callback() {
@@ -297,10 +299,14 @@ public class LockIcon extends KeyguardAffordanceView implements OnUserInfoChange
             final AnimatedVectorDrawable animation = icon instanceof AnimatedVectorDrawable
                     ? (AnimatedVectorDrawable) icon
                     : null;
-            setImageDrawable(icon, false);
-            if (mIsFaceUnlockState) {
+            mIsFaceUnlock = state == STATE_SCANNING_FACE;
+            if (mIsFaceUnlock) {
+                icon = mContext.getDrawable(getIconForState(state));
                 announceForAccessibility(getContext().getString(
                         R.string.accessibility_scanning_face));
+
+            setImageDrawable(icon, false);
+            shakeFace();
             }
 
             if (animation != null && isAnim) {
@@ -404,11 +410,12 @@ public class LockIcon extends KeyguardAffordanceView implements OnUserInfoChange
     private int getIconForState(int state) {
         int iconRes;
         switch (state) {
+            case STATE_SCANNING_FACE:
+                iconRes = com.android.systemui.R.drawable.ic_lock_face;
+                break;
             case STATE_LOCKED:
             // Scanning animation is a pulsing padlock. This means that the resting state is
             // just a padlock.
-            case STATE_SCANNING_FACE:
-            // Error animation also starts and ands on the padlock.
             case STATE_BIOMETRICS_ERROR:
                 iconRes = com.android.internal.R.drawable.ic_lock;
                 break;
@@ -608,5 +615,9 @@ public class LockIcon extends KeyguardAffordanceView implements OnUserInfoChange
             mWakeAndUnlockRunning = false;
             update();
         }
+    }
+
+    public void shakeFace() {
+        SystemUIAnimations.faceLockShake(this, mIsFaceUnlock ? false :true);
     }
 }
