@@ -16,6 +16,7 @@ import static android.net.NetworkCapabilities.NET_CAPABILITY_VALIDATED;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.ContentObserver;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
@@ -31,6 +32,7 @@ import android.net.wifi.WifiNetworkScoreCache;
 import android.net.wifi.WifiSsid;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.Settings;
 
 import com.android.settingslib.R;
 
@@ -84,6 +86,20 @@ public class WifiStatusTracker extends ConnectivityManager.NetworkCallback {
         mNetworkScoreManager = networkScoreManager;
         mConnectivityManager = connectivityManager;
         mCallback = callback;
+
+        mContext.getContentResolver().registerContentObserver(
+                Settings.Global.getUriFor(Settings.Global.WIFI_OFF_TIMEOUT),
+                false,
+                new ContentObserver(mHandler) {
+                    @Override
+                    public void onChange(boolean selfChange) {
+                        super.onChange(selfChange);
+                        WifiTimeoutReceiver.setTimeoutAlarm(context,
+                                Settings.Global.getLong(context.getContentResolver(),
+                                        Settings.Global.WIFI_OFF_TIMEOUT, 0));
+                    }
+                }
+        );
     }
 
     public void setListening(boolean listening) {
@@ -99,6 +115,9 @@ public class WifiStatusTracker extends ConnectivityManager.NetworkCallback {
             mWifiNetworkScoreCache.unregisterListener();
             mConnectivityManager.unregisterNetworkCallback(mNetworkCallback);
         }
+            WifiTimeoutReceiver.setTimeoutAlarm(mContext,
+                    Settings.Global.getLong(mContext.getContentResolver(),
+                            Settings.Global.WIFI_OFF_TIMEOUT, 0));
     }
 
     public void handleBroadcast(Intent intent) {
@@ -108,6 +127,11 @@ public class WifiStatusTracker extends ConnectivityManager.NetworkCallback {
         String action = intent.getAction();
         if (action.equals(WifiManager.WIFI_STATE_CHANGED_ACTION)) {
             updateWifiState();
+            if (intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, WifiManager.WIFI_STATE_UNKNOWN) == WifiManager.WIFI_STATE_ENABLED) {
+                WifiTimeoutReceiver.setTimeoutAlarm(mContext,
+                        Settings.Global.getLong(mContext.getContentResolver(),
+                                Settings.Global.WIFI_OFF_TIMEOUT, 0));
+            }
         } else if (action.equals(WifiManager.NETWORK_STATE_CHANGED_ACTION)) {
             updateWifiState();
             final NetworkInfo networkInfo =
@@ -126,6 +150,10 @@ public class WifiStatusTracker extends ConnectivityManager.NetworkCallback {
                     updateRssi(mWifiInfo.getRssi());
                     maybeRequestNetworkScore();
                 }
+            } else {
+                WifiTimeoutReceiver.setTimeoutAlarm(mContext,
+                        Settings.Global.getLong(mContext.getContentResolver(),
+                                Settings.Global.WIFI_OFF_TIMEOUT, 0));
             }
             updateStatusLabel();
         } else if (action.equals(WifiManager.RSSI_CHANGED_ACTION)) {

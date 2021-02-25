@@ -17444,6 +17444,12 @@ public final class Settings {
          * @hide
          */
         public static final String PM_DOWNGRADE_ALLOWED = "pm_downgrade_allowed";
+
+         /**
+         * The amount of time in milliseconds before wifi is turned off
+         * @hide
+         */
+        public static final String WIFI_OFF_TIMEOUT = "wifi_off_timeout";
     }
 
     /**
