@@ -40,9 +40,6 @@ import com.android.systemui.plugins.DarkIconDispatcher.DarkReceiver;
 
 import java.util.HashMap;
 
-import com.android.keyguard.KeyguardUpdateMonitor;
-import com.android.keyguard.KeyguardUpdateMonitorCallback;
-
 /*
  *
  * Seeing how an Integer object in java requires at least 16 Bytes, it seemed awfully wasteful
@@ -80,7 +77,6 @@ public class NetworkTraffic extends TextView {
     private int mTxtImgPadding;
     private boolean mAutoHide;
     private boolean mScreenOn = true;
-    private boolean mKeyguardShowing;
     private int mUnitType = UNIT_TYPE_BYTES;
     private boolean mIndicatorUp = false;
     private boolean mIndicatorDown = false;
@@ -158,7 +154,7 @@ public class NetworkTraffic extends TextView {
             }
 
             final boolean enabled = mMode != MODE_DISABLED && mScreenOn
-                    && isConnectionAvailable() && !mKeyguardShowing;
+                    && isConnectionAvailable();
             final boolean shouldHide = !enabled ||
                     (mAutoHide &&
                         mRxKbps < AUTOHIDE_THRESHOLD && mTxKbps < AUTOHIDE_THRESHOLD);
@@ -222,16 +218,6 @@ public class NetworkTraffic extends TextView {
         }
     };
 
-    private KeyguardUpdateMonitor mUpdateMonitor;
-
-    private KeyguardUpdateMonitorCallback mMonitorCallback = new KeyguardUpdateMonitorCallback() {
-        @Override
-        public void onKeyguardVisibilityChanged(boolean showing) {
-            mKeyguardShowing = showing;
-            updateViewState();
-        }
-    };
-
     class SettingsObserver extends ContentObserver {
         SettingsObserver(Handler handler) {
             super(handler);
@@ -288,7 +274,6 @@ public class NetworkTraffic extends TextView {
                 .build();
         mConnectivityManager.registerNetworkCallback(request, mNetworkCallback);
         mObserver = new SettingsObserver(mTrafficHandler);
-        mUpdateMonitor = KeyguardUpdateMonitor.getInstance(context);
         setVisibility(View.GONE);
     }
 
@@ -303,7 +288,6 @@ public class NetworkTraffic extends TextView {
             filter.addAction(Intent.ACTION_SCREEN_ON);
             mContext.registerReceiver(mIntentReceiver, filter, null, getHandler());
             mObserver.observe();
-            mUpdateMonitor.registerCallback(mMonitorCallback);
             updateSettings();
         }
     }
@@ -315,7 +299,6 @@ public class NetworkTraffic extends TextView {
             mContext.unregisterReceiver(mIntentReceiver);
             mObserver.unobserve();
             mAttached = false;
-            mUpdateMonitor.removeCallback(mMonitorCallback);
         }
     }
 
