@@ -11,7 +11,6 @@ import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.graphics.drawable.Drawable;
 import android.graphics.PorterDuff.Mode;
-import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.LinkProperties;
 import android.net.Network;
@@ -30,7 +29,6 @@ import android.os.UserHandle;
 import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
@@ -195,7 +193,6 @@ public class NetworkTraffic extends TextView {
 
                 // Update view if there's anything new to show
                 if (!output.contentEquals(getText())) {
-                    updateTextViewStyle();
                     setText(output);
                     mIndicatorUp = mTxKbps != 0;
                     mIndicatorDown = false;
@@ -207,7 +204,6 @@ public class NetworkTraffic extends TextView {
 
                 // Update view if there's anything new to show
                 if (!output.contentEquals(getText())) {
-                    updateTextViewStyle();
                     setText(output);
                     mIndicatorDown = mRxKbps != 0;
                     mIndicatorUp = false;
@@ -235,13 +231,14 @@ public class NetworkTraffic extends TextView {
             }
             double power = (size > 0) ? Math.floor(Math.log(size) / Math.log(mod)) : 0;
             String unit = units[(int) power];
+            String separator = getMyMode() == MODE_STATUS_BAR ? "\n" : " ";
             if (size <= 0) {
-                return String.format("%d %s", 0, units[1]);
+                return String.format("%d%s%s", 0, separator, units[1]);
             }else if (unit.equals("")) {
-                return String.format("< %d %s", 0, units[1]);
+                return String.format("< %d%s%s", 0, separator, units[1]);
             }
             double result = size / Math.pow(mod, power);
-            return String.format("%d %s", (int) result, unit);
+            return String.format("%d%s%s", (int) result, separator, unit);
         }
     };
 
@@ -380,11 +377,9 @@ public class NetworkTraffic extends TextView {
             Drawable d = getContext().getDrawable(indicatorDrawable);
             d.setColorFilter(mTintColor, Mode.MULTIPLY);
             setCompoundDrawablePadding(mTxtImgPadding);
-            setCompoundDrawablesWithIntrinsicBounds(null, null, d, null);
+            setCompoundDrawablesWithIntrinsicBounds(d, null, null, null);
             mIndicatorUp = false;
             mIndicatorDown = false;
-        } else {
-            setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         }
     }
 
@@ -394,17 +389,6 @@ public class NetworkTraffic extends TextView {
         mTxtSizeStatusbar = resources.getDimensionPixelSize(R.dimen.net_traffic_status_bar_text_size);
         mTxtImgPadding = resources.getDimensionPixelSize(R.dimen.net_traffic_txt_img_padding);
         setCompoundDrawablePadding(mTxtImgPadding);
-        updateTextViewStyle();
-    }
-
-    protected void updateTextViewStyle(){
-        if (getMyMode() == MODE_STATUS_BAR) {
-            setAutoSizeTextTypeUniformWithConfiguration(
-                    1, mTxtSizeStatusbar, 1, TypedValue.COMPLEX_UNIT_PX);
-        }else{
-            setTextSize(TypedValue.COMPLEX_UNIT_PX, (float)mTxtSizeQs);
-        }
-        setTypeface(Typeface.create(mTxtFont, Typeface.NORMAL));
     }
 
     protected void updateVisibility() {
