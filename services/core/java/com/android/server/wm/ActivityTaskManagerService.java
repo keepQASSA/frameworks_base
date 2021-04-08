@@ -1764,6 +1764,9 @@ public class ActivityTaskManagerService extends IActivityTaskManager.Stub {
         synchronized (mGlobalLock) {
             r = ActivityRecord.isInStackLocked(token);
             if (r != null) {
+                if (isAppLocked(r.packageName)) {
+                    mAppLockService.activityStopped(r.packageName, r.intent);
+                }
                 if (r.attachedToProcess()
                         && r.isState(ActivityStack.ActivityState.RESTARTING_PROCESS)) {
                     // The activity was requested to restart from
