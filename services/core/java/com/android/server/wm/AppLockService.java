@@ -104,8 +104,11 @@ public class AppLockService extends SystemService {
 
     private UserHandle mUserHandle;
     private int mUserId;
+    private int mLockTimeout;
+    private int lockAfterInstantly = 0;
+    private int lockAfter15Seconds = 15;
+    private int lockAfterScreenOff = -1;
     private UserManager mUserManager;
-    private boolean mShowOnlyOnWake;
     private boolean mIsSecure;
     private boolean mStartingFromRecents;
     private boolean mKeyguardShown;
@@ -259,10 +262,10 @@ public class AppLockService extends SystemService {
         readState();
         clearOpenedAppsList();
 
-        mShowOnlyOnWake = Settings.System.getIntForUser(mContext
+        mLockTimeout = Settings.System.getIntForUser(mContext
                 .getContentResolver(),
-                Settings.System.APP_LOCK_SHOW_ONLY_ON_WAKE, 0,
-                mUserId) != 0;
+                Settings.System.APP_LOCK_LOCK_AFTER, 0,
+                mUserId);
     }
 
     private File getFile() {
@@ -505,7 +508,10 @@ public class AppLockService extends SystemService {
                     if (DEBUG_APPLOCK) Slog.v(TAG_APPLOCK, "activityStopped() send: MSG_REMOVE_OPENED_APP");
                     final Message msgRemove = mHandler.obtainMessage(AppLockHandler.MSG_REMOVE_OPENED_APP,
                             cont.packageName);
-                    mHandler.sendMessageDelayed(msgRemove, APPLOCK_TIMEOUT);
+                    if(mLockTimeout == lockAfterInstantly)
+                        mHandler.sendMessage(msgRemove);
+                    else if (mLockTimeout == lockAfter15Seconds)
+                        mHandler.sendMessageDelayed(msgRemove, APPLOCK_TIMEOUT);
                 }
             }
         }
@@ -648,17 +654,16 @@ public class AppLockService extends SystemService {
         });
     }
 
-    private void setShowOnlyOnWake(boolean showOnce) {
-        mShowOnlyOnWake = showOnce;
+    private void setLockTimeout(int lockTimeout) {
+        mLockTimeout = lockTimeout;
         Settings.System.putIntForUser(mContext
                 .getContentResolver(),
-                Settings.System.APP_LOCK_SHOW_ONLY_ON_WAKE,
-                showOnce ? 1 : 0,
+                Settings.System.APP_LOCK_LOCK_AFTER, lockTimeout,
                 mUserId);
     }
 
-    private boolean getShowOnlyOnWake() {
-        return mShowOnlyOnWake;
+    private int getLockTimeout() {
+        return mLockTimeout;
     }
 
     private class AppLockImpl extends IAppLockService.Stub {
@@ -683,13 +688,13 @@ public class AppLockService extends SystemService {
         }
 
         @Override
-        public void setShowOnlyOnWake(boolean showOnce) {
-            AppLockService.this.setShowOnlyOnWake(showOnce);
+        public void setLockTimeout(int lockTimeout) {
+            AppLockService.this.setLockTimeout(lockTimeout);
         }
 
         @Override
-        public boolean getShowOnlyOnWake() {
-            return AppLockService.this.getShowOnlyOnWake();
+        public int getLockTimeout() {
+            return AppLockService.this.getLockTimeout();
         }
 
         @Override
@@ -744,7 +749,7 @@ public class AppLockService extends SystemService {
                     writeState();
                     break;
                 case MSG_REMOVE_OPENED_APP:
-                    if (!mShowOnlyOnWake) {
+                    if (mLockTimeout != lockAfterScreenOff) {
                         removeOpenedApp((String) msg.obj);
                     }
                     break;
