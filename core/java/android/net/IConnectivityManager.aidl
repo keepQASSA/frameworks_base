@@ -75,6 +75,8 @@ interface IConnectivityManager
     NetworkQuotaInfo getActiveNetworkQuotaInfo();
     boolean isActiveNetworkMetered();
 
+    boolean isUidIsolated(int uid);
+
     boolean requestRouteToHostAddress(int networkType, in byte[] hostAddress);
 
     int tether(String iface, String callerPkg);
