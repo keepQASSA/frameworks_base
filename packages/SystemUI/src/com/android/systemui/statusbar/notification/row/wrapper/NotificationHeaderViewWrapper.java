@@ -29,6 +29,8 @@ import android.view.animation.Interpolator;
 import android.view.animation.PathInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.os.UserHandle;
+import android.provider.Settings;
 
 import com.android.internal.widget.NotificationExpandButton;
 import com.android.systemui.Interpolators;
@@ -55,6 +57,7 @@ public class NotificationHeaderViewWrapper extends NotificationViewWrapper {
 
     protected int mColor;
     private ImageView mIcon;
+    boolean NewHeaderIconStyle;
 
     private NotificationExpandButton mExpandButton;
     protected NotificationHeaderView mNotificationHeader;
@@ -100,6 +103,8 @@ public class NotificationHeaderViewWrapper extends NotificationViewWrapper {
                 }, TRANSFORMING_VIEW_TITLE);
         resolveHeaderViews();
         addAppOpsOnClickListener(row);
+        NewHeaderIconStyle = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.HEADER_ICONS_STYLE, 1, UserHandle.USER_CURRENT) == 1;
     }
 
     protected void resolveHeaderViews() {
@@ -130,6 +135,9 @@ public class NotificationHeaderViewWrapper extends NotificationViewWrapper {
         updateCropToPaddingForImageViews();
         Notification notification = row.getStatusBarNotification().getNotification();
 
+        if (!NewHeaderIconStyle) {
+            mIcon.setTag(ImageTransformState.ICON_TAG, notification.getSmallIcon());
+        } else {
         String pkgname = row.getStatusBarNotification().getPackageName();
         Drawable icon = null;
         try {
@@ -142,7 +150,7 @@ public class NotificationHeaderViewWrapper extends NotificationViewWrapper {
         // The work profile image is always the same lets just set the icon tag for it not to
         // animate
         mWorkProfileImage.setTag(ImageTransformState.ICON_TAG, notification.getSmallIcon());
-
+       }
         // We need to reset all views that are no longer transforming in case a view was previously
         // transformed, but now we decided to transform its container instead.
         ArraySet<View> currentViews = mTransformationHelper.getAllTransformingViews();
