@@ -117,7 +117,7 @@ public abstract class ActivatableNotificationView extends ExpandableOutlineView 
     private Interpolator mCurrentAlphaInterpolator;
 
     protected NotificationBackgroundView mBackgroundNormal;
-    private NotificationBackgroundView mBackgroundDimmed;
+    public NotificationBackgroundView mBackgroundDimmed;
     private ObjectAnimator mBackgroundAnimator;
     private RectF mAppearAnimationRect = new RectF();
     private float mAnimationTranslationY;

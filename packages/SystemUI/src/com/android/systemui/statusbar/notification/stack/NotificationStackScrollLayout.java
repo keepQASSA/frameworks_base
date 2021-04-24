@@ -191,6 +191,9 @@ public class NotificationStackScrollLayout extends ViewGroup implements ScrollAd
     private final DynamicPrivacyController mDynamicPrivacyController;
     private final SysuiStatusBarStateController mStatusbarStateController;
 
+    private static final String NOTIFICATION_BG_ALPHA =
+            "system:" + Settings.System.NOTIFICATION_BG_ALPHA;
+
     private ExpandHelper mExpandHelper;
     private final NotificationSwipeHelper mSwipeHelper;
     private int mCurrentStackHeight = Integer.MAX_VALUE;
@@ -462,6 +465,7 @@ public class NotificationStackScrollLayout extends ViewGroup implements ScrollAd
     private int mMaxDisplayedNotifications = -1;
     private int mStatusBarHeight;
     private int mMinInteractionHeight;
+    private int mNotificationBackgroundAlpha;
     private boolean mNoAmbient;
     private final Rect mClipRect = new Rect();
     private boolean mIsClipped;
@@ -619,6 +623,10 @@ public class NotificationStackScrollLayout extends ViewGroup implements ScrollAd
             } else if (key.equals(LOCKSCREEN_TRANSLUCENT_NOTIFICATIONS_BG_ENABLED)) {
                 mShouldDrawNotificationBackground = !"1".equals(newValue);
                 setWillNotDraw(!mShouldDrawNotificationBackground && onKeyguard());
+            } else if (key.equals(NOTIFICATION_BG_ALPHA)) {
+                mNotificationBackgroundAlpha =
+                        TunerService.parseInteger(newValue, 255);
+                updateBackgroundDimming();
             }
         }, HIGH_PRIORITY, Settings.Secure.NOTIFICATION_DISMISS_RTL,
                 LOCKSCREEN_TRANSLUCENT_NOTIFICATIONS_BG_ENABLED);
@@ -1031,9 +1039,11 @@ public class NotificationStackScrollLayout extends ViewGroup implements ScrollAd
                 mLinearHideAmount);
         int color = ColorUtils.blendARGB(mBgColor, Color.WHITE, colorInterpolation);
 
-        if (mCachedBackgroundColor != color) {
+        if (mCachedBackgroundColor != color ||
+                mBackgroundPaint.getAlpha() != mNotificationBackgroundAlpha) {
             mCachedBackgroundColor = color;
             mBackgroundPaint.setColor(color);
+            mBackgroundPaint.setAlpha(mNotificationBackgroundAlpha);
             invalidate();
         }
     }
