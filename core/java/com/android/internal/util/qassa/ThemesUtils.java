@@ -29,4 +29,18 @@ public class ThemesUtils {
         "com.gnonymous.gvisualmod.urm_m", // 2
         "com.gnonymous.gvisualmod.urm_l", // 3
     };
+
+    // Statusbar Signal icons
+    private static final String[] SIGNAL_BAR = {
+        "com.qassa.systemui.signalbar_a",
+        "com.qassa.systemui.signalbar_b",
+        "com.qassa.systemui.signalbar_c",
+    };
+
+    // Statusbar Wifi icons
+    private static final String[] WIFI_BAR = {
+        "com.qassa.systemui.wifibar_a",
+        "com.qassa.systemui.wifibar_b",
+        "com.qassa.systemui.wifibar_c",
+    };
 }
