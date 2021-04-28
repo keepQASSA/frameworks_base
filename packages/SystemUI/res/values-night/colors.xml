@@ -52,8 +52,8 @@
     <color name="notification_guts_priority_button_content_color">@color/GM2_grey_500</color>
     <color name="notification_guts_priority_button_content_color_selected">@color/GM2_blue_300</color>
     <color name="notification_guts_priority_button_bg_fill_color">@color/transparent</color>
-    <color name="notification_guts_priority_button_bg_fill_color_selected">@color/GM2_grey_800</color>
-    <color name="notification_guts_priority_button_bg_stroke_color">@color/GM2_grey_700</color>
+    <color name="notification_guts_priority_button_bg_fill_color_selected">#22ffffff</color>
+    <color name="notification_guts_priority_button_bg_stroke_color">#22ffffff</color>
     <color name="notification_guts_priority_button_bg_stroke_color_selected">@color/GM2_blue_300</color>
 
     <color name="notification_section_clear_all_btn_color">@color/GM2_grey_500</color>
