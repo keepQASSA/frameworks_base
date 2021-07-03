@@ -31,5 +31,5 @@
     <string name="gaming_mode_disabled_toast">Mode permainan dimatikan</string>
     <string name="aerr_copy">Salin URL log kerusakan</string>
     <string name="url_copy_success">URL berhasil disalin</string>
-    <string name="url_copy_failed">Terjadi kesalahan saat mengunggah log ke dogbin</string>
+    <string name="url_copy_failed">Terjadi kesalahan saat mengunggah log ke Hastebin</string>
 </resources>
