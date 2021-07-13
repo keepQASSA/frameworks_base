@@ -9,6 +9,7 @@ android_library {
         "androidx.core_core",
         "com.google.android.material_material",
         "SettingsLibSettingsTransition",
+        "SettingsLibUtils",
     ],
     sdk_version: "system_current",
     min_sdk_version: "29",
