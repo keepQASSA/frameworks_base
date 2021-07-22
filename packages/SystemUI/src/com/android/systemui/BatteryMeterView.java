@@ -416,12 +416,12 @@ public class BatteryMeterView extends LinearLayout implements
         if (mShowBatteryEstimate != 0 && !mCharging) {
             mBatteryController.getEstimatedTimeRemainingString((String estimate) -> {
                 if (estimate != null) {
-                    if (mShowPercentMode == MODE_ON || mShowBatteryPercent == 2) {
+                    if (mShowPercentMode == MODE_ON || mShowBatteryPercent >= 2) {
                         mBatteryPercentView.setText(text + " · " + estimate);
                     } else {
                         mBatteryPercentView.setText(estimate);
                     }
-                } else if (mShowPercentMode == MODE_ON || mShowBatteryPercent == 2) {
+                } else if (mShowPercentMode == MODE_ON || mShowBatteryPercent >= 2) {
                     mBatteryPercentView.setText(text);
                 } else {
                     mBatteryPercentView.setText("");
@@ -454,7 +454,7 @@ public class BatteryMeterView extends LinearLayout implements
         final boolean showing = mBatteryPercentView != null;
         final boolean drawPercentInside = mShowBatteryPercent == 1
                                     && !mCharging;
-        final boolean addPecentView = mShowBatteryPercent == 2
+        final boolean addPecentView = mShowBatteryPercent >= 2
                                     || (mBatteryPercentCharging && mCharging)
                                     || mShowPercentMode == MODE_ON
                                     || mShowBatteryEstimate != 0;
@@ -483,6 +483,7 @@ public class BatteryMeterView extends LinearLayout implements
                 Resources res = getContext().getResources();
                 mBatteryPercentView.setPaddingRelative(
                         res.getDimensionPixelSize(R.dimen.battery_level_padding_start), 0, 0, 0);
+                setLayoutDirection(mShowBatteryPercent > 2 ? View.LAYOUT_DIRECTION_RTL : View.LAYOUT_DIRECTION_LTR);
             }
         } else {
             removeBatteryPercentView();
