@@ -72,7 +72,6 @@ public class ThemeOverlayController extends SystemUI {
                 mContext.getString(R.string.themepicker_overlayable_package));
         final Handler bgHandler = Dependency.get(Dependency.BG_HANDLER);
         final IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_USER_SWITCHED);
         filter.addAction(Intent.ACTION_MANAGED_PROFILE_ADDED);
         mContext.registerReceiverAsUser(new BroadcastReceiver() {
             @Override
@@ -87,7 +86,7 @@ public class ThemeOverlayController extends SystemUI {
                 new ContentObserver(bgHandler) {
                     @Override
                     public void onChange(boolean selfChange, Uri uri, int userId) {
-                        if (DEBUG) Log.d(TAG, "Overlay changed for user: " + userId);
+                        if (DEBUG) Log.d(TAG, "onUserSwitched");
                         if (ActivityManager.getCurrentUser() == userId) {
                             updateThemeOverlays();
                         }
