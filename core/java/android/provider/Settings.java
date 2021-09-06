@@ -6069,6 +6069,18 @@ public final class Settings {
         public static final String NETWORK_TRAFFIC_FONT_STYLE = "network_traffic_font_style";
 
         /**
+         * Whether to add left padding on statusbar
+         * @hide
+         */
+        public static final String LEFT_PADDING = "statusbar_left_padding";
+
+        /**
+         * Whether to add right padding on statusbar
+         * @hide
+         */
+        public static final String RIGHT_PADDING = "statusbar_right_padding";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
