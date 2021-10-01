@@ -6427,6 +6427,12 @@ public final class Settings {
         public static final String HEADER_ICONS_STYLE = "headers_icons_style";
 
         /**
+         * Toggle between stock and color coded battery icon
+         * @hide
+         */
+        public static final String BATTERY_LEVEL_COLORS = "battery_level_colors";
+
+        /**
          * Keys we no longer back up under the current schema, but want to continue to
          * process when restoring historical backup datasets.
          *
@@ -6655,6 +6661,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(LESS_BORING_HEADS_UP);
             PRIVATE_SETTINGS.add(QS_DATAUSAGE);
             PRIVATE_SETTINGS.add(HIDE_SMART_REPLIES);
+            PRIVATE_SETTINGS.add(BATTERY_LEVEL_COLORS);
         }
 
         /**
