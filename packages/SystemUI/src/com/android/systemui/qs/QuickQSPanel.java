@@ -21,6 +21,8 @@ import static com.android.systemui.util.InjectionInflationController.VIEW_CONTEX
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Rect;
+import android.os.UserHandle;
+import android.provider.Settings;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -68,7 +70,7 @@ public class QuickQSPanel extends QSPanel {
             }
             removeView((View) mTileLayout);
         }
-        mDefaultMaxTiles = getResources().getInteger(R.integer.quick_qs_panel_max_columns);
+        mDefaultMaxTiles = Settings.System.getIntForUser(context.getContentResolver(),Settings.System.QQS_ICONS,6,UserHandle.USER_CURRENT);
         mTileLayout = new HeaderTileLayout(context);
         mTileLayout.setListening(mListening);
         addView((View) mTileLayout, 0 /* Between brightness and footer */);
@@ -150,7 +152,7 @@ public class QuickQSPanel extends QSPanel {
     private final Tunable mNumTiles = new Tunable() {
         @Override
         public void onTuningChanged(String key, String newValue) {
-            setMaxTiles(getNumQuickTiles(mContext));
+            setMaxTiles(mDefaultMaxTiles);
         }
     };
 
