@@ -75,6 +75,7 @@ import java.util.zip.GZIPOutputStream;
  */
 public final class DropBoxManagerService extends SystemService {
     private static final String TAG = "DropBoxManagerService";
+    private static final boolean DBG = false;
     private static final int DEFAULT_AGE_SECONDS = 3 * 86400;
     private static final int DEFAULT_MAX_FILES = 1000;
     private static final int DEFAULT_MAX_FILES_LOWRAM = 300;
@@ -912,7 +913,7 @@ public final class DropBoxManagerService extends SystemService {
             // Scan pre-existing files.
             for (File file : files) {
                 if (file.getName().endsWith(".tmp")) {
-                    Slog.i(TAG, "Cleaning temp file: " + file);
+                    if (DBG) Slog.i(TAG, "Cleaning temp file: " + file);
                     file.delete();
                     continue;
                 }
