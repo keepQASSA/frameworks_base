@@ -28,6 +28,8 @@ import java.util.Map;
 
 public class PixelPropsUtils {
 
+    public static final String PACKAGE_GMS = "com.google.android.gms";
+    private static final String DEVICE = "ro.aosqp.device";
     private static final String TAG = PixelPropsUtils.class.getSimpleName();
     private static final boolean DEBUG = false;
 
@@ -100,6 +102,20 @@ public class PixelPropsUtils {
             "com.epicgames.portal"
     };
 
+    // Codenames for currently supported Pixels by Google
+    private static final String[] pixelCodenames = {
+            "oriole",
+            "raven",
+            "redfin",
+            "barbet",
+            "bramble",
+            "sunfish",
+            "coral",
+            "flame",
+            "bonito",
+            "sargo"
+    };
+
     private static volatile boolean sIsGms = false;
 
     static {
@@ -140,11 +156,13 @@ public class PixelPropsUtils {
         if (packageName == null) {
             return;
         }
-        if (Arrays.asList(packagesToKeep).contains(packageName)) {
-            return;
+        if (packageName.equals(PACKAGE_GMS)) {
+            sIsGms = true;
         }
-        if (packageName.startsWith("com.google.")
-                || Arrays.asList(extraPackagesToChange).contains(packageName)) {
+        boolean isPixelDevice = Arrays.asList(pixelCodenames).contains(SystemProperties.get(DEVICE));
+        if (!isPixelDevice &&
+            ((packageName.startsWith("com.google.") && !Arrays.asList(packagesToKeep).contains(packageName))
+                || Arrays.asList(extraPackagesToChange).contains(packageName))) {
 
             if (packageName.equals("com.google.android.apps.photos")) {
                 if (!SystemProperties.getBoolean("persist.sys.pixelprops.gphotos", true))
@@ -171,9 +189,6 @@ public class PixelPropsUtils {
                 }
                 if (DEBUG) Log.d(TAG, "Defining " + key + " prop for: " + packageName);
                 setPropValue(key, value);
-            }
-            if (packageName.equals("com.google.android.gms")) {
-                sIsGms = true;
             }
             // Set proper indexing fingerprint
             if (packageName.equals("com.google.android.settings.intelligence")) {
