@@ -289,6 +289,10 @@
     <!-- Suspend actions -->
     <protected-broadcast android:name="android.intent.action.SCREEN_STATE_SERVICE_UPDATE" />
 
+    <!-- Permission needed for Kasa Idle Manager -->
+    <!-- Kill processes -->
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
+
     <application
         android:name=".SystemUIApplication"
         android:persistent="true"

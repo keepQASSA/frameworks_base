@@ -6457,6 +6457,12 @@ public final class Settings {
         public static final String NOTIFICATION_SOUND_VIB_SCREEN_ON = "notification_sound_vib_screen_on";
 
         /**
+         * Kasa Idle Manager
+         * @hide
+         */
+        public static final String KASA_IDLE_MANAGER = "kasa_idle_manager";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *

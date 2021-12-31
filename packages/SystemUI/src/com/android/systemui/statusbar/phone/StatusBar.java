@@ -165,6 +165,7 @@ import com.android.systemui.ForegroundServiceController;
 import com.android.systemui.ImageUtilities;
 import com.android.systemui.InitController;
 import com.android.systemui.Interpolators;
+import com.android.systemui.KasaIdleManager;
 import com.android.systemui.Prefs;
 import com.android.systemui.R;
 import com.android.systemui.SystemUI;
@@ -459,6 +460,9 @@ public class StatusBar extends SystemUI implements DemoMode,
 
     // expanded notifications
     protected NotificationPanelView mNotificationPanel; // the sliding/resizing panel within the notification window
+
+    // Kasa Idle
+    private boolean isIdleManagerIstantiated = false;
 
     // settings
     private static QSPanel mQSPanel;
@@ -4550,6 +4554,17 @@ public class StatusBar extends SystemUI implements DemoMode,
             mWakeUpCoordinator.setFullyAwake(false);
             mBypassHeadsUpNotifier.setFullyAwake(false);
             mKeyguardBypassController.onStartedGoingToSleep();
+            if (Settings.System.getIntForUser(mContext.getContentResolver(),
+                                              Settings.System.KASA_IDLE_MANAGER, 1,
+                                              mLockscreenUserManager.getCurrentUserId()) == 1) {
+                if (!isIdleManagerIstantiated) {
+                    KasaIdleManager.initManager(mContext);
+                    isIdleManagerIstantiated = true;
+                    KasaIdleManager.executeManager();
+                } else {
+                    KasaIdleManager.executeManager();
+                }
+            }
         }
 
         @Override
@@ -4568,6 +4583,11 @@ public class StatusBar extends SystemUI implements DemoMode,
             // once we fully woke up.
             updateNotificationPanelTouchState();
             mPulseExpansionHandler.onStartedWakingUp();
+            if (Settings.System.getIntForUser(mContext.getContentResolver(),
+                                              Settings.System.KASA_IDLE_MANAGER, 1,
+                                              mLockscreenUserManager.getCurrentUserId()) == 1) {
+                KasaIdleManager.haltManager();
+            }
         }
 
         @Override
