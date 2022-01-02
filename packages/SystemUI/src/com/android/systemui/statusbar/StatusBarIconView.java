@@ -28,17 +28,15 @@ import android.content.pm.ApplicationInfo;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.database.ContentObserver;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.Icon;
-import android.graphics.Typeface;
-import android.os.Handler;
 import android.os.Parcelable;
 import android.os.UserHandle;
 import android.provider.Settings;
@@ -57,16 +55,18 @@ import androidx.core.graphics.ColorUtils;
 
 import com.android.internal.statusbar.StatusBarIcon;
 import com.android.internal.util.ContrastColorUtil;
+import com.android.systemui.Dependency;
 import com.android.systemui.Interpolators;
 import com.android.systemui.R;
 import com.android.systemui.statusbar.notification.NotificationIconDozeHelper;
 import com.android.systemui.statusbar.notification.NotificationUtils;
 
 import java.text.NumberFormat;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class StatusBarIconView extends AnimatedImageView implements StatusIconDisplayable {
+
     public static final int NO_COLOR = 0;
 
     /**
@@ -160,8 +160,6 @@ public class StatusBarIconView extends AnimatedImageView implements StatusIconDi
     private ValueAnimator mColorAnimator;
     private int mCurrentSetColor = NO_COLOR;
     private int mAnimationStartColor = NO_COLOR;
-    private boolean mShowNotificationCount;
-    private GlobalSettingsObserver mObserver;
     private final ValueAnimator.AnimatorUpdateListener mColorUpdater
             = animation -> {
         int newColor = NotificationUtils.interpolateColors(mAnimationStartColor, mIconColor,
@@ -178,6 +176,7 @@ public class StatusBarIconView extends AnimatedImageView implements StatusIconDi
     private boolean mDismissed;
     private Runnable mOnDismissListener;
     private boolean mIncreasedSize;
+    private boolean mShowNotificationCount;
 
     public StatusBarIconView(Context context, String slot, StatusBarNotification sbn) {
         this(context, slot, sbn, false);
@@ -188,9 +187,8 @@ public class StatusBarIconView extends AnimatedImageView implements StatusIconDi
         super(context);
         mDozer = new NotificationIconDozeHelper(context);
         mBlocked = blocked;
-        final float densityMultiplier = context.getResources().getDisplayMetrics().density;
-        final float scaledPx = 8 * densityMultiplier;
         mSlot = slot;
+        final float scaledPx = 8 * getResources().getDisplayMetrics().density;
         mNumberPain = new Paint();
         mNumberPain.setTextAlign(Paint.Align.CENTER);
         mNumberPain.setColor(context.getColor(R.drawable.notification_number_text_color));
@@ -206,8 +204,6 @@ public class StatusBarIconView extends AnimatedImageView implements StatusIconDi
         initializeDecorColor();
         reloadDimens();
         maybeUpdateIconScaleDimens();
-
-        mObserver = GlobalSettingsObserver.getInstance(context);
     }
 
     /** Should always be preceded by {@link #reloadDimens()} */
@@ -300,8 +296,6 @@ public class StatusBarIconView extends AnimatedImageView implements StatusIconDi
 
     public void setNotification(StatusBarNotification notification) {
         mNotification = notification;
-        mShowNotificationCount = Settings.System.getIntForUser(mContext.getContentResolver(),
-                Settings.System.STATUS_BAR_NOTIF_COUNT, 0, UserHandle.USER_CURRENT) == 1;
         if (notification != null) {
             setContentDescription(notification.getNotification());
         }
@@ -343,11 +337,20 @@ public class StatusBarIconView extends AnimatedImageView implements StatusIconDi
                 return false;
         }
     }
+
+    public void setShowCount(boolean showCount) {
+        mShowNotificationCount = showCount;
+    }
+
     /**
      * Returns whether the set succeeded.
      */
     public boolean set(StatusBarIcon icon) {
         return set(icon, false);
+    }
+
+    public boolean updateIconForced() {
+        return set(mIcon, true);
     }
 
     private boolean set(StatusBarIcon icon, boolean force) {
@@ -375,7 +378,7 @@ public class StatusBarIconView extends AnimatedImageView implements StatusIconDi
         }
 
         if (!numberEquals || force) {
-            if (icon.number > 1 && mShowNotificationCount) {
+            if (icon.number > 0 && mShowNotificationCount) {
                 if (mNumberBackground == null) {
                     mNumberBackground = getContext().getResources().getDrawable(
                             R.drawable.ic_notification_overlay);
@@ -546,24 +549,6 @@ public class StatusBarIconView extends AnimatedImageView implements StatusIconDi
     }
 
     @Override
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
-
-        if (mObserver != null) {
-            mObserver.attach(this);
-        }
-    }
-
-    @Override
-    public void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-
-        if (mObserver != null) {
-            mObserver.detach(this);
-        }
-    }
-
-    @Override
     protected void debug(int depth) {
         super.debug(depth);
         Log.d("View", debugIndent(depth) + "slot=" + mSlot);
@@ -654,7 +639,6 @@ public class StatusBarIconView extends AnimatedImageView implements StatusIconDi
 
         return c.getString(R.string.accessibility_desc_notification_icon, appName, desc);
     }
-
 
     /**
      * Set the color that is used to draw decoration like the overflow dot. This will not be applied
@@ -1092,57 +1076,4 @@ public class StatusBarIconView extends AnimatedImageView implements StatusIconDi
     public interface OnVisibilityChangedListener {
         void onVisibilityChanged(int newVisibility);
     }
-
-    static class GlobalSettingsObserver extends ContentObserver {
-        private static GlobalSettingsObserver sInstance;
-        private ArrayList<StatusBarIconView> mIconViews = new ArrayList<StatusBarIconView>();
-        private Context mContext;
-
-        GlobalSettingsObserver(Handler handler, Context context) {
-            super(handler);
-            mContext = context.getApplicationContext();
-        }
-
-        static GlobalSettingsObserver getInstance(Context context) {
-            if (sInstance == null) {
-                sInstance = new GlobalSettingsObserver(new Handler(), context);
-            }
-            return sInstance;
-        }
-
-        void attach(StatusBarIconView sbiv) {
-            if (mIconViews.isEmpty()) {
-                observe();
-            }
-            mIconViews.add(sbiv);
-        }
-
-        void detach(StatusBarIconView sbiv) {
-            mIconViews.remove(sbiv);
-            if (mIconViews.isEmpty()) {
-                unobserve();
-            }
-        }
-
-        void observe() {
-            mContext.getContentResolver().registerContentObserver(
-                    Settings.System.getUriFor(Settings.System.STATUS_BAR_NOTIF_COUNT),
-                    false, this);
-        }
-
-        void unobserve() {
-            mContext.getContentResolver().unregisterContentObserver(this);
-        }
-
-        @Override
-        public void onChange(boolean selfChange) {
-            boolean showIconCount = Settings.System.getIntForUser(mContext.getContentResolver(),
-                    Settings.System.STATUS_BAR_NOTIF_COUNT, 0, UserHandle.USER_CURRENT) == 1;
-            for (StatusBarIconView sbiv : mIconViews) {
-                sbiv.mShowNotificationCount = showIconCount;
-                sbiv.set(sbiv.mIcon, true);
-            }
-        }
-    }
 }
-

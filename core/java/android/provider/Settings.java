@@ -5524,7 +5524,7 @@ public final class Settings {
          * Show the pending notification counts as overlays on the status bar
          * @hide
          */
-        public static final String STATUS_BAR_NOTIF_COUNT = "status_bar_notif_count";
+        public static final String STATUSBAR_NOTIF_COUNT = "statusbar_notif_count";
 
         /**
          * Screen stabilization parameters

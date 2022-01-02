@@ -33,6 +33,7 @@ import com.android.systemui.statusbar.notification.NotificationUtils;
 import com.android.systemui.statusbar.notification.NotificationWakeUpCoordinator;
 import com.android.systemui.statusbar.notification.collection.NotificationEntry;
 import com.android.systemui.statusbar.notification.row.ExpandableNotificationRow;
+import com.android.systemui.tuner.TunerService;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -44,7 +45,11 @@ import java.util.function.Function;
  */
 public class NotificationIconAreaController implements DarkReceiver,
         StatusBarStateController.StateListener,
-        NotificationWakeUpCoordinator.WakeUpListener {
+        NotificationWakeUpCoordinator.WakeUpListener,
+        TunerService.Tunable {
+
+    public static final String STATUSBAR_NOTIF_COUNT =
+            "system:" + Settings.System.STATUSBAR_NOTIF_COUNT;
 
     public static final String HIGH_PRIORITY = "high_priority";
     private static final long AOD_ICONS_APPEAR_DURATION = 200;
@@ -82,6 +87,7 @@ public class NotificationIconAreaController implements DarkReceiver,
     private boolean mFullyHidden;
     private boolean mAodIconsVisible;
     private boolean mIsPulsing;
+    private boolean mShowNotificationCount = false;
 
     public NotificationIconAreaController(Context context, StatusBar statusBar,
             StatusBarStateController statusBarStateController,
@@ -106,6 +112,24 @@ public class NotificationIconAreaController implements DarkReceiver,
     NewIconStyle = Settings.System.getIntForUser(mContext.getContentResolver(),
             Settings.System.STATUSBAR_ICONS_STYLE, 1, UserHandle.USER_CURRENT) == 1;
 
+        final TunerService tunerService = Dependency.get(TunerService.class);
+        tunerService.addTunable(this, STATUSBAR_NOTIF_COUNT);
+    }
+
+    @Override
+    public void onTuningChanged(String key, String newValue) {
+        switch (key) {
+            case STATUSBAR_NOTIF_COUNT:
+                boolean showIconCount =
+                    TunerService.parseIntegerSwitch(newValue, false);
+                if (mShowNotificationCount != showIconCount) {
+                    mShowNotificationCount = showIconCount;
+                    updateNotificationIcons();
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     protected View inflateIconArea(LayoutInflater inflater) {
@@ -294,6 +318,9 @@ public class NotificationIconAreaController implements DarkReceiver,
     }
 
     private void updateShelfIcons() {
+        if (mShelfIcons == null) {
+            return;
+        }
         updateIconsForLayout(entry -> entry.expandedIcon, mShelfIcons,
                 true /* showAmbient */,
                 false /* hideDismissed */,
@@ -305,6 +332,9 @@ public class NotificationIconAreaController implements DarkReceiver,
     }
 
     public void updateStatusBarIcons() {
+        if (mNotificationIcons == null) {
+            return;
+        }
         updateIconsForLayout(entry -> entry.icon, mNotificationIcons,
                 false /* showAmbient */,
                 true /* hideDismissed */,
@@ -316,6 +346,9 @@ public class NotificationIconAreaController implements DarkReceiver,
     }
 
     private void updateCenterIcon() {
+        if (mCenteredIcon == null) {
+            return;
+        }
         updateIconsForLayout(entry -> entry.centeredIcon, mCenteredIcon,
                 false /* showAmbient */,
                 false /* hideDismissed */,
@@ -435,6 +468,8 @@ public class NotificationIconAreaController implements DarkReceiver,
                 }
                 hostLayout.addView(v, i, params);
             }
+            v.setShowCount(mShowNotificationCount);
+            v.updateIconForced();
         }
 
         hostLayout.setChangingViewPositions(true);
