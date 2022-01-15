@@ -1,11 +1,11 @@
 package com.android.systemui.statusbar.phone;
 
-import android.os.UserHandle;
-import android.provider.Settings;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.os.UserHandle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +50,8 @@ public class NotificationIconAreaController implements DarkReceiver,
 
     public static final String STATUSBAR_NOTIF_COUNT =
             "system:" + Settings.System.STATUSBAR_NOTIF_COUNT;
+    public static final String STATUSBAR_COLORED_ICONS =
+            "system:" + Settings.System.STATUSBAR_COLORED_ICONS;
 
     public static final String HIGH_PRIORITY = "high_priority";
     private static final long AOD_ICONS_APPEAR_DURATION = 200;
@@ -81,13 +83,13 @@ public class NotificationIconAreaController implements DarkReceiver,
     private Context mContext;
     private int mAodIconAppearTranslation;
 
-    boolean NewIconStyle;
     private boolean mAnimationsEnabled;
     private int mAodIconTint;
     private boolean mFullyHidden;
     private boolean mAodIconsVisible;
     private boolean mIsPulsing;
     private boolean mShowNotificationCount = false;
+    private boolean mNewIconStyle = false;
 
     public NotificationIconAreaController(Context context, StatusBar statusBar,
             StatusBarStateController statusBarStateController,
@@ -109,11 +111,9 @@ public class NotificationIconAreaController implements DarkReceiver,
         initializeNotificationAreaViews(context);
         reloadAodColor();
 
-    NewIconStyle = Settings.System.getIntForUser(mContext.getContentResolver(),
-            Settings.System.STATUSBAR_ICONS_STYLE, 1, UserHandle.USER_CURRENT) == 1;
-
         final TunerService tunerService = Dependency.get(TunerService.class);
         tunerService.addTunable(this, STATUSBAR_NOTIF_COUNT);
+        tunerService.addTunable(this, STATUSBAR_COLORED_ICONS);
     }
 
     @Override
@@ -124,6 +124,14 @@ public class NotificationIconAreaController implements DarkReceiver,
                     TunerService.parseIntegerSwitch(newValue, false);
                 if (mShowNotificationCount != showIconCount) {
                     mShowNotificationCount = showIconCount;
+                    updateNotificationIcons();
+                }
+                break;
+            case STATUSBAR_COLORED_ICONS:
+                boolean newIconStyle =
+                    TunerService.parseIntegerSwitch(newValue, false);
+                if (mNewIconStyle != newIconStyle) {
+                    mNewIconStyle = newIconStyle;
                     updateNotificationIcons();
                 }
                 break;
@@ -468,7 +476,9 @@ public class NotificationIconAreaController implements DarkReceiver,
                 }
                 hostLayout.addView(v, i, params);
             }
+            v.setIconStyle(mNewIconStyle);
             v.setShowCount(mShowNotificationCount);
+            v.updateDrawable();
             v.updateIconForced();
         }
 
@@ -486,6 +496,7 @@ public class NotificationIconAreaController implements DarkReceiver,
         }
         hostLayout.setChangingViewPositions(false);
         hostLayout.setReplacingIcons(null);
+        hostLayout.updateState();
     }
 
     /**
@@ -521,11 +532,12 @@ public class NotificationIconAreaController implements DarkReceiver,
         if (colorize) {
             color = DarkIconDispatcher.getTint(mTintArea, v, tint);
         }
-        if (v.getStatusBarIcon().pkg.contains("systemui") || !NewIconStyle) {
+        if (v.getStatusBarIcon().pkg.contains("systemui") || !mNewIconStyle) {
             v.setStaticDrawableColor(color);
             v.setDecorColor(tint);
         } else {
-            return;
+            v.setStaticDrawableColor(StatusBarIconView.NO_COLOR);
+            v.setDecorColor(Color.WHITE);
         }
     }
 

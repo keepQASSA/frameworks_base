@@ -19,8 +19,6 @@ package com.android.systemui.statusbar.phone;
 import static com.android.systemui.statusbar.phone.HeadsUpAppearanceController.CONTENT_FADE_DELAY;
 import static com.android.systemui.statusbar.phone.HeadsUpAppearanceController.CONTENT_FADE_DURATION;
 
-import android.os.UserHandle;
-import android.provider.Settings;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -31,6 +29,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Icon;
 import android.os.Handler;
+import android.os.UserHandle;
+import android.provider.Settings;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -170,9 +170,6 @@ public class NotificationIconContainer extends AlphaOptimizedFrameLayout {
     private int[] mAbsolutePosition = new int[2];
     private View mIsolatedIconForAnimation;
 
-        boolean NewIconStyle = Settings.System.getIntForUser(getContext().getContentResolver(),
-                Settings.System.STATUSBAR_ICONS_STYLE, 1, UserHandle.USER_CURRENT) == 1;
-
     private SettingsObserver mSettingsObserver;
 
     public NotificationIconContainer(Context context, AttributeSet attrs) {
@@ -281,7 +278,7 @@ public class NotificationIconContainer extends AlphaOptimizedFrameLayout {
         mOverflowWidth = mIconSize + (MAX_DOTS - 1) * (mStaticDotDiameter + mDotPadding);
     }
 
-    private void updateState() {
+    public void updateState() {
         resetViewStates();
         calculateIconTranslations();
         applyIconStates();
@@ -800,8 +797,14 @@ public class NotificationIconContainer extends AlphaOptimizedFrameLayout {
                     }
                 }
                 icon.setVisibleState(visibleState, animationsAllowed);
-                if (icon.getStatusBarIcon().pkg.contains("systemui") || !NewIconStyle)
-                    icon.setIconColor(iconColor, needsCannedAnimation && animationsAllowed);
+                boolean newIconStyle = Settings.System.getIntForUser(getContext().getContentResolver(),
+                            Settings.System.STATUSBAR_COLORED_ICONS, 0, UserHandle.USER_CURRENT) == 1;
+                if (icon.getStatusBarIcon().pkg.contains("systemui") || !newIconStyle) {
+                icon.setIconColor(iconColor, needsCannedAnimation && animationsAllowed);
+                } else {
+                    icon.setIconColor(StatusBarIconView.NO_COLOR,
+                            needsCannedAnimation && animationsAllowed);
+                }
                 if (animate) {
                     animateTo(icon, animationProperties);
                 } else {
@@ -824,10 +827,13 @@ public class NotificationIconContainer extends AlphaOptimizedFrameLayout {
             super.initFrom(view);
             if (view instanceof StatusBarIconView) {
                 StatusBarIconView icon = (StatusBarIconView) view;
-                if (icon.getStatusBarIcon().pkg.contains("systemui") || !NewIconStyle)
+                boolean newIconStyle = Settings.System.getIntForUser(getContext().getContentResolver(),
+                            Settings.System.STATUSBAR_COLORED_ICONS, 0, UserHandle.USER_CURRENT) == 1;
+                if (icon.getStatusBarIcon().pkg.contains("systemui") || !newIconStyle) {
                     iconColor = ((StatusBarIconView) view).getStaticDrawableColor();
-                else
-                    return;
+                } else {
+                    iconColor = StatusBarIconView.NO_COLOR;
+                }
             }
         }
     }

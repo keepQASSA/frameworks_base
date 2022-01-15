@@ -6549,7 +6549,7 @@ public final class Settings {
          * Whether StatusBar icons should use app icon
          * @hide
          */
-        public static final String STATUSBAR_ICONS_STYLE = "statusbar_icons_style";
+        public static final String STATUSBAR_COLORED_ICONS = "statusbar_colored_icons";
 
         /**
          * Whether should the icons on notification headers have the app color
@@ -6781,7 +6781,6 @@ public final class Settings {
             PRIVATE_SETTINGS.add(FOD_GESTURE);
             PRIVATE_SETTINGS.add(POCKET_JUDGE);
             PRIVATE_SETTINGS.add(AUTO_BRIGHTNESS_MIN_VALUE);
-            PRIVATE_SETTINGS.add(STATUSBAR_ICONS_STYLE);
             PRIVATE_SETTINGS.add(HEADER_ICONS_STYLE);
             PRIVATE_SETTINGS.add(QS_BLUR_RADIUS);
             PRIVATE_SETTINGS.add(ENABLE_CONDITIONS);
