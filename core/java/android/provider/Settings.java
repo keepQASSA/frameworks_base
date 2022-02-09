@@ -11629,6 +11629,12 @@ public final class Settings {
         public static final String SPOOF_STORAGE_ENCRYPTION_STATUS = "spoof_storage_encryption_status";
 
         /**
+         * Control whether GMS is enabled for this user.
+         * @hide
+         */
+        public static final String GMS_ENABLED = "gms_enabled";
+
+        /**
          * These entries are considered common between the personal and the managed profile,
          * since the managed profile doesn't get to change them.
          */
