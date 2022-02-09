@@ -332,6 +332,8 @@ import com.android.server.wm.ActivityTaskManagerInternal;
 import dalvik.system.CloseGuard;
 import dalvik.system.VMRuntime;
 
+import ink.kaleidoscope.server.GmsManagerService;
+
 import libcore.io.IoUtils;
 import libcore.util.EmptyArray;
 
@@ -4353,6 +4355,8 @@ public class PackageManagerService extends IPackageManager.Stub
 
     @Override
     public PackageInfo getPackageInfo(String packageName, int flags, int userId) {
+        if (GmsManagerService.shouldHide(userId, packageName))
+            return null;
         return getPackageInfoInternal(packageName, PackageManager.VERSION_CODE_HIGHEST,
                 flags, Binder.getCallingUid(), userId);
     }
@@ -4836,6 +4840,8 @@ public class PackageManagerService extends IPackageManager.Stub
 
     @Override
     public ApplicationInfo getApplicationInfo(String packageName, int flags, int userId) {
+        if (GmsManagerService.shouldHide(userId, packageName))
+            return null;
         return getApplicationInfoInternal(packageName, flags, Binder.getCallingUid(), userId);
     }
 
@@ -8688,7 +8694,8 @@ public class PackageManagerService extends IPackageManager.Stub
     public ParceledListSlice<PackageInfo> getInstalledPackages(int flags, int userId) {
         final int callingUid = Binder.getCallingUid();
         if (getInstantAppPackageName(callingUid) != null) {
-            return ParceledListSlice.emptyList();
+            return GmsManagerService.recreatePackageList(
+                        userId, ParceledListSlice.emptyList());
         }
         if (!sUserManager.exists(userId)) return ParceledListSlice.emptyList();
         flags = updateFlagsForPackage(flags, userId, null);
@@ -8823,7 +8830,8 @@ public class PackageManagerService extends IPackageManager.Stub
     public ParceledListSlice<ApplicationInfo> getInstalledApplications(int flags, int userId) {
         final int callingUid = Binder.getCallingUid();
         return new ParceledListSlice<>(
-                getInstalledApplicationsListInternal(flags, userId, callingUid));
+                GmsManagerService.recreateApplicationList(userId,
+                    getInstalledApplicationsListInternal(flags, userId, callingUid)));
     }
 
     private List<ApplicationInfo> getInstalledApplicationsListInternal(int flags, int userId,

@@ -167,6 +167,8 @@ import com.android.server.wm.WindowManagerService;
 
 import dalvik.system.VMRuntime;
 
+import ink.kaleidoscope.server.GmsManagerService;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
@@ -287,6 +289,8 @@ public final class SystemServer {
             "com.android.server.appprediction.AppPredictionManagerService";
     private static final String CONTENT_SUGGESTIONS_SERVICE_CLASS =
             "com.android.server.contentsuggestions.ContentSuggestionsManagerService";
+    private static final String GMS_MANAGER_SERVICE_SERVICE_CLASS =
+            "ink.kaleidoscope.server.GmsManagerService";
 
     private static final String PERSISTENT_DATA_BLOCK_PROP = "ro.frp.pst";
 
@@ -2089,6 +2093,10 @@ public final class SystemServer {
 
         traceBeginAndSlog("StartBootPhaseDeviceSpecificServicesReady");
         mSystemServiceManager.startBootPhase(SystemService.PHASE_DEVICE_SPECIFIC_SERVICES_READY);
+        traceEnd();
+
+        traceBeginAndSlog("StartGmsManagerService");
+        mSystemServiceManager.startService(GMS_MANAGER_SERVICE_SERVICE_CLASS);
         traceEnd();
 
         // These are needed to propagate to the runnable below.
