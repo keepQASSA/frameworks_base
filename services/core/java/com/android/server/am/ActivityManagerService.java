@@ -1606,6 +1606,7 @@ public class ActivityManagerService extends IActivityManager.Stub
     static final HostingRecord sNullHostingRecord = new HostingRecord(null);
 
     private SystemSensorManager mSystemSensorManager;
+    private boolean mIsSwipeToScreenshotActive;
 
     /**
      * Used to notify activity lifecycle events.
@@ -19236,9 +19237,12 @@ public class ActivityManagerService extends IActivityManager.Stub
 
     @Override
     public boolean isSwipeToScreenshotGestureActive() {
-        synchronized (this) {
-            return mIsSwipeToScrenshotEnabled && SystemProperties.getBoolean("sys.android.screenshot", false);
-        }
+        return mIsSwipeToScrenshotEnabled && mIsSwipeToScreenshotActive;
+    }
+
+    @Override
+    public void setSwipeToScreenshotGestureActive(boolean enabled) {
+        mIsSwipeToScreenshotActive = enabled;
     }
 
 }
