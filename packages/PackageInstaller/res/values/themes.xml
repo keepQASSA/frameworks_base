@@ -16,8 +16,8 @@
 
 <resources>
 
-    <style name="Theme.AppActivity.NoAnimation">
-        <item name="android:windowAnimationStyle">@null</item>
+    <style name="Theme.AppActivity.SlideAnim">
+        <item name="android:windowAnimationStyle">@style/Kscope.PackageInstaller.Activity.SlideAnimation</item>
     </style>
 
     <style name="Theme.AppActivity" parent="@style/Theme.AppCompat.Light.NoActionBar">
