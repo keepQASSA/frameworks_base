@@ -15367,7 +15367,9 @@ public class PackageManagerService extends IPackageManager.Stub
 
                 if (dataOwnerPkg != null) {
                     if (!PackageManagerServiceUtils.isDowngradePermitted(installFlags,
-                            dataOwnerPkg.applicationInfo.flags)) {
+                            dataOwnerPkg.applicationInfo.flags)
+                            && Global.getInt(mContext.getContentResolver(),
+                                            Global.PM_DOWNGRADE_ALLOWED, 0) == 0) {
                         try {
                             checkDowngrade(dataOwnerPkg, pkgLite);
                         } catch (PackageManagerException e) {
