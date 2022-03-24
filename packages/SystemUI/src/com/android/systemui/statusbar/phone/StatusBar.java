@@ -1803,7 +1803,7 @@ public class StatusBar extends SystemUI implements DemoMode,
             }
             mUiOffloadThread.submit(() -> {
                 try {
-                    mOverlayManager.setEnabled("org.pixelexperience.overlay.hidecutout",
+                    mOverlayManager.setEnabled("org.aosqp.overlay.hidecutout",
                                 mDisplayCutoutHidden, mLockscreenUserManager.getCurrentUserId());
                 } catch (RemoteException ignored) {
                 }
