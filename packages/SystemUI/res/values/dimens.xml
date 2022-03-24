@@ -142,7 +142,7 @@
     <dimen name="notification_max_heads_up_height_increased">188dp</dimen>
 
     <!-- Side padding on the lockscreen on the side of notifications -->
-    <dimen name="notification_side_paddings">4dp</dimen>
+    <dimen name="notification_side_paddings">0dp</dimen>
 
     <!-- padding between the heads up and the statusbar -->
     <dimen name="heads_up_status_bar_padding">8dp</dimen>
@@ -364,7 +364,7 @@
     <dimen name="qs_footer_icon_padding">14dp</dimen>
 
     <!-- The padding between the notifications and the quick settings container -->
-    <dimen name="qs_notification_padding">@dimen/notification_side_paddings</dimen>
+    <dimen name="qs_notification_padding">4dp</dimen>
 
     <!-- Height of the status bar header bar when expanded -->
     <dimen name="status_bar_header_height_expanded">124dp</dimen>
@@ -584,7 +584,7 @@
     <dimen name="notification_divider_height_increased">6dp</dimen>
 
     <!-- The height of the gap between adjacent notification sections. -->
-    <dimen name="notification_section_divider_height">@dimen/notification_side_paddings</dimen>
+    <dimen name="notification_section_divider_height">4dp</dimen>
 
     <!-- The minimum amount of top overscroll to go to the quick settings. -->
     <dimen name="min_top_overscroll_to_qs">36dp</dimen>
