@@ -202,7 +202,16 @@ open class LandscapeABatteryDrawable(private val context: Context, frameColor: I
                     fillRect.left + (fillRect.width() * (1 - fillFraction))
 
         levelRect.left = Math.floor(fillTop.toDouble()).toFloat()
-        levelPath.addRect(levelRect, Path.Direction.CCW)
+        //levelPath.addRect(levelRect, Path.Direction.CCW)
+        levelPath.addRoundRect(levelRect,
+        floatArrayOf(4.0f,
+                     4.0f, 
+                     4.0f, 
+                     4.0f, 
+                     4.0f, 
+                     4.0f, 
+                     4.0f, 
+                     4.0f), Path.Direction.CCW)
 
         // The perimeter should never change
         unifiedPath.addPath(scaledPerimeter)
