@@ -606,7 +606,7 @@ public class QuickStatusBarHeader extends RelativeLayout implements
                 mIsQuickQsBrightnessEnabled = Integer.parseInt(newValue) > 1;
             } catch (NumberFormatException e) {
                 // Catches exception as newValue may be null or malformed.
-                mIsQuickQsBrightnessEnabled = false;
+                mIsQuickQsBrightnessEnabled = true;
             }
             updateResources();
         } else if (QS_SHOW_AUTO_BRIGHTNESS.equals(key)) {
