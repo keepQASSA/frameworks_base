@@ -402,7 +402,7 @@ public class GlobalActionsDialog implements DialogInterface.OnDismissListener,
         }
         boolean keyguardLocked = mKeyguardManager.inKeyguardRestrictedInputMode() && mKeyguardManager.isKeyguardSecure();
         boolean advancedRestartEnabled = Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.ADVANCED_REBOOT, 0) == 1;
+                Settings.System.ADVANCED_REBOOT, 1) == 1;
         boolean isPrimaryUser = UserHandle.getCallingUserId() == UserHandle.USER_OWNER;
 
         return advancedRestartEnabled && !keyguardLocked && isPrimaryUser;
