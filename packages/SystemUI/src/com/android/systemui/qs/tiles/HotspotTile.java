@@ -24,12 +24,15 @@ import android.service.quicksettings.Tile;
 import android.widget.Switch;
 
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
+import com.android.systemui.Dependency;
 import com.android.systemui.R;
+import com.android.systemui.plugins.ActivityStarter;
 import com.android.systemui.plugins.qs.QSTile.BooleanState;
 import com.android.systemui.qs.QSHost;
 import com.android.systemui.qs.tileimpl.QSTileImpl;
 import com.android.systemui.statusbar.policy.DataSaverController;
 import com.android.systemui.statusbar.policy.HotspotController;
+import com.android.systemui.statusbar.policy.KeyguardMonitor;
 
 import javax.inject.Inject;
 
@@ -42,18 +45,25 @@ public class HotspotTile extends QSTileImpl<BooleanState> {
 
     private final HotspotController mHotspotController;
     private final DataSaverController mDataSaverController;
+    private final ActivityStarter mActivityStarter;
 
     private final HotspotAndDataSaverCallbacks mCallbacks = new HotspotAndDataSaverCallbacks();
     private boolean mListening;
 
+    private final KeyguardMonitor mKeyguard;
+    private final KeyguardCallback mKeyguardCallback = new KeyguardCallback();
+
     @Inject
     public HotspotTile(QSHost host, HotspotController hotspotController,
-            DataSaverController dataSaverController) {
+            DataSaverController dataSaverController,
+            ActivityStarter activityStarter) {
         super(host);
         mHotspotController = hotspotController;
+        mActivityStarter = activityStarter;
         mDataSaverController = dataSaverController;
         mHotspotController.observe(this, mCallbacks);
         mDataSaverController.observe(this, mCallbacks);
+        mKeyguard = Dependency.get(KeyguardMonitor.class);
     }
 
     @Override
@@ -73,6 +83,11 @@ public class HotspotTile extends QSTileImpl<BooleanState> {
         if (listening) {
             refreshState();
         }
+        if (listening) {
+            mKeyguard.addCallback(mKeyguardCallback);
+        } else {
+            mKeyguard.removeCallback(mKeyguardCallback);
+        }
     }
 
     @Override
@@ -85,8 +100,7 @@ public class HotspotTile extends QSTileImpl<BooleanState> {
         return new BooleanState();
     }
 
-    @Override
-    protected void handleClick() {
+    void handleClickInner() {
         final boolean isEnabled = mState.value;
         if (!isEnabled && mDataSaverController.isDataSaverEnabled()) {
             return;
@@ -94,6 +108,18 @@ public class HotspotTile extends QSTileImpl<BooleanState> {
         // Immediately enter transient enabling state when turning hotspot on.
         refreshState(isEnabled ? null : ARG_SHOW_TRANSIENT_ENABLING);
         mHotspotController.setHotspotEnabled(!isEnabled);
+    }
+
+    @Override
+    protected void handleClick() {
+        if (mKeyguard.isSecure() && mKeyguard.isShowing()) {
+            Dependency.get(ActivityStarter.class).postQSRunnableDismissingKeyguard(() -> {
+                mHost.openPanels();
+                handleClickInner();
+            });
+            return;
+        }
+        handleClickInner();
     }
 
     @Override
@@ -220,4 +246,11 @@ public class HotspotTile extends QSTileImpl<BooleanState> {
                     .append(']').toString();
         }
     }
+
+    private final class KeyguardCallback implements KeyguardMonitor.Callback {
+        @Override
+        public void onKeyguardShowingChanged() {
+            refreshState();
+        }
+    };
 }
