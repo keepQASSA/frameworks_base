@@ -5,8 +5,6 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.android.internal.util.custom.cutout.CutoutUtils;
-
 import com.android.systemui.statusbar.CustomStatusBarItem;
 
 public class StatusBarNetworkTraffic extends NetworkTraffic {
@@ -53,9 +51,6 @@ public class StatusBarNetworkTraffic extends NetworkTraffic {
 
     @Override
     protected int getMyMode(){
-        if (CutoutUtils.hasCutout(mContext, true /* ignoreCutoutMasked*/)){
-            return MODE_DISABLED;
-        }
         return MODE_STATUS_BAR;
     }
 }
