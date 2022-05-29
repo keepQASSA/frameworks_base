@@ -780,7 +780,7 @@ public class GlobalActionsDialog implements DialogInterface.OnDismissListener,
 
     private final class RestartRecoveryAction extends SinglePressAction {
         private RestartRecoveryAction() {
-            super(com.android.systemui.R.drawable.ic_lock_restart_recovery,
+            super(com.android.systemui.R.drawable.ic_qs_reboot_recovery,
                     com.android.systemui.R.string.global_action_restart_recovery);
         }
 
