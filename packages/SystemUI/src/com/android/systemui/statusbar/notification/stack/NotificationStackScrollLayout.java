@@ -554,7 +554,7 @@ public class NotificationStackScrollLayout extends ViewGroup implements ScrollAd
                 Settings.System.NOTIFICATION_HEADERS, 1, UserHandle.USER_CURRENT) == 1;
 
         mCenterHeaders = Settings.System.getIntForUser(getContext().getContentResolver(),
-                Settings.System.CENTER_NOTIFICATION_HEADERS, 1, UserHandle.USER_CURRENT) == 1;
+                Settings.System.CENTER_NOTIFICATION_HEADERS, 0, UserHandle.USER_CURRENT) == 1;
 
         mSectionsManager =
                 new NotificationSectionsManager(
