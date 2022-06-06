@@ -982,7 +982,7 @@ class GlobalScreenshot {
             @Override
             public void run() {
                 if (Settings.System.getIntForUser(mContext.getContentResolver(),
-                        Settings.System.SCREENSHOT_SOUND, 1, UserHandle.USER_CURRENT) != 0) {
+                        Settings.System.SCREENSHOT_SOUND, 0, UserHandle.USER_CURRENT) != 0) {
                     switch (mAudioManager.getRingerMode()) {
                         case AudioManager.RINGER_MODE_SILENT:
                             // do nothing

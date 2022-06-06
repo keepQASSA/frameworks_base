@@ -75,7 +75,7 @@ public class StitchImageUtility {
             mCameraSound = new MediaActionSound();
             mCameraSound.load(MediaActionSound.SHUTTER_CLICK);
         }
-        if (Settings.System.getIntForUser(mContext.getContentResolver(), Settings.System.SCREENSHOT_SOUND, 1, UserHandle.USER_CURRENT) == 1) {
+        if (Settings.System.getIntForUser(mContext.getContentResolver(), Settings.System.SCREENSHOT_SOUND, 0, UserHandle.USER_CURRENT) == 1) {
             switch (mAudioManager.getRingerMode()) {
                 case AudioManager.RINGER_MODE_SILENT:
                     // do nothing
