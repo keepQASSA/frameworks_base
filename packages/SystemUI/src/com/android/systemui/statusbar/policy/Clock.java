@@ -145,6 +145,14 @@ public class Clock extends TextView implements DemoMode, Tunable, CommandQueue.C
             "system:" + Settings.System.STATUS_BAR_CLOCK_AUTO_HIDE_HDURATION;
     public static final String STATUS_BAR_CLOCK_AUTO_HIDE_SDURATION =
             "system:" + Settings.System.STATUS_BAR_CLOCK_AUTO_HIDE_SDURATION;
+    public static final String STATUS_BAR_CLOCK_SIZE =
+            "system:" + Settings.System.STATUS_BAR_CLOCK_SIZE;
+    public static final String QS_HEADER_CLOCK_SIZE =
+            "system:" + Settings.System.QS_HEADER_CLOCK_SIZE;
+
+    public static final int DEFAULT_CLOCK_SIZE = 14;
+    private int mClockSize;
+    private int mClockSizeQsHeader;
 
     /**
      * Whether we should use colors that adapt based on wallpaper/the scrim behind quick settings
@@ -249,7 +257,9 @@ public class Clock extends TextView implements DemoMode, Tunable, CommandQueue.C
                     STATUS_BAR_CLOCK_DATE_FORMAT,
                     STATUS_BAR_CLOCK_AUTO_HIDE,
                     STATUS_BAR_CLOCK_AUTO_HIDE_HDURATION,
-                    STATUS_BAR_CLOCK_AUTO_HIDE_SDURATION);
+                    STATUS_BAR_CLOCK_AUTO_HIDE_SDURATION,
+                    STATUS_BAR_CLOCK_SIZE,
+                    QS_HEADER_CLOCK_SIZE);
             SysUiServiceProvider.getComponent(getContext(), CommandQueue.class).addCallback(this);
             if (mShowDark) {
                 Dependency.get(DarkIconDispatcher.class).addDarkReceiver(this);
@@ -273,6 +283,7 @@ public class Clock extends TextView implements DemoMode, Tunable, CommandQueue.C
         updateClockVisibility();
         updateShowSeconds();
         updateClockVisibility();
+        updateClockSize();
     }
 
     @Override
@@ -430,12 +441,21 @@ public class Clock extends TextView implements DemoMode, Tunable, CommandQueue.C
                 mShowDuration =
                         TunerService.parseInteger(newValue, SHOW_DURATION);
                 break;
+            case STATUS_BAR_CLOCK_SIZE:
+                mClockSize =
+                        TunerService.parseInteger(newValue, DEFAULT_CLOCK_SIZE);
+                break;
+            case QS_HEADER_CLOCK_SIZE:
+                 mClockSizeQsHeader =
+                        TunerService.parseInteger(newValue, DEFAULT_CLOCK_SIZE);
+                break;
             default:
                 break;
         }
         mClockFormatString = ""; // force refresh
         updateClock();
         updateClockVisibility();
+        updateClockSize();
     }
 
     @Override
@@ -687,6 +707,15 @@ public class Clock extends TextView implements DemoMode, Tunable, CommandQueue.C
             mSecondsHandler.postAtTime(this, SystemClock.uptimeMillis() / 1000 * 1000 + 1000);
         }
     };
+
+    public void updateClockSize() {
+	if(mQsHeader) {
+            setTextSize(mClockSizeQsHeader);
+        } else {
+            setTextSize(mClockSize);
+        }
+            updateClock();
+    }
 
 @Override
     public void onCountdown(long millisUntilFinished) {
