@@ -5162,7 +5162,7 @@ public class StatusBar extends SystemUI implements DemoMode,
 
     private void setQSblurRadius() {
         mBlurRadius = Settings.System.getIntForUser(mContext.getContentResolver(),
-                Settings.System.QS_BLUR_RADIUS, 7, UserHandle.USER_CURRENT);
+                Settings.System.QS_BLUR_RADIUS, 25, UserHandle.USER_CURRENT);
     }
 
     private void setQsRowsColumns() {
