@@ -340,18 +340,6 @@ public class QuickStatusBarHeader extends RelativeLayout implements
         mSettingsObserver.observe();
         updateSettings(false);
 
-        Dependency.get(TunerService.class).addTunable(this,
-                StatusBarIconController.ICON_BLACKLIST,
-                QS_SHOW_AUTO_BRIGHTNESS, QS_SHOW_BRIGHTNESS_SLIDER,
-                QS_SHOW_BATTERY_PERCENT,
-                QS_SHOW_BATTERY_ESTIMATE,
-                STATUS_BAR_BATTERY_STYLE,
-                QS_BATTERY_STYLE,
-                QS_BATTERY_LOCATION,
-                QSFooterImpl.QS_SHOW_DRAG_HANDLE,
-                STATUS_BAR_CLOCK,
-                SHOW_QS_CLOCK);
-
         mPermissionsHubEnabled = PrivacyItemControllerKt.isPermissionsHubEnabled();
         // Change the ignored slots when DeviceConfig flag changes
         DeviceConfig.addOnPropertyChangedListener(DeviceConfig.NAMESPACE_PRIVACY,
@@ -632,6 +620,17 @@ public class QuickStatusBarHeader extends RelativeLayout implements
 
     @Override
     public void onAttachedToWindow() {
+        Dependency.get(TunerService.class).addTunable(this,
+                StatusBarIconController.ICON_BLACKLIST,
+                QS_SHOW_AUTO_BRIGHTNESS, QS_SHOW_BRIGHTNESS_SLIDER,
+                QS_SHOW_BATTERY_PERCENT,
+                QS_SHOW_BATTERY_ESTIMATE,
+                STATUS_BAR_BATTERY_STYLE,
+                QS_BATTERY_STYLE,
+                QS_BATTERY_LOCATION,
+                QSFooterImpl.QS_SHOW_DRAG_HANDLE,
+                STATUS_BAR_CLOCK,
+                SHOW_QS_CLOCK);
         super.onAttachedToWindow();
         mStatusBarIconController.addIconGroup(mIconManager);
         requestApplyInsets();
@@ -687,6 +686,7 @@ public class QuickStatusBarHeader extends RelativeLayout implements
     public void onDetachedFromWindow() {
         setListening(false);
         mStatusBarIconController.removeIconGroup(mIconManager);
+        Dependency.get(TunerService.class).removeTunable(this);
         super.onDetachedFromWindow();
     }
 
