@@ -221,7 +221,7 @@ import com.android.internal.policy.IShortcutService;
 import com.android.internal.policy.PhoneWindow;
 import com.android.internal.statusbar.IStatusBarService;
 import com.android.internal.util.ArrayUtils;
-import com.android.internal.util.custom.ActionUtils;
+import com.android.internal.util.aosqp.ActionUtils;
 import com.android.server.ExtconStateObserver;
 import com.android.server.ExtconUEventObserver;
 import com.android.server.GestureLauncherService;
@@ -244,7 +244,7 @@ import com.android.server.wm.WindowManagerInternal.AppTransitionListener;
 
 import dalvik.system.PathClassLoader;
 
-import com.android.internal.util.custom.ActionUtils;
+import com.android.internal.util.aosqp.ActionUtils;
 import com.android.internal.util.custom.VolumeKeyHandler;
 
 import java.io.File;
