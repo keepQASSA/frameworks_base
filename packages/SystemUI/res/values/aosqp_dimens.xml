@@ -105,4 +105,8 @@
 
     <!-- Per app volume -->
     <dimen name="volume_row_app_icon_padding">8dp</dimen>
+
+    <!-- Quick Settings padding Start-End -->
+    <dimen name="quick_settings_padding_start">0dp</dimen>
+    <dimen name="quick_settings_padding_end">0dp</dimen>
 </resources>

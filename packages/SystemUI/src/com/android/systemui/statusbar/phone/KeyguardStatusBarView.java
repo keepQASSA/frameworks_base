@@ -237,8 +237,8 @@ public class KeyguardStatusBarView extends RelativeLayout
     private void updateCornerCutoutPadding(Pair<Integer, Integer> cornerCutoutMargins) {
         int paddingStart, paddingEnd;
         if (cornerCutoutMargins != null) {
-            paddingStart = getResources().getDimensionPixelSize(R.dimen.status_bar_padding_start);
-            paddingEnd = getResources().getDimensionPixelSize(R.dimen.status_bar_padding_end);
+            paddingStart = getResources().getDimensionPixelSize(R.dimen.quick_settings_padding_start);
+            paddingEnd = getResources().getDimensionPixelSize(R.dimen.quick_settings_padding_end);
             setPadding(Math.max(paddingStart, cornerCutoutMargins.first), 0,
                     Math.max(paddingEnd, cornerCutoutMargins.second), 0);
         } else {

@@ -18,8 +18,8 @@
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:layout_gravity="center_vertical"
-    android:paddingLeft="@dimen/status_bar_padding_start"
-    android:paddingRight="@dimen/status_bar_padding_end"
+    android:paddingLeft="@dimen/quick_settings_padding_start"
+    android:paddingRight="@dimen/quick_settings_padding_end"
     style="@style/BrightnessDialogContainer">
 
     <com.android.systemui.settings.ToggleSliderView

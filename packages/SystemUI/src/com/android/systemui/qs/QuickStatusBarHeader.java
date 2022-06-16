@@ -454,9 +454,9 @@ public class QuickStatusBarHeader extends RelativeLayout implements
         DisplayCutout cutout = insets.getDisplayCutout();
         Pair<Integer, Integer> padding = PhoneStatusBarView.cornerCutoutMargins(
                 cutout, getDisplay());
-        int paddingStart = getResources().getDimensionPixelSize(R.dimen.status_bar_padding_start);
+        int paddingStart = getResources().getDimensionPixelSize(R.dimen.quick_settings_padding_start);
         int paddingTop = getResources().getDimensionPixelSize(R.dimen.status_bar_padding_top);
-        int paddingEnd = getResources().getDimensionPixelSize(R.dimen.status_bar_padding_end);
+        int paddingEnd = getResources().getDimensionPixelSize(R.dimen.quick_settings_padding_end);
         if (padding == null) {
             mSystemIconsView.setPaddingRelative(
                     paddingStart,
