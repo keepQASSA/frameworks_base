@@ -283,7 +283,6 @@ public class NetworkTraffic extends TextView {
         super(context, attrs, defStyle);
         final Resources resources = getResources();
         mTxtFont = resources.getString(com.android.internal.R.string.config_headlineFontFamilyMedium);
-        mTxtSizeQs = resources.getDimensionPixelSize(R.dimen.net_traffic_qs_text_size);
         mTxtSizeStatusbar = resources.getDimensionPixelSize(R.dimen.net_traffic_status_bar_text_size);
         mTxtImgPadding = resources.getDimensionPixelSize(R.dimen.net_traffic_txt_img_padding);
         mTintColor = resources.getColor(android.R.color.white);
@@ -387,7 +386,6 @@ public class NetworkTraffic extends TextView {
 
     public void onDensityOrFontScaleChanged() {
         final Resources resources = getResources();
-        mTxtSizeQs = resources.getDimensionPixelSize(R.dimen.net_traffic_qs_text_size);
         mTxtSizeStatusbar = resources.getDimensionPixelSize(R.dimen.net_traffic_status_bar_text_size);
         mTxtImgPadding = resources.getDimensionPixelSize(R.dimen.net_traffic_txt_img_padding);
         setCompoundDrawablePadding(mTxtImgPadding);
