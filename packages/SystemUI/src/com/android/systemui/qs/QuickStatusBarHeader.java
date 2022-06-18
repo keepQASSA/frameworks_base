@@ -221,10 +221,13 @@ public class QuickStatusBarHeader extends RelativeLayout implements
 
         // Tint for the battery icons are handled in setupHost()
         mBatteryRemainingIcon = findViewById(R.id.batteryRemainingIcon);
+        mBatteryRemainingIcon.setOnClickListener(this);
+        // Don't need to worry about tuner settings for this icon
+        mBatteryRemainingIcon.setIgnoreTunerUpdates(true);
         // QS will always show the estimate, and BatteryMeterView handles the case where
         // it's unavailable or charging
         mBatteryRemainingIcon.setPercentShowMode(BatteryMeterView.MODE_ESTIMATE);
-        mBatteryRemainingIcon.setOnClickListener(this);
+
         mRingerModeTextView.setSelected(true);
         mNextAlarmTextView.setSelected(true);
 
