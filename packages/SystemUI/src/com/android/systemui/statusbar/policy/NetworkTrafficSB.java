@@ -391,7 +391,7 @@ public class NetworkTrafficSB extends TextView implements StatusIconDisplayable 
         if (mIsEnabled) {
             if (mAttached) {
                 totalRxBytes = TrafficStats.getTotalRxBytes();
-                lastUpdateTime = SystemClock.elapsedRealtime();
+                totalTxBytes = TrafficStats.getTotalTxBytes();
                 mTrafficHandler.sendEmptyMessage(1);
             }
             updateTrafficDrawable();
