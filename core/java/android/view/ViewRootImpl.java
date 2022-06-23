@@ -920,11 +920,7 @@ public final class ViewRootImpl implements ViewParent,
                 mInsetsController.onStateChanged(mTempInsets);
                 if (DEBUG_LAYOUT) Log.v(mTag, "Added window " + mWindow);
                 if (res < WindowManagerGlobal.ADD_OKAY) {
-                    mAttachInfo.mRootView = null;
-                    mAdded = false;
                     mFallbackEventHandler.setView(null);
-                    unscheduleTraversals();
-                    setAccessibilityFocus(null, null);
                     switch (res) {
                         case WindowManagerGlobal.ADD_BAD_APP_TOKEN:
                         case WindowManagerGlobal.ADD_BAD_SUBWINDOW_TOKEN:
@@ -4304,7 +4300,9 @@ public final class ViewRootImpl implements ViewParent,
     }
 
     void dispatchDetachedFromWindow() {
-        mFirstInputStage.onDetachedFromWindow();
+        if (mFirstInputStage != null) {
+            mFirstInputStage.onDetachedFromWindow();
+        }
         if (mView != null && mView.mAttachInfo != null) {
             mAttachInfo.mTreeObserver.dispatchOnWindowAttachedChange(false);
             mView.dispatchDetachedFromWindow();
