@@ -2,7 +2,7 @@
  * Copyright (C) 2019 The PixelExperience project
  * Copyright (C) 2019 The Syberia project
  * Copyright (C) 2019-2020 crDroid Android Project
- * Copyright (C) 2022 AOSQP
+ * Copyright (C) 2022 QASSA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package com.android.internal.util.aosqp;
+package com.android.internal.util.qassa;
 
 import static android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL;
 import static android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC;

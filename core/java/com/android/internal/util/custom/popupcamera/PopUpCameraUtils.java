@@ -21,7 +21,7 @@ import android.os.UserHandle;
 
 public class PopUpCameraUtils {
     public static String MANAGE_POPUP_CAMERA_SERVICE_PERMISSION =
-            "ro.aosqp.device.MANAGE_POPUP_CAMERA_SERVICE";
+            "ro.qassa.device.MANAGE_POPUP_CAMERA_SERVICE";
 
     public static String ACTION_BATTERY_LED_STATE_OVERRIDE =
             "android.intent.action.BATTERY_LED_STATE_OVERRIDE";

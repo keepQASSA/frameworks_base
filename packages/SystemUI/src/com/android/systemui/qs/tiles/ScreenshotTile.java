@@ -3,7 +3,7 @@
  * Copyright (C) 2014-2015 The Euphoria-OS Project
  * Copyright (C) 2017 ABC rom
  * Copyright (C) 2019 crDroid Android Project
- * Copyright (C) 2022 AOSQP
+ * Copyright (C) 2022 QASSA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import android.os.UserHandle;
 import android.provider.Settings;
 import android.service.quicksettings.Tile;
 
-import com.android.internal.util.aosqp.ActionUtils;
+import com.android.internal.util.qassa.ActionUtils;
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
 import com.android.systemui.qs.QSHost;
 import com.android.systemui.plugins.qs.QSTile.BooleanState;
@@ -49,7 +49,7 @@ public class ScreenshotTile extends QSTileImpl<BooleanState> {
 
     @Override
     public int getMetricsCategory() {
-        return MetricsEvent.AOSQP;
+        return MetricsEvent.QASSA;
     }
 
     @Override

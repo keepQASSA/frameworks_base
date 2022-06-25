@@ -1921,7 +1921,7 @@ public class StatusBar extends SystemUI implements DemoMode,
             }
             mUiOffloadThread.submit(() -> {
                 try {
-                    mOverlayManager.setEnabled("org.aosqp.overlay.hidecutout",
+                    mOverlayManager.setEnabled("org.qassa.overlay.hidecutout",
                                 mDisplayCutoutHidden, mLockscreenUserManager.getCurrentUserId());
                 } catch (RemoteException ignored) {
                 }

@@ -104,7 +104,7 @@ public class MusicTile extends QSTileImpl<BooleanState> {
 
     @Override
     public int getMetricsCategory() {
-        return MetricsEvent.AOSQP;
+        return MetricsEvent.QASSA;
     }
 
     @Override

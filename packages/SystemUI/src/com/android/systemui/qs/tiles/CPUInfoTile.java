@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2017-2018 Benzo Rom
  *           (C) 2017-2019 crDroidAndroid Project
- *           (C) 2022 AOSQP
+ *           (C) 2022 QASSA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -110,7 +110,7 @@ public class CPUInfoTile extends QSTileImpl<BooleanState> {
 
     @Override
     public int getMetricsCategory() {
-        return MetricsEvent.AOSQP;
+        return MetricsEvent.QASSA;
     }
 
     @Override
