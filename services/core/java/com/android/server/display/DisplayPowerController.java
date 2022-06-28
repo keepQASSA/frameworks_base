@@ -495,7 +495,7 @@ final class DisplayPowerController implements AutomaticBrightnessController.Call
                     com.android.internal.R.string.config_displayLightSensorType);
             Sensor lightSensor = findDisplayLightSensor(lightSensorType);
 
-            mBrightnessMapper = BrightnessMappingStrategy.create(resources);
+            mBrightnessMapper = BrightnessMappingStrategy.create(resources, getAutoBrightnessAdjustmentSetting());
             if (mBrightnessMapper != null) {
                 mAutomaticBrightnessController = new AutomaticBrightnessController(this, mContext,
                         handler.getLooper(), sensorManager, lightSensor, mBrightnessMapper,
