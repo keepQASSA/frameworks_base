@@ -5618,6 +5618,14 @@ public final class Settings {
         private static final Validator CENTER_NOTIFICATION_HEADERS_VALIDATOR = BOOLEAN_VALIDATOR;
 
         /**
+         * Controls whether to right R style notification headers
+         * @hide
+         */
+        public static final String RIGHT_NOTIFICATION_HEADERS = "right_notification_headers";
+
+        private static final Validator RIGHT_NOTIFICATION_HEADERS_VALIDATOR = BOOLEAN_VALIDATOR;
+
+        /**
          * Enable/Disable screenshot sound
          * @hide
          */
@@ -5776,6 +5784,7 @@ public final class Settings {
             AUTO_BRIGHTNESS_MIN_VALUE,
             NOTIFICATION_HEADERS,
             CENTER_NOTIFICATION_HEADERS,
+            RIGHT_NOTIFICATION_HEADERS,
             QS_BLUR,
             QS_BLUR_RADIUS,
             ENABLE_CONDITIONS,
@@ -6205,6 +6214,7 @@ public final class Settings {
             VALIDATORS.put(AUTO_BRIGHTNESS_MIN_VALUE, AUTO_BRIGHTNESS_MIN_VALUE_VALIDATOR);
             VALIDATORS.put(NOTIFICATION_HEADERS, NOTIFICATION_HEADERS_VALIDATOR);
             VALIDATORS.put(CENTER_NOTIFICATION_HEADERS, CENTER_NOTIFICATION_HEADERS_VALIDATOR);
+            VALIDATORS.put(RIGHT_NOTIFICATION_HEADERS, RIGHT_NOTIFICATION_HEADERS_VALIDATOR);
             VALIDATORS.put(QS_BLUR, QS_BLUR_VALIDATOR);
             VALIDATORS.put(QS_BLUR_RADIUS, QS_BLUR_RADIUS_VALIDATOR);
             VALIDATORS.put(ENABLE_CONDITIONS, ENABLE_CONDITIONS_VALIDATOR);

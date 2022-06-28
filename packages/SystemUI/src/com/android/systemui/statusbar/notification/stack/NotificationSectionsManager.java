@@ -55,6 +55,7 @@ class NotificationSectionsManager implements StackScrollAlgorithm.SectionProvide
     private boolean mAlertHeaderVisible = false;
     private boolean mShowHeaders;
     private boolean mCenterHeaders;
+    private boolean mRightHeaders;
     @Nullable private ExpandableNotificationRow mFirstGentleNotif;
     @Nullable private ExpandableNotificationRow mFirstAlertNotif;
 
@@ -65,7 +66,8 @@ class NotificationSectionsManager implements StackScrollAlgorithm.SectionProvide
             ConfigurationController configurationController,
             boolean useMultipleSections,
             boolean showHeaders,
-            boolean centerHeaders) {
+            boolean centerHeaders,
+            boolean rightHeaders) {
         mParent = parent;
         mActivityStarter = activityStarter;
         mStatusBarStateController = statusBarStateController;
@@ -73,6 +75,7 @@ class NotificationSectionsManager implements StackScrollAlgorithm.SectionProvide
         mUseMultipleSections = useMultipleSections;
         mShowHeaders = showHeaders;
         mCenterHeaders = centerHeaders;
+        mRightHeaders = rightHeaders;
     }
 
     /** Must be called before use. */
@@ -110,7 +113,9 @@ class NotificationSectionsManager implements StackScrollAlgorithm.SectionProvide
         sectionHeader = (SectionHeaderView) layoutInflater.inflate(
                 R.layout.status_bar_notification_section_header, mParent, false);
         sectionHeader.setLabelText(mParent.getContext().getResources().getString(labelId));
-        if (mCenterHeaders) {
+        if (mRightHeaders) {
+            sectionHeader.setLabelGravity(Gravity.RIGHT);
+        } else if (mCenterHeaders) {
             sectionHeader.setLabelGravity(Gravity.CENTER);
         } else {
             sectionHeader.setLabelGravity(Gravity.START);

@@ -94,7 +94,10 @@ public class SectionHeaderView extends StackScrollerDecorView {
     public void setLabelGravity(int gravity) {
         mLabelView.setGravity(gravity);
         ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) mLabelView.getLayoutParams();
-        if (gravity == Gravity.CENTER){
+        if (gravity == Gravity.RIGHT){
+          lp.setMarginEnd(getContext().getResources().getDimensionPixelSize(
+                  R.dimen.notification_section_header_padding_left));
+        } else if (gravity == Gravity.CENTER){
           lp.setMarginStart(0);
         } else if (gravity == Gravity.START){
           lp.setMarginStart(getContext().getResources().getDimensionPixelSize(
