@@ -22,8 +22,11 @@ import static com.android.settingslib.graph.BatteryMeterDrawableBase.BATTERY_STY
 import static com.android.settingslib.graph.BatteryMeterDrawableBase.BATTERY_STYLE_RLANDSCAPE;
 import static com.android.settingslib.graph.BatteryMeterDrawableBase.BATTERY_STYLE_LANDSCAPE;
 import static com.android.settingslib.graph.BatteryMeterDrawableBase.BATTERY_STYLE_CIRCLE;
+import static com.android.settingslib.graph.BatteryMeterDrawableBase.BATTERY_STYLE_BIG_CIRCLE;
 import static com.android.settingslib.graph.BatteryMeterDrawableBase.BATTERY_STYLE_DOTTED_CIRCLE;
+import static com.android.settingslib.graph.BatteryMeterDrawableBase.BATTERY_STYLE_BIG_DOTTED_CIRCLE;
 import static com.android.settingslib.graph.BatteryMeterDrawableBase.BATTERY_STYLE_SOLID;
+import static com.android.settingslib.graph.BatteryMeterDrawableBase.BATTERY_STYLE_BIG_SOLID;
 import static com.android.settingslib.graph.BatteryMeterDrawableBase.BATTERY_STYLE_HIDDEN;
 
 import static com.android.systemui.util.SysuiLifecycle.viewAttachLifecycle;
@@ -522,6 +525,7 @@ public class BatteryMeterView extends LinearLayout implements
 
         int batteryHeight = res.getDimensionPixelSize(
                            isLandscapeBattery() ? R.dimen.status_bar_battery_icon_height_landscape :
+                           isBigCircleBattery() ? R.dimen.status_bar_battery_big_circle_icon_height :
                                                   R.dimen.status_bar_battery_icon_height);
         int batteryWidth = mBatteryStyle == BATTERY_STYLE_CIRCLE ||
                            mBatteryStyle == BATTERY_STYLE_DOTTED_CIRCLE ||
@@ -532,6 +536,10 @@ public class BatteryMeterView extends LinearLayout implements
 
         if (isLandscapeBattery()) {
                  batteryWidth = res.getDimensionPixelSize(R.dimen.status_bar_battery_icon_width_landscape);
+        }
+
+        if (isBigCircleBattery()) {
+                 batteryWidth = res.getDimensionPixelSize(R.dimen.status_bar_battery_big_circle_icon_width);
         }
 
         LinearLayout.LayoutParams scaledLayoutParams = new LinearLayout.LayoutParams(
@@ -572,6 +580,12 @@ public class BatteryMeterView extends LinearLayout implements
     private boolean isLandscapeBattery() {
         return mBatteryStyle == BatteryMeterDrawableBase.BATTERY_STYLE_RLANDSCAPE ||
                mBatteryStyle == BatteryMeterDrawableBase.BATTERY_STYLE_LANDSCAPE;
+    }
+
+    private boolean isBigCircleBattery() {
+        return mBatteryStyle == BatteryMeterDrawableBase.BATTERY_STYLE_BIG_CIRCLE ||
+               mBatteryStyle == BatteryMeterDrawableBase.BATTERY_STYLE_BIG_DOTTED_CIRCLE ||
+               mBatteryStyle == BatteryMeterDrawableBase.BATTERY_STYLE_BIG_SOLID;
     }
 
     private void updateColors(int foregroundColor, int backgroundColor, int singleToneColor) {

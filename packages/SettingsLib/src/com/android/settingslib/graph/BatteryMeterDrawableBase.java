@@ -52,9 +52,12 @@ public class BatteryMeterDrawableBase extends Drawable {
     public static final int BATTERY_STYLE_RLANDSCAPE = 1;
     public static final int BATTERY_STYLE_LANDSCAPE = 2;
     public static final int BATTERY_STYLE_CIRCLE = 3;
-    public static final int BATTERY_STYLE_DOTTED_CIRCLE = 4;
-    public static final int BATTERY_STYLE_SOLID = 5;
-    public static final int BATTERY_STYLE_HIDDEN = 6;
+    public static final int BATTERY_STYLE_BIG_CIRCLE = 4;
+    public static final int BATTERY_STYLE_DOTTED_CIRCLE = 5;
+    public static final int BATTERY_STYLE_BIG_DOTTED_CIRCLE = 6;
+    public static final int BATTERY_STYLE_SOLID = 7;
+    public static final int BATTERY_STYLE_BIG_SOLID = 8;
+    public static final int BATTERY_STYLE_HIDDEN = 9;
 
     protected final Context mContext;
     protected final Paint mFramePaint;
@@ -210,7 +213,10 @@ public class BatteryMeterDrawableBase extends Drawable {
    private boolean canAnimate() {
         return (mMeterStyle == BATTERY_STYLE_SOLID ||
                 mMeterStyle == BATTERY_STYLE_DOTTED_CIRCLE ||
-                mMeterStyle == BATTERY_STYLE_CIRCLE);
+                mMeterStyle == BATTERY_STYLE_CIRCLE ||
+                mMeterStyle == BATTERY_STYLE_BIG_CIRCLE ||
+                mMeterStyle == BATTERY_STYLE_BIG_DOTTED_CIRCLE ||
+                mMeterStyle == BATTERY_STYLE_BIG_SOLID);
    }
 
    private boolean checkChargingAnimation() {
@@ -412,10 +418,13 @@ public class BatteryMeterDrawableBase extends Drawable {
                 break;
             case BATTERY_STYLE_CIRCLE:
             case BATTERY_STYLE_DOTTED_CIRCLE:
+            case BATTERY_STYLE_BIG_CIRCLE:
+            case BATTERY_STYLE_BIG_DOTTED_CIRCLE:
             default:
                 drawCircle(c);
                 break;
             case BATTERY_STYLE_SOLID:
+            case BATTERY_STYLE_BIG_SOLID:
                 drawSolid(c);
                 break;
         }
@@ -437,7 +446,8 @@ public class BatteryMeterDrawableBase extends Drawable {
 
         mPowersavePaint.setStrokeWidth(strokeWidth);
 
-        if (mMeterStyle == BATTERY_STYLE_DOTTED_CIRCLE) {
+        if (mMeterStyle == BATTERY_STYLE_DOTTED_CIRCLE ||
+            mMeterStyle ==BATTERY_STYLE_BIG_DOTTED_CIRCLE) {
             mBatteryPaint.setPathEffect(mPathEffect);
         } else {
             mBatteryPaint.setPathEffect(null);
