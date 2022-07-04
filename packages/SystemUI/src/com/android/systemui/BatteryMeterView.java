@@ -313,7 +313,7 @@ public class BatteryMeterView extends LinearLayout implements
         switch (key) {
             case STATUS_BAR_BATTERY_STYLE:
                 mBatteryStyle =
-                        TunerService.parseInteger(newValue, BATTERY_STYLE_PORTRAIT);
+                        TunerService.parseInteger(newValue, BATTERY_STYLE_BIG_CIRCLE);
                 updateBatteryStyle();
                 updatePercentView();
                 updateVisibility();
