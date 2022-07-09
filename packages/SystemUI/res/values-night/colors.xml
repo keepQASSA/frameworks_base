@@ -31,7 +31,7 @@
     <color name="notification_divider_color">#212121</color>
 
     <!-- The background color of the notification shade -->
-    <color name="notification_shade_background_color">@color/GM2_grey_900</color>
+    <color name="notification_shade_background_color">@android:color/black</color>
 
     <!-- The color of the gear shown behind a notification -->
     <color name="notification_gear_color">@color/GM2_grey_500</color>
@@ -60,10 +60,10 @@
     <color name="notification_channel_dialog_separator">@color/GM2_grey_700</color>
 
     <!-- The color of the background in the top part of QSCustomizer -->
-    <color name="qs_customize_background">@color/GM2_grey_900</color>
+    <color name="qs_customize_background">@android:color/black</color>
 
     <!-- The color of the background in the bottom part of QSCustomizer -->
-    <color name="qs_customize_decoration">@color/GM2_grey_800</color>
+    <color name="qs_customize_decoration">@android:color/black</color>
 
     <!-- The color of the background in the separated list of the Global Actions menu -->
     <color name="global_actions_separated_background">@color/GM2_grey_900</color>
