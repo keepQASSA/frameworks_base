@@ -105,7 +105,7 @@ public class MobileSignalController extends SignalController<
     private static final int NETWORK_TYPE_LTE_CA_5GE = TelephonyManager.MAX_NETWORK_TYPE + 1;
 
     // 4G instead of LTE
-    private boolean mShow4GUserConfig;
+    private boolean mShow4gForLte;
 
     private ImsManager mImsManager;
     private ImsManager.Connector mImsManagerConnector;
@@ -121,6 +121,8 @@ public class MobileSignalController extends SignalController<
             "system:" + Settings.System.ROAMING_INDICATOR_ICON;
     public static final String DATA_DISABLED_ICON =
             "system:" + Settings.System.DATA_DISABLED_ICON;
+    public static final String SHOW_FOURG_ICON =
+            "system:" + Settings.System.SHOW_FOURG_ICON;
 
     // TODO: Reduce number of vars passed in, if we have the NetworkController, probably don't
     // need listener lists anymore.
@@ -187,42 +189,11 @@ public class MobileSignalController extends SignalController<
                 }
             }
         };
-        SettingsObserver settingsObserver = new SettingsObserver(new Handler());
-        settingsObserver.observe();
-    }
-
-    protected class SettingsObserver extends ContentObserver {
-        SettingsObserver(Handler handler) {
-            super(handler);
-        }
-
-        void observe() {
-           ContentResolver resolver = mContext.getContentResolver();
-           resolver.registerContentObserver(Settings.System.getUriFor(
-                  Settings.System.SHOW_FOURG),
-                  false, this, UserHandle.USER_ALL);
-           updateSettings();
-        }
-
-        /*
-         *  @hide
-         */
-        @Override
-        public void onChange(boolean selfChange, Uri uri) {
-            updateSettings();
-        }
-    }
-
-    private void updateSettings() {
-        ContentResolver resolver = mContext.getContentResolver();
-        mShow4GUserConfig = Settings.System.getIntForUser(resolver,
-                Settings.System.SHOW_FOURG, 0, UserHandle.USER_CURRENT) == 1;
-        mapIconSets();
-        updateTelephony();
 
         Dependency.get(TunerService.class).addTunable(this, VOLTE_ICON_STYLE);
         Dependency.get(TunerService.class).addTunable(this, ROAMING_INDICATOR_ICON);
         Dependency.get(TunerService.class).addTunable(this, DATA_DISABLED_ICON);
+        Dependency.get(TunerService.class).addTunable(this, SHOW_FOURG_ICON);
     }
 
     @Override
@@ -241,6 +212,12 @@ public class MobileSignalController extends SignalController<
             case DATA_DISABLED_ICON:
                 mDataDisabledIcon =
                     TunerService.parseIntegerSwitch(newValue, true);
+                updateTelephony();
+                break;
+            case SHOW_FOURG_ICON:
+                mShow4gForLte =
+                    TunerService.parseIntegerSwitch(newValue, false);
+                mapIconSets();
                 updateTelephony();
                 break;
             default:
@@ -360,7 +337,7 @@ public class MobileSignalController extends SignalController<
         mNetworkToIconLookup.put(TelephonyManager.NETWORK_TYPE_HSPA, hGroup);
         mNetworkToIconLookup.put(TelephonyManager.NETWORK_TYPE_HSPAP, hPlusGroup);
 
-        if (mShow4GUserConfig) {
+        if (mShow4gForLte) {
             mNetworkToIconLookup.put(TelephonyManager.NETWORK_TYPE_LTE, TelephonyIcons.FOUR_G);
             if (mConfig.hideLtePlus) {
                 mNetworkToIconLookup.put(TelephonyManager.NETWORK_TYPE_LTE_CA,

@@ -74,6 +74,7 @@ public class TunerServiceImpl extends TunerService {
             BatteryMeterView.STATUS_BAR_BATTERY_TEXT_CHARGING,
             MobileSignalController.VOLTE_ICON_STYLE,
             MobileSignalController.ROAMING_INDICATOR_ICON,
+            MobileSignalController.SHOW_FOURG_ICON,
             MobileSignalController.DATA_DISABLED_ICON,
             QSTileHost.TILES_SETTING,
             Settings.Secure.DOZE_ALWAYS_ON,
