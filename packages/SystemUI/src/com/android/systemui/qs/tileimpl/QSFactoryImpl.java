@@ -41,7 +41,6 @@ import com.android.systemui.qs.tiles.DataSaverTile;
 import com.android.systemui.qs.tiles.DataSwitchTile;
 import com.android.systemui.qs.tiles.DndTile;
 import com.android.systemui.qs.tiles.FlashlightTile;
-import com.android.systemui.qs.tiles.GamingModeTile;
 import com.android.systemui.qs.tiles.FPSInfoTile;
 import com.android.systemui.qs.tiles.HeadsUpTile;
 import com.android.systemui.qs.tiles.HotspotTile;
@@ -115,7 +114,6 @@ public class QSFactoryImpl implements QSFactory {
     private final Provider<CPUInfoTile> mCPUInfoTileProvider;
     private final Provider<RebootTile> mRebootTileProvider;
     private final Provider<ScreenshotTile> mScreenshotTileProvider;
-    private final Provider<GamingModeTile> mGamingModeTileProvider;
     private final Provider<ImmersiveTile> mImmersiveTileProvider;
     private final Provider<SoundTile> mSoundTileProvider;
 
@@ -159,7 +157,6 @@ public class QSFactoryImpl implements QSFactory {
             Provider<RebootTile> rebootTileProvider,
             Provider<FPSInfoTile> fpsInfoTileProvider,
             Provider<ScreenshotTile> screenshotTileProvider,
-            Provider<GamingModeTile> gamingModeTileProvider,
             Provider<ImmersiveTile> immersiveTileProvider,
             Provider<SoundTile> soundTileProvider) {
         mWifiTileProvider = wifiTileProvider;
@@ -199,7 +196,6 @@ public class QSFactoryImpl implements QSFactory {
         mRebootTileProvider = rebootTileProvider;
         mFPSInfoTileProvider = fpsInfoTileProvider;
         mScreenshotTileProvider = screenshotTileProvider;
-        mGamingModeTileProvider = gamingModeTileProvider;
         mImmersiveTileProvider = immersiveTileProvider;
         mSoundTileProvider = soundTileProvider;
     }
@@ -292,8 +288,6 @@ public class QSFactoryImpl implements QSFactory {
                 return mFPSInfoTileProvider.get();
             case "screenshot":
                 return mScreenshotTileProvider.get();
-            case "gaming":
-                return mGamingModeTileProvider.get();
             case "immersive":
                 return mImmersiveTileProvider.get();
             case "sound":
