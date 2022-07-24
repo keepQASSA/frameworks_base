@@ -689,7 +689,7 @@ public class QuickStatusBarHeader extends RelativeLayout implements
                 break;
             case STATUS_BAR_BATTERY_STYLE:
                 mStatusBarBatteryStyle =
-                        TunerService.parseInteger(newValue, 8);
+                        TunerService.parseInteger(newValue, 12);
                 updateBatteryStyle();
                 break;
             case QS_BATTERY_STYLE:

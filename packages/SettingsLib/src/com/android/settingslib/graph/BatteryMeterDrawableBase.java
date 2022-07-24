@@ -49,19 +49,23 @@ public class BatteryMeterDrawableBase extends Drawable {
     private static final float RADIUS_RATIO = 1.0f / 17f;
 
     public static final int BATTERY_STYLE_PORTRAIT = 0;
-    public static final int BATTERY_STYLE_RLANDSCAPE = 1;
-    public static final int BATTERY_STYLE_RLANDSCAPE_A = 2;
-    public static final int BATTERY_STYLE_RLANDSCAPE_B = 3;
-    public static final int BATTERY_STYLE_LANDSCAPE = 4;
-    public static final int BATTERY_STYLE_LANDSCAPE_A = 5;
-    public static final int BATTERY_STYLE_LANDSCAPE_B = 6;
-    public static final int BATTERY_STYLE_CIRCLE = 7;
-    public static final int BATTERY_STYLE_BIG_CIRCLE = 8;
-    public static final int BATTERY_STYLE_DOTTED_CIRCLE = 9;
-    public static final int BATTERY_STYLE_BIG_DOTTED_CIRCLE = 10;
-    public static final int BATTERY_STYLE_SOLID = 11;
-    public static final int BATTERY_STYLE_BIG_SOLID = 12;
-    public static final int BATTERY_STYLE_HIDDEN = 13;
+    public static final int BATTERY_STYLE_MUSKU = 1;
+    public static final int BATTERY_STYLE_PILL = 2;
+    public static final int BATTERY_STYLE_RLANDSCAPE = 3;
+    public static final int BATTERY_STYLE_RLANDSCAPE_A = 4;
+    public static final int BATTERY_STYLE_RLANDSCAPE_B = 5;
+    public static final int BATTERY_STYLE_LANDSCAPE = 6;
+    public static final int BATTERY_STYLE_LANDSCAPE_A = 7;
+    public static final int BATTERY_STYLE_LANDSCAPE_B = 8;
+    public static final int BATTERY_STYLE_LANDSCAPE_BUDDY = 9;
+    public static final int BATTERY_STYLE_SIGNAL = 10;
+    public static final int BATTERY_STYLE_CIRCLE = 11;
+    public static final int BATTERY_STYLE_BIG_CIRCLE = 12;
+    public static final int BATTERY_STYLE_DOTTED_CIRCLE = 13;
+    public static final int BATTERY_STYLE_BIG_DOTTED_CIRCLE = 14;
+    public static final int BATTERY_STYLE_SOLID = 15;
+    public static final int BATTERY_STYLE_BIG_SOLID = 16;
+    public static final int BATTERY_STYLE_HIDDEN = 17;
 
     protected final Context mContext;
     protected final Paint mFramePaint;

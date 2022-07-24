@@ -3325,6 +3325,28 @@
   <java-symbol type="string" name="config_batterymeterLandBPowersavePath" />
   <java-symbol type="string" name="config_batterymeterLandBErrorPerimeterPath" />
 
+  <!-- More battery styles -->
+  <java-symbol type="string" name="config_batterymeterLandBuddyPerimeterPath" />
+  <java-symbol type="string" name="config_batterymeterLandBuddyFillMask" />
+  <java-symbol type="string" name="config_batterymeterLandBuddyBoltPath" />
+  <java-symbol type="string" name="config_batterymeterLandBuddyPowersavePath" />
+  <java-symbol type="string" name="config_batterymeterLandBuddyErrorPerimeterPath" />
+  <java-symbol type="string" name="config_batterymeterMuskuPerimeterPath" />
+  <java-symbol type="string" name="config_batterymeterMuskuFillMask" />
+  <java-symbol type="string" name="config_batterymeterMuskuBoltPath" />
+  <java-symbol type="string" name="config_batterymeterMuskuPowersavePath" />
+  <java-symbol type="string" name="config_batterymeterMuskuErrorPerimeterPath" />
+  <java-symbol type="string" name="config_batterymeterPillPerimeterPath" />
+  <java-symbol type="string" name="config_batterymeterPillFillMask" />
+  <java-symbol type="string" name="config_batterymeterPillBoltPath" />
+  <java-symbol type="string" name="config_batterymeterPillPowersavePath" />
+  <java-symbol type="string" name="config_batterymeterPillErrorPerimeterPath" />
+  <java-symbol type="string" name="config_batterymeterSignalPerimeterPath" />
+  <java-symbol type="string" name="config_batterymeterSignalFillMask" />
+  <java-symbol type="string" name="config_batterymeterSignalBoltPath" />
+  <java-symbol type="string" name="config_batterymeterSignalPowersavePath" />
+  <java-symbol type="string" name="config_batterymeterSignalErrorPerimeterPath" />
+
   <java-symbol type="bool" name="config_debugEnableAutomaticSystemServerHeapDumps" />
   <java-symbol type="integer" name="config_debugSystemServerPssThresholdBytes" />
 
