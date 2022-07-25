@@ -25,6 +25,7 @@ cc_defaults {
     cflags: [
         "-Wall",
         "-Werror",
+	"-O3",
     ],
     include_dirs: ["frameworks/base/tools"],
     static_libs: [

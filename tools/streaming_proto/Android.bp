@@ -27,6 +27,7 @@ cc_defaults {
     cflags: [
         "-Wall",
         "-Werror",
+	"-O3",
     ],
 
     shared_libs: ["libprotoc"],
