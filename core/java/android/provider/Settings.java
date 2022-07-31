@@ -5835,6 +5835,14 @@ public final class Settings {
                 "lockscreen_quick_unlock_control";
 
         /**
+         * Whether to display activity indicators on wifi and mobile icons
+         *
+         * @hide
+         */
+        public static final String STATUS_BAR_SHOW_ACTIVITY_INDICATORS =
+                 "status_bar_show_activity_indicators";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *

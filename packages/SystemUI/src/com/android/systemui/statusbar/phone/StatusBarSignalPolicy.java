@@ -18,6 +18,7 @@ package com.android.systemui.statusbar.phone;
 
 import android.content.Context;
 import android.os.Handler;
+import android.provider.Settings;
 import android.telephony.SubscriptionInfo;
 import android.util.ArraySet;
 import android.util.Log;
@@ -39,6 +40,9 @@ import java.util.Objects;
 public class StatusBarSignalPolicy implements NetworkControllerImpl.SignalCallback,
         SecurityController.SecurityControllerCallback, Tunable {
     private static final String TAG = "StatusBarSignalPolicy";
+
+    private static final String SHOW_ACTIVITY_INDICATORS =
+            "system:" + Settings.System.STATUS_BAR_SHOW_ACTIVITY_INDICATORS;
 
     private final String mSlotAirplane;
     private final String mSlotMobile;
@@ -84,7 +88,8 @@ public class StatusBarSignalPolicy implements NetworkControllerImpl.SignalCallba
         mNetworkController = Dependency.get(NetworkController.class);
         mSecurityController = Dependency.get(SecurityController.class);
 
-        Dependency.get(TunerService.class).addTunable(this, StatusBarIconController.ICON_BLACKLIST);
+        Dependency.get(TunerService.class).addTunable(this, StatusBarIconController.ICON_BLACKLIST,
+                SHOW_ACTIVITY_INDICATORS);
         mNetworkController.addCallback(this);
         mSecurityController.addCallback(this);
     }
@@ -118,26 +123,30 @@ public class StatusBarSignalPolicy implements NetworkControllerImpl.SignalCallba
 
     @Override
     public void onTuningChanged(String key, String newValue) {
-        if (!StatusBarIconController.ICON_BLACKLIST.equals(key)) {
-            return;
-        }
-        ArraySet<String> blockList = StatusBarIconController.getIconBlacklist(newValue);
-        boolean blockAirplane = blockList.contains(mSlotAirplane);
-        boolean blockMobile = blockList.contains(mSlotMobile);
-        boolean blockWifi = blockList.contains(mSlotWifi);
-        boolean blockEthernet = blockList.contains(mSlotEthernet);
-        boolean blockRoaming = blockList.contains(mSlotRoaming);
-        boolean blockVpn = blockList.contains(mSlotVpn);
+        if (StatusBarIconController.ICON_BLACKLIST.equals(key)) {
+            ArraySet<String> blockList = StatusBarIconController.getIconBlacklist(newValue);
+            boolean blockAirplane = blockList.contains(mSlotAirplane);
+            boolean blockMobile = blockList.contains(mSlotMobile);
+            boolean blockWifi = blockList.contains(mSlotWifi);
+            boolean blockEthernet = blockList.contains(mSlotEthernet);
+            boolean blockRoaming = blockList.contains(mSlotRoaming);
+            boolean blockVpn = blockList.contains(mSlotVpn);
 
-        if (blockAirplane != mBlockAirplane || blockMobile != mBlockMobile
-                || blockEthernet != mBlockEthernet || blockWifi != mBlockWifi
-                || blockRoaming != mBlockRoaming || blockVpn != mBlockVpn) {
-            mBlockAirplane = blockAirplane;
-            mBlockMobile = blockMobile;
-            mBlockEthernet = blockEthernet;
-            mBlockWifi = blockWifi || mForceBlockWifi;
-            mBlockRoaming = blockRoaming;
-            mBlockVpn = blockVpn;
+            if (blockAirplane != mBlockAirplane || blockMobile != mBlockMobile
+                     || blockEthernet != mBlockEthernet || blockWifi != mBlockWifi
+                     || blockRoaming != mBlockRoaming || blockVpn != mBlockVpn) {
+                mBlockAirplane = blockAirplane;
+                mBlockMobile = blockMobile;
+                mBlockEthernet = blockEthernet;
+                mBlockWifi = blockWifi || mForceBlockWifi;
+                mBlockRoaming = blockRoaming;
+                mBlockVpn = blockVpn;
+                // Re-register to get new callbacks.
+                mNetworkController.removeCallback(this);
+                mNetworkController.addCallback(this);
+            }
+        } else if (SHOW_ACTIVITY_INDICATORS.equals(key)) {
+            mActivityEnabled = TunerService.parseIntegerSwitch(newValue, true);
             // Re-register to get new callbacks.
             mNetworkController.removeCallback(this);
             mNetworkController.addCallback(this);
