@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2017 The OmniROM Project
  *           (C) 2018-2019 crDroid Android Project
- *           (C) 222 AOSQP
+ *           (C) 222 QASSA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
