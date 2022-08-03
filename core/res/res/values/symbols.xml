@@ -3328,7 +3328,6 @@
   <!-- More battery styles -->
   <java-symbol type="string" name="config_batterymeterLandBuddyPerimeterPath" />
   <java-symbol type="string" name="config_batterymeterLandBuddyFillMask" />
-  <java-symbol type="string" name="config_batterymeterLandBuddyBoltPath" />
   <java-symbol type="string" name="config_batterymeterLandBuddyPowersavePath" />
   <java-symbol type="string" name="config_batterymeterLandBuddyErrorPerimeterPath" />
   <java-symbol type="string" name="config_batterymeterMuskuPerimeterPath" />
@@ -3343,7 +3342,6 @@
   <java-symbol type="string" name="config_batterymeterPillErrorPerimeterPath" />
   <java-symbol type="string" name="config_batterymeterSignalPerimeterPath" />
   <java-symbol type="string" name="config_batterymeterSignalFillMask" />
-  <java-symbol type="string" name="config_batterymeterSignalBoltPath" />
   <java-symbol type="string" name="config_batterymeterSignalPowersavePath" />
   <java-symbol type="string" name="config_batterymeterSignalErrorPerimeterPath" />
 

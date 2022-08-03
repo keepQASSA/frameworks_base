@@ -4205,9 +4205,6 @@
     <string name="config_batterymeterLandBuddyFillMask" translatable="false">
 	M2.25,8.00L9.75,8.00A0.00 0.00 0 0 1 9.75,8.00L9.75,12.00A0.00 0.00 0 0 1 9.75,12.00L2.25,12.00A0.00 0.00 0 0 1 2.25,12.00L2.25,8.00A0.00 0.00 0 0 1 2.25,8.00z
     </string>
-    <string name="config_batterymeterLandBuddyBoltPath" translatable="false">
-	M5.61,10.76L5.60,12.15C5.58,12.42,5.95,12.49,6.14,12.15L7.25,10.09C7.44,9.66,7.07,9.24,6.39,9.24L6.40,7.85C6.42,7.58,6.05,7.51,5.86,7.85L4.75,9.91C4.56,10.34,4.93,10.76,5.61,10.76
-    </string>
     <string name="config_batterymeterLandBuddyPowersavePath" translatable="false">@string/config_batterymeterLandBuddyPerimeterPath</string>
     <string name="config_batterymeterLandBuddyErrorPerimeterPath" translatable="false">@string/config_batterymeterLandBuddyPerimeterPath</string>
     <string name="config_batterymeterPillPerimeterPath" translatable="false">
@@ -4237,9 +4234,6 @@
     </string>
     <string name="config_batterymeterSignalFillMask" translatable="false">
 	M8.28,6.53L8.89,6.53A0.61 0.61 0 0 1 9.50,7.14L9.50,12.96A0.61 0.61 0 0 1 8.89,13.57L8.28,13.57A0.61 0.61 0 0 1 7.67,12.96L7.67,7.14A0.61 0.61 0 0 1 8.28,6.53z
-    </string>
-    <string name="config_batterymeterSignalBoltPath" translatable="false">
-	M4.26,10.66L4.25,11.86C4.23,12.10,4.62,12.16,4.82,11.86L5.97,10.08C6.17,9.71,5.79,9.35,5.08,9.34L5.08,8.14C5.10,7.90,4.72,7.84,4.52,8.14L3.36,9.92C3.16,10.29,3.55,10.65,4.26,10.66
     </string>
     <string name="config_batterymeterSignalPowersavePath" translatable="false">@string/config_batterymeterSignalPerimeterPath</string>
     <string name="config_batterymeterSignalErrorPerimeterPath" translatable="false">@string/config_batterymeterSignalPerimeterPath</string>
