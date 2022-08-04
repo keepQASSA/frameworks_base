@@ -897,7 +897,7 @@ public class GlobalActionsDialog implements DialogInterface.OnDismissListener,
     }
 
     private Action getScreenrecordAction() {
-        return new SinglePressAction(com.android.systemui.R.drawable.ic_lock_screenrecord,
+        return new SinglePressAction(com.android.systemui.R.drawable.ic_qs_screenrecord,
                 com.android.systemui.R.string.global_action_screenrecord) {
             @Override
             public void onPress() {
