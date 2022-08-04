@@ -75,7 +75,6 @@ import android.telephony.SubscriptionManager;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.ArraySet;
-import android.util.FeatureFlagUtils;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -139,8 +138,6 @@ public class GlobalActionsDialog implements DialogInterface.OnDismissListener,
     static public final String SYSTEM_DIALOG_REASON_KEY = "reason";
     static public final String SYSTEM_DIALOG_REASON_GLOBAL_ACTIONS = "globalactions";
     static public final String SYSTEM_DIALOG_REASON_DREAM = "dream";
-
-    private static final String GLOBAL_ACTION_KEY_SCREENRECORD = "screenrecord";
 
     private static final String TAG = "GlobalActionsDialog";
 
@@ -548,10 +545,7 @@ public class GlobalActionsDialog implements DialogInterface.OnDismissListener,
             } else if (GLOBAL_ACTION_KEY_SCREENSHOT.equals(actionKey)) {
                 mItems.add(new ScreenshotAction());
             } else if (GLOBAL_ACTION_KEY_SCREENRECORD.equals(actionKey)) {
-                if (Settings.System.getInt(mContext.getContentResolver(),
-                        Settings.System.POWERMENU_SCREENRECORD, 0) == 1) {
-                    mItems.add(getScreenrecordAction());
-                }
+                mItems.add(new ScreenrecordAction());
             } else if (GLOBAL_ACTION_KEY_LOGOUT.equals(actionKey)) {
                 if (mDevicePolicyManager.isLogoutEnabled()
                         && getCurrentUser().id != UserHandle.USER_SYSTEM) {
@@ -896,26 +890,6 @@ public class GlobalActionsDialog implements DialogInterface.OnDismissListener,
         }
     }
 
-    private Action getScreenrecordAction() {
-        return new SinglePressAction(com.android.systemui.R.drawable.ic_qs_screenrecord,
-                com.android.systemui.R.string.global_action_screenrecord) {
-            @Override
-            public void onPress() {
-                takeScreenrecord();
-            }
-
-            @Override
-            public boolean showDuringKeyguard() {
-                return true;
-            }
-
-            @Override
-            public boolean showBeforeProvisioning() {
-                return true;
-            }
-        };
-    }
-
     private class ScreenshotAction extends SinglePressAction implements LongPressAction {
         public ScreenshotAction() {
             super(R.drawable.ic_screenshot, R.string.global_action_screenshot);
@@ -955,6 +929,36 @@ public class GlobalActionsDialog implements DialogInterface.OnDismissListener,
         public boolean onLongPress() {
             mScreenshotHelper.takeScreenshot(2, true, true, mHandler, null);
             return true;
+        }
+    }
+
+    private class ScreenrecordAction extends SinglePressAction {
+        public ScreenrecordAction() {
+            super(com.android.systemui.R.drawable.ic_qs_screenrecord, com.android.systemui.R.string.global_action_screenrecord);
+        }
+
+        @Override
+        public void onPress() {
+            // Add a little delay before executing, to give the
+            // dialog a chance to go away before it shows
+            // screenrecord prompt.
+            // TODO: instead, omit global action dialog layer
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mScreenRecordHelper.launchRecordPrompt();
+                }
+            }, 500);
+        }
+
+        @Override
+        public boolean showDuringKeyguard() {
+            return true;
+        }
+
+        @Override
+        public boolean showBeforeProvisioning() {
+            return false;
         }
     }
 
@@ -1217,32 +1221,6 @@ public class GlobalActionsDialog implements DialogInterface.OnDismissListener,
                     items.add(switchToUser);
                 }
             }
-        }
-    }
-
-    /**
-     * functions needed for taking screen record.
-     */
-    final Object mScreenrecordLock = new Object();
-    ServiceConnection mScreenrecordConnection = null;
-
-    final Runnable mScreenrecordTimeout = new Runnable() {
-        @Override public void run() {
-            synchronized (mScreenrecordLock) {
-                if (mScreenrecordConnection != null) {
-                    mContext.unbindService(mScreenrecordConnection);
-                    mScreenrecordConnection = null;
-                }
-            }
-        }
-    };
-
-    private void takeScreenrecord() {
-       synchronized (mScreenrecordLock) {
-            if (mScreenrecordConnection != null) {
-                return;
-            }
-            mScreenRecordHelper.launchRecordPrompt();
         }
     }
 
