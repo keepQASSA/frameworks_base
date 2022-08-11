@@ -104,11 +104,6 @@
     <string name="qs_data_switch_changed_1">Using SIM 1 for Mobile data</string>
     <string name="qs_data_switch_changed_2">Using SIM 2 for Mobile data</string>
 
-    <!-- Music tile -->
-    <string name="quick_settings_music_label">Music</string>
-    <string name="quick_settings_music_play">Play Music</string>
-    <string name="quick_settings_music_pause">Pause</string>
-
     <!-- Text to use when the number in a notification info is too large
          (greater than status_bar_notification_info_maxnum, defined in
          values/config.xml) and must be truncated.
