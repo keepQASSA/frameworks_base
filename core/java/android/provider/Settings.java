@@ -5453,35 +5453,6 @@ public final class Settings {
                 BOOLEAN_VALIDATOR;
 
         /**
-         * Whether to show network traffic indicator
-         * @hide
-         */
-        public static final String NETWORK_TRAFFIC_LOCATION = "network_traffic_location";
-
-        /** @hide */
-        public static final Validator NETWORK_TRAFFIC_LOCATION_VALIDATOR =
-                new SettingsValidators.InclusiveIntegerRangeValidator(0, 2);
-
-        /**
-         * Whether or not to hide the network traffic indicator when there is no activity
-         * @hide
-         */
-        public static final String NETWORK_TRAFFIC_AUTOHIDE = "network_traffic_autohide";
-
-        /** @hide */
-        public static final Validator NETWORK_TRAFFIC_AUTOHIDE_VALIDATOR = BOOLEAN_VALIDATOR;
-
-        /**
-         * Measurement unit preference for network traffic
-         * @hide
-         */
-        public static final String NETWORK_TRAFFIC_UNIT_TYPE = "network_traffic_unit_type";
-
-        /** @hide */
-        public static final Validator NETWORK_TRAFFIC_UNIT_TYPE_VALIDATOR =
-                new SettingsValidators.InclusiveIntegerRangeValidator(0, 1);
-
-        /**
          * Whether or not to vibrate when a touchscreen gesture is detected
          * @hide
          */
@@ -6352,9 +6323,6 @@ public final class Settings {
             PRIVATE_SETTINGS.add(LIVE_DISPLAY_HINTED);
             PRIVATE_SETTINGS.add(BACK_GESTURE_HEIGHT);
             PRIVATE_SETTINGS.add(LOCKSCREEN_TRANSLUCENT_NOTIFICATIONS_BG_ENABLED);
-            PRIVATE_SETTINGS.add(NETWORK_TRAFFIC_LOCATION);
-            PRIVATE_SETTINGS.add(NETWORK_TRAFFIC_AUTOHIDE);
-            PRIVATE_SETTINGS.add(NETWORK_TRAFFIC_UNIT_TYPE);
             PRIVATE_SETTINGS.add(TOUCHSCREEN_GESTURE_HAPTIC_FEEDBACK);
             PRIVATE_SETTINGS.add(FEATURE_TOUCH_HOVERING);
             PRIVATE_SETTINGS.add(HIGH_TOUCH_SENSITIVITY_ENABLE);
@@ -6545,9 +6513,6 @@ public final class Settings {
             VALIDATORS.put(LIVE_DISPLAY_HINTED, LIVE_DISPLAY_HINTED_VALIDATOR);
             VALIDATORS.put(BACK_GESTURE_HEIGHT, BACK_GESTURE_HEIGHT_VALIDATOR);
             VALIDATORS.put(LOCKSCREEN_TRANSLUCENT_NOTIFICATIONS_BG_ENABLED, LOCKSCREEN_TRANSLUCENT_NOTIFICATIONS_BG_ENABLED_VALIDATOR);
-            VALIDATORS.put(NETWORK_TRAFFIC_LOCATION, NETWORK_TRAFFIC_LOCATION_VALIDATOR);
-            VALIDATORS.put(NETWORK_TRAFFIC_AUTOHIDE, NETWORK_TRAFFIC_AUTOHIDE_VALIDATOR);
-            VALIDATORS.put(NETWORK_TRAFFIC_UNIT_TYPE, NETWORK_TRAFFIC_UNIT_TYPE_VALIDATOR);
             VALIDATORS.put(TOUCHSCREEN_GESTURE_HAPTIC_FEEDBACK, TOUCHSCREEN_GESTURE_HAPTIC_FEEDBACK_VALIDATOR);
             VALIDATORS.put(FEATURE_TOUCH_HOVERING, FEATURE_TOUCH_HOVERING_VALIDATOR);
             VALIDATORS.put(HIGH_TOUCH_SENSITIVITY_ENABLE, HIGH_TOUCH_SENSITIVITY_ENABLE_VALIDATOR);

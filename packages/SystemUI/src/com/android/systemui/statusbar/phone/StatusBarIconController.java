@@ -49,7 +49,6 @@ import com.android.systemui.statusbar.StatusBarWifiView;
 import com.android.systemui.statusbar.StatusIconDisplayable;
 import com.android.systemui.statusbar.phone.StatusBarSignalPolicy.MobileIconState;
 import com.android.systemui.statusbar.phone.StatusBarSignalPolicy.WifiIconState;
-import com.android.systemui.statusbar.policy.StatusBarNetworkTraffic;
 import com.android.systemui.tuner.TunerService;
 import com.android.systemui.util.Utils.DisableStateTracker;
 

@@ -22,19 +22,11 @@
     android:layout_height="@*android:dimen/quick_qs_offset_height"
     android:clipChildren="false"
     android:clipToPadding="false"
-    android:gravity="center"
     android:orientation="horizontal"
     android:clickable="true"
     android:paddingStart="@dimen/status_bar_padding_start"
     android:paddingEnd="@dimen/status_bar_padding_end"
     android:paddingTop="@dimen/status_bar_padding_top" >
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:gravity="center_vertical|start" >
 
     <com.android.systemui.statusbar.policy.Clock
         android:id="@+id/clock"
@@ -47,7 +39,6 @@
         android:singleLine="true"
         android:textAppearance="@style/TextAppearance.StatusBar.Clock"
         systemui:showDark="false" />
-    </LinearLayout>
 
     <android.widget.Space
         android:id="@+id/space"
@@ -62,14 +53,6 @@
         android:layout_weight="1.5"
         android:orientation="horizontal"
         android:gravity="center_vertical|end">
-
-        <com.android.systemui.statusbar.policy.NetworkTraffic
-            android:id="@+id/networkTraffic"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textAppearance="@style/TextAppearance.QS.Status"
-            android:paddingEnd="5dp"
-            android:gravity="center_vertical|start" />
 
         <com.android.systemui.BatteryMeterView
             android:id="@+id/batteryIcon"
