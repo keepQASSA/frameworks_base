@@ -24,11 +24,13 @@ import android.provider.Settings;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.database.ContentObserver;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Icon;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -171,10 +173,15 @@ public class NotificationIconContainer extends AlphaOptimizedFrameLayout {
         boolean NewIconStyle = Settings.System.getIntForUser(getContext().getContentResolver(),
                 Settings.System.STATUSBAR_ICONS_STYLE, 1, UserHandle.USER_CURRENT) == 1;
 
+    private SettingsObserver mSettingsObserver;
+
     public NotificationIconContainer(Context context, AttributeSet attrs) {
         super(context, attrs);
         initDimens();
         setWillNotDraw(!(DEBUG || DEBUG_OVERFLOW));
+
+        mSettingsObserver = new SettingsObserver(new Handler());
+        mSettingsObserver.observe();
     }
 
     private void initDimens() {
@@ -225,6 +232,25 @@ public class NotificationIconContainer extends AlphaOptimizedFrameLayout {
     protected void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         initDimens();
+    }
+
+    private class SettingsObserver extends ContentObserver {
+        SettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        void observe() {
+            final ContentResolver resolver = getContext().getContentResolver();
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.MAX_VISIBLE_NOTIFICATION_ICONS), false, this,
+                    UserHandle.USER_ALL);
+            //updateState();
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            updateState();
+        }
     }
 
     @Override
@@ -386,8 +412,10 @@ public class NotificationIconContainer extends AlphaOptimizedFrameLayout {
         float translationX = getActualPaddingStart();
         int firstOverflowIndex = -1;
         int childCount = getChildCount();
+        int maxStatusVisibleIcons = Settings.System.getIntForUser(getContext().getContentResolver(),
+                Settings.System.MAX_VISIBLE_NOTIFICATION_ICONS, MAX_STATIC_ICONS, UserHandle.USER_CURRENT);
         int maxVisibleIcons = mOnLockScreen ? MAX_VISIBLE_ICONS_ON_LOCK :
-                mIsStaticLayout ? MAX_STATIC_ICONS : childCount;
+                mIsStaticLayout ? maxStatusVisibleIcons : childCount;
         float layoutEnd = getLayoutEnd();
         float overflowStart = getMaxOverflowStart();
         mVisualOverflowStart = 0;
