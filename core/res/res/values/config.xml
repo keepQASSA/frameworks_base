@@ -4236,6 +4236,9 @@
     <string name="config_batterymeterSignalFillMask" translatable="false">
 	M8.28,6.53L8.89,6.53A0.61 0.61 0 0 1 9.50,7.14L9.50,12.96A0.61 0.61 0 0 1 8.89,13.57L8.28,13.57A0.61 0.61 0 0 1 7.67,12.96L7.67,7.14A0.61 0.61 0 0 1 8.28,6.53z
     </string>
+    <string name="config_batterymeterSignalBoltPath" translatable="false">
+	M4.26,10.66L4.25,11.86C4.23,12.10,4.62,12.16,4.82,11.86L5.97,10.08C6.17,9.71,5.79,9.35,5.08,9.34L5.08,8.14C5.10,7.90,4.72,7.84,4.52,8.14L3.36,9.92C3.16,10.29,3.55,10.65,4.26,10.66
+    </string>
     <string name="config_batterymeterSignalPowersavePath" translatable="false">@string/config_batterymeterSignalPerimeterPath</string>
     <string name="config_batterymeterSignalErrorPerimeterPath" translatable="false">@string/config_batterymeterSignalPerimeterPath</string>
     <!-- X path for SignalDrawable as defined on a 24x24 canvas. -->

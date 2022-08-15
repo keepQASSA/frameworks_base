@@ -61,6 +61,10 @@ open class SignalBatteryDrawable(private val context: Context, frameColor: Int) 
     // The net result of fill + perimeter paths
     private val unifiedPath = Path()
 
+    // Bolt path (used while charging)
+    private val boltPath = Path()
+    private val scaledBolt = Path()
+
     // Plus sign (used for power save mode)
     private val plusPath = Path()
     private val scaledPlus = Path()
@@ -218,6 +222,15 @@ open class SignalBatteryDrawable(private val context: Context, frameColor: Int) 
 
         fillPaint.color = levelColor
 
+        // Deal with unifiedPath clipping before it draws
+        if (charging) {
+            // Clip out the bolt shape
+            unifiedPath.op(scaledBolt, Path.Op.DIFFERENCE)
+            if (!invertFillIcon) {
+                c.drawPath(scaledBolt, fillPaint)
+            }
+        }
+
         if (dualTone) {
             // Dual tone means we draw the shape again, clipped to the charge level
             c.drawPath(unifiedPath, dualToneBackgroundFill)
@@ -244,7 +257,14 @@ open class SignalBatteryDrawable(private val context: Context, frameColor: Int) 
             }
         }
 
-        if (powerSaveEnabled) {
+        if (charging) {
+            c.clipOutPath(scaledBolt)
+            if (invertFillIcon) {
+                c.drawPath(scaledBolt, fillColorStrokePaint)
+            } else {
+                c.drawPath(scaledBolt, fillColorStrokeProtection)
+            }
+        } else if (powerSaveEnabled) {
             // If power save is enabled draw the perimeter path with colorError
             c.drawPath(scaledErrorPerimeter, errorPaint)
             // And draw the plus sign on top of the fill
@@ -392,6 +412,7 @@ open class SignalBatteryDrawable(private val context: Context, frameColor: Int) 
         errorPerimeterPath.transform(scaleMatrix, scaledErrorPerimeter)
         fillMask.transform(scaleMatrix, scaledFill)
         scaledFill.computeBounds(fillRect, true)
+        boltPath.transform(scaleMatrix, scaledBolt)
         plusPath.transform(scaleMatrix, scaledPlus)
 
         // It is expected that this view only ever scale by the same factor in each dimension, so
@@ -419,6 +440,10 @@ open class SignalBatteryDrawable(private val context: Context, frameColor: Int) 
         fillMask.set(PathParser.createPathFromPathData(fillMaskString))
         // Set the fill rect so we can calculate the fill properly
         fillMask.computeBounds(fillRect, true)
+
+        val boltPathString = context.resources.getString(
+                com.android.internal.R.string.config_batterymeterSignalBoltPath)
+        boltPath.set(PathParser.createPathFromPathData(boltPathString))
 
         val plusPathString = context.resources.getString(
                 com.android.internal.R.string.config_batterymeterSignalPowersavePath)
