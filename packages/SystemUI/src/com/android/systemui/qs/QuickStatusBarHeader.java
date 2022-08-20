@@ -22,17 +22,20 @@ import android.annotation.ColorInt;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.database.ContentObserver;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Handler;
+import android.os.UserHandle;
 import android.provider.AlarmClock;
 import android.provider.CalendarContract;
 import android.provider.Settings;
@@ -165,6 +168,26 @@ public class QuickStatusBarHeader extends RelativeLayout implements
     private boolean mIsQuickQsBrightnessEnabled;
     private boolean mIsQsAutoBrightnessEnabled;
 
+    private boolean mShowQSClockBg = true;
+
+    private class SettingsObserver extends ContentObserver {
+       SettingsObserver(Handler handler) {
+           super(handler);
+       }
+       void observe() {
+         mContentResolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.QUICKSETTINGS_CLOCK_CHIP),
+                    false, this, UserHandle.USER_ALL);
+       }
+
+       @Override
+       public void onChange(boolean selfChange) {
+           updateSettings(true);
+       }
+    }
+    private SettingsObserver mSettingsObserver;
+    private ContentResolver mContentResolver;
+
     private final BroadcastReceiver mRingerReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -225,6 +248,9 @@ public class QuickStatusBarHeader extends RelativeLayout implements
         float intensity = getColorIntensity(colorForeground);
         int fillColor = mDualToneHandler.getSingleColor(intensity);
 
+        mContentResolver = getContext().getContentResolver();
+        mSettingsObserver = new SettingsObserver(mHandler);
+
         // Set light text on the header icons because they will always be on a black background
         applyDarkness(R.id.clock, tintArea, 0, DarkIconDispatcher.DEFAULT_ICON_TINT);
 
@@ -249,6 +275,9 @@ public class QuickStatusBarHeader extends RelativeLayout implements
         mBatteryIcon.setIgnoreTunerUpdates(true);
         mRingerModeTextView.setSelected(true);
         mNextAlarmTextView.setSelected(true);
+
+        mSettingsObserver.observe();
+        updateSettings(false);
 
         Dependency.get(TunerService.class).addTunable(this,
                 StatusBarIconController.ICON_BLACKLIST,
@@ -735,6 +764,21 @@ public class QuickStatusBarHeader extends RelativeLayout implements
                 break;
             default:
                 break;
+        }
+    }
+
+    public void updateSettings(boolean animate) {
+
+        mShowQSClockBg = Settings.System.getIntForUser(mContentResolver,
+                Settings.System.QUICKSETTINGS_CLOCK_CHIP, 0,
+                UserHandle.USER_CURRENT) == 1;
+
+        if (mShowQSClockBg) {
+            mClockView.setBackgroundResource(R.drawable.sb_date_bg);
+            mClockView.setPadding(10,5,10,5);
+        } else {
+            mClockView.setBackgroundResource(0);
+            mClockView.setPadding(0,0,0,0);
         }
     }
 }

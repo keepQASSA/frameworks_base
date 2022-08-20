@@ -6009,6 +6009,14 @@ public final class Settings {
         public static final String STATUSBAR_CLOCK_CHIP ="statusbar_clock_chip";
 
         /**
+         * Quicksettings clock background
+         * 0 - hide accented chip (default)
+         * 1 - show accented chip
+         * @hide
+         */
+        public static final String QUICKSETTINGS_CLOCK_CHIP ="quicksettings_clock_chip";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
@@ -6310,6 +6318,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(ENABLE_CONDITIONS);
             PRIVATE_SETTINGS.add(ENABLE_SUGGESTIONS);
             PRIVATE_SETTINGS.add(STATUSBAR_CLOCK_CHIP);
+            PRIVATE_SETTINGS.add(QUICKSETTINGS_CLOCK_CHIP);
         }
 
         /**
