@@ -37,6 +37,8 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.UserHandle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.provider.AlarmClock;
 import android.provider.CalendarContract;
 import android.provider.DeviceConfig;
@@ -103,7 +105,7 @@ import javax.inject.Named;
  */
 public class QuickStatusBarHeader extends RelativeLayout implements
         View.OnClickListener, NextAlarmController.NextAlarmChangeCallback,
-        ZenModeController.Callback, TunerService.Tunable {
+        ZenModeController.Callback, TunerService.Tunable, View.OnLongClickListener {
     private static final String TAG = "QuickStatusBarHeader";
     private static final boolean DEBUG = false;
 
@@ -136,7 +138,6 @@ public class QuickStatusBarHeader extends RelativeLayout implements
     private final NextAlarmController mAlarmController;
     private final ZenModeController mZenController;
     private final StatusBarIconController mStatusBarIconController;
-    private final ActivityStarter mActivityStarter;
 
     private QSPanel mQsPanel;
 
@@ -248,6 +249,9 @@ public class QuickStatusBarHeader extends RelativeLayout implements
         }
     };
 
+    private final ActivityStarter mActivityStarter;
+    private final Vibrator mVibrator;
+
     @Inject
     public QuickStatusBarHeader(@Named(VIEW_CONTEXT) Context context, AttributeSet attrs,
             NextAlarmController nextAlarmController, ZenModeController zenModeController,
@@ -261,6 +265,7 @@ public class QuickStatusBarHeader extends RelativeLayout implements
         mPrivacyItemController = privacyItemController;
         mDualToneHandler = new DualToneHandler(
                 new ContextThemeWrapper(context, R.style.QSHeaderTheme));
+        mVibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
     }
 
     @Override
@@ -318,14 +323,17 @@ public class QuickStatusBarHeader extends RelativeLayout implements
 
         mClockView = findViewById(R.id.clock);
         mClockView.setOnClickListener(this);
+        mClockView.setOnLongClickListener(this);
         mClockView.setQsHeader();
         mDateView = findViewById(R.id.date);
         mDateView.setOnClickListener(this);
+        mDateView.setOnLongClickListener(this);
         mSpace = findViewById(R.id.space);
 
         // Tint for the battery icons are handled in setupHost()
         mBatteryRemainingIcon = findViewById(R.id.batteryRemainingIcon);
         mBatteryRemainingIcon.setOnClickListener(this);
+        mBatteryRemainingIcon.setOnLongClickListener(this);
         mBatteryIcon = findViewById(R.id.batteryIcon);
         mBatteryIcon.setOnClickListener(this);
         // Don't need to worry about tuner settings for this icon
@@ -450,6 +458,23 @@ public class QuickStatusBarHeader extends RelativeLayout implements
     public void onRtlPropertiesChanged(int layoutDirection) {
         super.onRtlPropertiesChanged(layoutDirection);
         updateResources();
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        if (v == mClockView || v == mDateView) {
+            Intent nIntent = new Intent(Intent.ACTION_MAIN);
+            nIntent.setClassName("com.android.settings",
+                    "com.android.settings.Settings$DateTimeSettingsActivity");
+            mActivityStarter.startActivity(nIntent, true /* dismissShade */);
+            mVibrator.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
+            return true;
+        } else if (v == mBatteryRemainingIcon) {
+            mActivityStarter.postStartActivityDismissingKeyguard(new Intent(
+                    Intent.ACTION_POWER_USAGE_SUMMARY), 0);
+            return true;
+        }
+        return false;
     }
 
     /**
