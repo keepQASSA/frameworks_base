@@ -28,6 +28,7 @@
             android:minHeight="64dp"
             android:paddingTop="12dp"
             android:textAppearance="?android:attr/textAppearanceButton"
+            android:textSize="@dimen/no_notifications_text_size"
             android:gravity="top|center_horizontal"
             android:textColor="?attr/wallpaperTextColor"
             android:text="@string/empty_shade_text"/>
