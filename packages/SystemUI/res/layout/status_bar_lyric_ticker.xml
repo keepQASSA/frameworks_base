@@ -25,18 +25,18 @@
     android:orientation="horizontal">
 
     <ImageSwitcher android:id="@+id/lyricIcon"
-        android:layout_width="@dimen/status_bar_icon_size"
-        android:layout_height="@dimen/status_bar_icon_size"
-        android:layout_marginEnd="@dimen/ticker_icon_end_margin"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="0dp"
         >
         <com.android.systemui.statusbar.AnimatedImageView
-            android:layout_width="@dimen/status_bar_icon_size"
-            android:layout_height="@dimen/status_bar_icon_size"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:scaleType="centerInside"
             />
         <com.android.systemui.statusbar.AnimatedImageView
-            android:layout_width="@dimen/status_bar_icon_size"
-            android:layout_height="@dimen/status_bar_icon_size"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:scaleType="centerInside"
             />
     </ImageSwitcher>
