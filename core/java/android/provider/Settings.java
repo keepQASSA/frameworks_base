@@ -6202,6 +6202,12 @@ public final class Settings {
         private static final Validator LESS_BORING_HEADS_UP_VALIDATOR = BOOLEAN_VALIDATOR;
 
         /**
+         * Whether to disable Scrim View in QS
+         * @hide
+         */
+        public static final String QS_SCRIM_VIEW = "qs_scrim_view";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *

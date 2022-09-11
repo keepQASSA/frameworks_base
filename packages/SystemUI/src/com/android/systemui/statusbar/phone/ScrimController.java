@@ -28,6 +28,8 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Trace;
+import android.os.UserHandle;
+import android.provider.Settings;
 import android.util.Log;
 import android.util.MathUtils;
 import android.view.View;
@@ -403,7 +405,7 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener, OnCo
             mExpansionFraction = fraction;
 
             final boolean keyguardOrUnlocked = mState == ScrimState.UNLOCKED
-                    || mState == ScrimState.KEYGUARD || mState == ScrimState.PULSING;
+                    || mState == ScrimState.KEYGUARD || mState == ScrimState.PULSING || mState == ScrimState.BUBBLE_EXPANDED;
             if (!keyguardOrUnlocked || !mExpansionAffectsAlpha) {
                 return;
             }
@@ -450,7 +452,14 @@ public class ScrimController implements ViewTreeObserver.OnPreDrawListener, OnCo
             return;
         }
 
-        if (mState == ScrimState.UNLOCKED) {
+        if (Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.QS_SCRIM_VIEW, 0, UserHandle.USER_CURRENT) == 1) {
+            if (mState == ScrimState.UNLOCKED) {
+                mCurrentBehindAlpha = 0;
+                mCurrentInFrontAlpha = 0;
+            }
+            if (mState == ScrimState.BUBBLE_EXPANDED) {
+        }
             // Darken scrim as you pull down the shade when unlocked
             float behindFraction = getInterpolatedFraction();
             behindFraction = (float) Math.pow(behindFraction, 0.8f);
