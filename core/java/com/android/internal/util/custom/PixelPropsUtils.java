@@ -34,6 +34,8 @@ public class PixelPropsUtils {
     private static final String TAG = PixelPropsUtils.class.getSimpleName();
     private static final boolean DEBUG = false;
 
+    private static final String SAMSUNG = "com.samsung.android.";
+
     private static final Map<String, Object> propsToChange;
     private static final Map<String, Object> propsToChangePixel5;
     private static final Map<String, Object> propsToChangePixel7Pro;
@@ -194,6 +196,7 @@ public class PixelPropsUtils {
         boolean isPixelDevice = Arrays.asList(pixelCodenames).contains(SystemProperties.get(DEVICE));
         if (!isPixelDevice &&
             ((packageName.startsWith("com.google.") && !Arrays.asList(packagesToKeep).contains(packageName))
+                || packageName.startsWith(SAMSUNG)
                 || Arrays.asList(extraPackagesToChange).contains(packageName)
                 || Arrays.asList(streamingPackagesToChange).contains(packageName))) {
 
@@ -213,7 +216,9 @@ public class PixelPropsUtils {
                 sIsFinsky = true;
                 return;
             } else {
-                if (Arrays.asList(packagesToChangePixel7Pro).contains(packageName)) {
+                if ((Arrays.asList(packagesToChangePixel7Pro).contains(packageName))
+                        || packageName.startsWith(SAMSUNG)
+                        || Arrays.asList(extraPackagesToChange).contains(packageName)) {
                     propsToChange.putAll(propsToChangePixel7Pro);
                 } else if (Arrays.asList(packagesToChangePixelXL).contains(packageName)) {
                     propsToChange.putAll(propsToChangePixelXL);
