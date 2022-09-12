@@ -457,7 +457,7 @@ public class StatusBar extends SystemUI implements DemoMode,
     protected NotificationPanelView mNotificationPanel; // the sliding/resizing panel within the notification window
 
     // settings
-    private static QSPanel mQSPanel;
+    private QSPanel mQSPanel;
 
     KeyguardIndicationController mKeyguardIndicationController;
 
@@ -1213,7 +1213,7 @@ public class StatusBar extends SystemUI implements DemoMode,
 
     public static void setDismissAllVisible(boolean visible) {
 
-        if(mClearableNotifications && mState != StatusBarState.KEYGUARD && visible && isDismissAllButtonEnabled() && !mQSPanel.isExpanded()) {
+        if(mClearableNotifications && mState != StatusBarState.KEYGUARD && visible && isDismissAllButtonEnabled()) {
             mDismissAllButton.setVisibility(View.VISIBLE);
             int DismissAllAlpha = Math.round(255.0f * mStaticNotificationPanel.getExpandedFraction());
             mDismissAllButton.setAlpha(DismissAllAlpha);
