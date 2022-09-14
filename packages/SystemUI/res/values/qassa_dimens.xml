@@ -149,4 +149,8 @@
     <dimen name="ticker_icon_end_margin">4dp</dimen>
     <dimen name="ticker_text_top_padding">2dp</dimen>
     <dimen name="ticker_text_end_padding">10dp</dimen>
+
+    <!-- The size for the date in the quick settings. -->
+    <dimen name="quick_settings_date_size">14sp</dimen>
+
 </resources>

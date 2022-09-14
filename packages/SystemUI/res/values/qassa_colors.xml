@@ -20,5 +20,8 @@
     <color name="screenshot_partial_layout_background">#20000000</color>
     <color name="screenshot_partial_capture_background">@*android:color/accent_device_default</color>
     <color name="screenshot_partial_cancel_background">#a0000000</color>
+
+    <!-- QS date color-->
+    <color name="qs_date_color">#B3000000</color>
 </resources>
 

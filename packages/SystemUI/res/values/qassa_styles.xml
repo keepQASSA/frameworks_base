@@ -20,4 +20,10 @@
         <!-- Note: must be dp to fit in status bar -->
         <item name="android:textSize">14dp</item>
     </style>
+
+    <style name="TextAppearance.QS.Date" parent="TextAppearance.QS.TileLabel.Secondary">
+        <item name="android:textSize">@dimen/quick_settings_date_size</item>
+        <item name="android:fontFamily">@*android:string/config_bodyFontFamily</item>
+        <item name="android:textColor">@color/qs_date_color</item>
+    </style>
 </resources>
