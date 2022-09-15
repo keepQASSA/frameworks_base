@@ -10,6 +10,7 @@
 
     <application>
         <uses-library android:name="android.test.runner" />
+        <profileable android:shell="true" />
         <activity android:name="android.perftests.utils.StubActivity">
           <intent-filter>
             <action android:name="com.android.perftests.core.PERFTEST" />
