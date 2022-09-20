@@ -58,10 +58,10 @@ public class NetworkTrafficSB extends TextView implements StatusIconDisplayable 
     private static final int GB = MB * KB;
     private static final String symbol = "/s";
 
-    private int mNetworkTrafficFontStyle = FONT_NORMAL;
-    public static final int FONT_NORMAL = 0;
-    public static final int FONT_ITALIC = 1;
-    public static final int FONT_BOLD = 2;
+    private int mNetworkTrafficFontStyle = FONT_BOLD;
+    public static final int FONT_BOLD = 0;
+    public static final int FONT_NORMAL = 1;
+    public static final int FONT_ITALIC = 2;
     public static final int FONT_BOLD_ITALIC = 3;
     public static final int FONT_LIGHT = 4;
     public static final int FONT_LIGHT_ITALIC = 5;
@@ -506,7 +506,7 @@ public class NetworkTrafficSB extends TextView implements StatusIconDisplayable 
     }
     private void updateNetworkTrafficFontStyle() {
         mNetworkTrafficFontStyle = Settings.System.getIntForUser(mContext.getContentResolver(),
-                Settings.System.NETWORK_TRAFFIC_FONT_STYLE, FONT_NORMAL,
+                Settings.System.NETWORK_TRAFFIC_FONT_STYLE, FONT_BOLD,
 		UserHandle.USER_CURRENT);
         getNetworkTrafficFontStyle(mNetworkTrafficFontStyle);
         updateVisibility();
@@ -514,15 +514,15 @@ public class NetworkTrafficSB extends TextView implements StatusIconDisplayable 
 
     public void getNetworkTrafficFontStyle(int font) {
         switch (font) {
-            case FONT_NORMAL:
+            case FONT_BOLD:
             default:
+                setTypeface(Typeface.create("sans-serif", Typeface.BOLD));
+                break;
+            case FONT_NORMAL:
                 setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
                 break;
             case FONT_ITALIC:
                 setTypeface(Typeface.create("sans-serif", Typeface.ITALIC));
-                break;
-            case FONT_BOLD:
-                setTypeface(Typeface.create("sans-serif", Typeface.BOLD));
                 break;
             case FONT_BOLD_ITALIC:
                 setTypeface(Typeface.create("sans-serif", Typeface.BOLD_ITALIC));
