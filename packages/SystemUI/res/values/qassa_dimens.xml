@@ -78,10 +78,10 @@
     <dimen name="biometric_dialog_fod_margin">40dp</dimen>
 
     <dimen name="dismiss_all_button_elevation">10dp</dimen>
-    <dimen name="dismiss_all_button_height">60dp</dimen>
+    <dimen name="dismiss_all_button_height">55dp</dimen>
     <dimen name="dismiss_all_button_margin_bottom">70dp</dimen>
     <dimen name="dismiss_all_button_margin_top">65dp</dimen>
-    <dimen name="dismiss_all_button_width">60dp</dimen>
+    <dimen name="dismiss_all_button_width">55dp</dimen>
     <dimen name="dismiss_all_fab_src_size">24dp</dimen>
 
     <!-- Old style mobile data indicators -->
