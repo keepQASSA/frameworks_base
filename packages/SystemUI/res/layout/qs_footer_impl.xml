@@ -62,7 +62,7 @@
                 android:clickable="true"
                 android:gravity="center_vertical"
                 android:focusable="true"
-                android:textAppearance="@style/TextAppearance.QS.Status"
+                android:textAppearance="@style/TextAppearance.QS.Date"
                 android:textColor="?android:attr/textColorSecondary"
                 android:visibility="gone"/>
          </com.android.keyguard.AlphaOptimizedLinearLayout>
