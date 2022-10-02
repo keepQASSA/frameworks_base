@@ -37,7 +37,7 @@ import com.android.settingslib.Utils
  * A battery meter drawable that respects paths configured in
  * frameworks/base/core/res/res/values/config.xml to allow for an easily overrideable battery icon
  */
-open class LandscapeBuddyBatteryDrawable(private val context: Context, frameColor: Int) : Drawable() {
+open class LandscapeCapsuleBatteryDrawable(private val context: Context, frameColor: Int) : Drawable() {
 
     // Need to load:
     // 1. perimeter shape
@@ -405,23 +405,23 @@ open class LandscapeBuddyBatteryDrawable(private val context: Context, frameColo
 
     private fun loadPaths() {
         val pathString = context.resources.getString(
-                com.android.internal.R.string.config_batterymeterLandBuddyPerimeterPath)
+                com.android.internal.R.string.config_batterymeterLandCapsulePerimeterPath)
         perimeterPath.set(PathParser.createPathFromPathData(pathString))
         perimeterPath.computeBounds(RectF(), true)
 
         val errorPathString = context.resources.getString(
-                com.android.internal.R.string.config_batterymeterLandBuddyErrorPerimeterPath)
+                com.android.internal.R.string.config_batterymeterLandCapsuleErrorPerimeterPath)
         errorPerimeterPath.set(PathParser.createPathFromPathData(errorPathString))
         errorPerimeterPath.computeBounds(RectF(), true)
 
         val fillMaskString = context.resources.getString(
-                com.android.internal.R.string.config_batterymeterLandBuddyFillMask)
+                com.android.internal.R.string.config_batterymeterLandCapsuleFillMask)
         fillMask.set(PathParser.createPathFromPathData(fillMaskString))
         // Set the fill rect so we can calculate the fill properly
         fillMask.computeBounds(fillRect, true)
 
         val plusPathString = context.resources.getString(
-                com.android.internal.R.string.config_batterymeterLandBuddyPowersavePath)
+                com.android.internal.R.string.config_batterymeterLandCapsulePowersavePath)
         plusPath.set(PathParser.createPathFromPathData(plusPathString))
 
         dualTone = context.resources.getBoolean(
@@ -429,7 +429,7 @@ open class LandscapeBuddyBatteryDrawable(private val context: Context, frameColo
     }
 
     companion object {
-        private const val TAG = "LandscapeBuddyBatteryDrawable"
+        private const val TAG = "LandscapeCapsuleBatteryDrawable"
         private const val WIDTH = 12f
         private const val HEIGHT = 20f
         private const val CRITICAL_LEVEL = 15

@@ -37,7 +37,7 @@ import com.android.settingslib.Utils
  * A battery meter drawable that respects paths configured in
  * frameworks/base/core/res/res/values/config.xml to allow for an easily overrideable battery icon
  */
-open class SignalBatteryDrawable(private val context: Context, frameColor: Int) : Drawable() {
+open class IosBatteryDrawable(private val context: Context, frameColor: Int) : Drawable() {
 
     // Need to load:
     // 1. perimeter shape
@@ -426,27 +426,27 @@ open class SignalBatteryDrawable(private val context: Context, frameColor: Int) 
 
     private fun loadPaths() {
         val pathString = context.resources.getString(
-                com.android.internal.R.string.config_batterymeterSignalPerimeterPath)
+                com.android.internal.R.string.config_batterymeterIosPerimeterPath)
         perimeterPath.set(PathParser.createPathFromPathData(pathString))
         perimeterPath.computeBounds(RectF(), true)
 
         val errorPathString = context.resources.getString(
-                com.android.internal.R.string.config_batterymeterSignalErrorPerimeterPath)
+                com.android.internal.R.string.config_batterymeterIosErrorPerimeterPath)
         errorPerimeterPath.set(PathParser.createPathFromPathData(errorPathString))
         errorPerimeterPath.computeBounds(RectF(), true)
 
         val fillMaskString = context.resources.getString(
-                com.android.internal.R.string.config_batterymeterSignalFillMask)
+                com.android.internal.R.string.config_batterymeterIosFillMask)
         fillMask.set(PathParser.createPathFromPathData(fillMaskString))
         // Set the fill rect so we can calculate the fill properly
         fillMask.computeBounds(fillRect, true)
 
         val boltPathString = context.resources.getString(
-                com.android.internal.R.string.config_batterymeterSignalBoltPath)
+                com.android.internal.R.string.config_batterymeterIosBoltPath)
         boltPath.set(PathParser.createPathFromPathData(boltPathString))
 
         val plusPathString = context.resources.getString(
-                com.android.internal.R.string.config_batterymeterSignalPowersavePath)
+                com.android.internal.R.string.config_batterymeterIosPowersavePath)
         plusPath.set(PathParser.createPathFromPathData(plusPathString))
 
         dualTone = context.resources.getBoolean(
@@ -454,7 +454,7 @@ open class SignalBatteryDrawable(private val context: Context, frameColor: Int) 
     }
 
     companion object {
-        private const val TAG = "SignalBatteryDrawable"
+        private const val TAG = "IosBatteryDrawable"
         private const val WIDTH = 12f
         private const val HEIGHT = 20f
         private const val CRITICAL_LEVEL = 15

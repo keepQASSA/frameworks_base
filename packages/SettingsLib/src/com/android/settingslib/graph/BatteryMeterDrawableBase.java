@@ -49,16 +49,16 @@ public class BatteryMeterDrawableBase extends Drawable {
     private static final float RADIUS_RATIO = 1.0f / 17f;
 
     public static final int BATTERY_STYLE_PORTRAIT = 0;
-    public static final int BATTERY_STYLE_MUSKU = 1;
-    public static final int BATTERY_STYLE_PILL = 2;
-    public static final int BATTERY_STYLE_SIGNAL = 3;
+    public static final int BATTERY_STYLE_IOS = 1;
+    public static final int BATTERY_STYLE_MX = 2;
+    public static final int BATTERY_STYLE_AIROO = 3;
     public static final int BATTERY_STYLE_RLANDSCAPE = 4;
     public static final int BATTERY_STYLE_RLANDSCAPE_A = 5;
     public static final int BATTERY_STYLE_RLANDSCAPE_B = 6;
     public static final int BATTERY_STYLE_LANDSCAPE = 7;
     public static final int BATTERY_STYLE_LANDSCAPE_A = 8;
     public static final int BATTERY_STYLE_LANDSCAPE_B = 9;
-    public static final int BATTERY_STYLE_LANDSCAPE_BUDDY = 10;
+    public static final int BATTERY_STYLE_LANDSCAPE_CAPSULE = 10;
     public static final int BATTERY_STYLE_CIRCLE = 11;
     public static final int BATTERY_STYLE_BIG_CIRCLE = 12;
     public static final int BATTERY_STYLE_DOTTED_CIRCLE = 13;
