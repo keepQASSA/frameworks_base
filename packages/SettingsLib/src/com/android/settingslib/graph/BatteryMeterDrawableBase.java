@@ -37,6 +37,8 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.os.UserHandle;
+import android.provider.Settings;
 import android.util.TypedValue;
 
 import com.android.settingslib.R;
@@ -469,8 +471,11 @@ public class BatteryMeterDrawableBase extends Drawable {
 
         // set the battery charging color
         mBatteryPaint.setColor(batteryColorForLevel(level));
-        if (mChargingAnimator != null) {
-            mBoltPaint.setAlpha(mBatteryAlpha);
+        if (Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.CHARGING_ANIMATOR, 1, UserHandle.USER_CURRENT) == 1) {
+            if (mChargingAnimator != null) {
+                mBoltPaint.setAlpha(mBatteryAlpha);
+            }
         }
 
         if (mCharging) {
