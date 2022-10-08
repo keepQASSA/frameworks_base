@@ -314,6 +314,8 @@ public class StatusBar extends SystemUI implements DemoMode,
             "system:" + Settings.System.STATUS_BAR_TICKER_ANIMATION_MODE;
     private static final String STATUS_BAR_TICKER_TICK_DURATION =
             "system:" + Settings.System.STATUS_BAR_TICKER_TICK_DURATION;
+    private static final String SYSUI_ROUNDED_FWVALS =
+            Settings.Secure.SYSUI_ROUNDED_FWVALS;
 
     private static final String BANNER_ACTION_CANCEL =
             "com.android.systemui.statusbar.banner_action_cancel";
@@ -522,6 +524,8 @@ public class StatusBar extends SystemUI implements DemoMode,
     private final Rect mLastDockedStackBounds = new Rect();
 
     private final DisplayMetrics mDisplayMetrics = Dependency.get(DisplayMetrics.class);
+
+    private boolean mSysuiRoundedFwvals;
 
     // XXX: gesture research
     private final GestureRecorder mGestureRec = DEBUG_GESTURES
@@ -800,6 +804,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         tunerService.addTunable(this, SHOW_BACK_ARROW_GESTURE);
         tunerService.addTunable(this, STATUS_BAR_TICKER_ANIMATION_MODE);
         tunerService.addTunable(this, STATUS_BAR_TICKER_TICK_DURATION);
+        tunerService.addTunable(this, SYSUI_ROUNDED_FWVALS);
 
         mDisplayManager = mContext.getSystemService(DisplayManager.class);
 
@@ -4046,6 +4051,21 @@ public class StatusBar extends SystemUI implements DemoMode,
         mScrimController.setExpansionAffectsAlpha(true);
     }
 
+    public boolean isCurrentRoundedSameAsFw() {
+        float density = Resources.getSystem().getDisplayMetrics().density;
+        // Resource IDs for framework properties
+        int resourceIdPadding = (int) mContext.getResources().getDimension(R.dimen.rounded_corner_content_padding);
+
+        // Values on framework resources
+        int contentPaddingRes = (int) (resourceIdPadding / density);
+
+        // Values in Settings DBs
+        int contentPadding = Settings.Secure.getIntForUser(mContext.getContentResolver(),
+                Settings.Secure.SYSUI_ROUNDED_CONTENT_PADDING, contentPaddingRes, UserHandle.USER_CURRENT);
+
+        return (contentPaddingRes == contentPadding);
+    }
+
     /**
      * Switches theme from light to dark and vice-versa.
      */
@@ -4061,6 +4081,16 @@ public class StatusBar extends SystemUI implements DemoMode,
         if (mContext.getThemeResId() != themeResId) {
             mContext.setTheme(themeResId);
             Dependency.get(ConfigurationController.class).notifyThemeChanged();
+        }
+        updateCorners();
+    }
+
+    private void updateCorners() {
+        if (mSysuiRoundedFwvals && !isCurrentRoundedSameAsFw()) {
+            float density = Resources.getSystem().getDisplayMetrics().density;
+            int resourceIdPadding = (int) mContext.getResources().getDimension(R.dimen.rounded_corner_content_padding);
+            Settings.Secure.putIntForUser(mContext.getContentResolver(),
+                Settings.Secure.SYSUI_ROUNDED_CONTENT_PADDING, (int) (resourceIdPadding / density), UserHandle.USER_CURRENT);
         }
     }
 
@@ -5455,6 +5485,11 @@ public class StatusBar extends SystemUI implements DemoMode,
                 if (getNavigationBarView() != null) {
                     getNavigationBarView().updateBackArrowForGesture();
                 }
+                break;
+            case SYSUI_ROUNDED_FWVALS:
+                mSysuiRoundedFwvals =
+                        TunerService.parseIntegerSwitch(newValue, true);
+                updateCorners();
                 break;
             default:
                 break;
