@@ -18,8 +18,8 @@
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:layout_gravity="center_vertical"
-    android:paddingLeft="@dimen/quick_settings_padding_start"
-    android:paddingRight="@dimen/quick_settings_padding_end"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     style="@style/BrightnessDialogContainer">
 
     <com.android.systemui.settings.ToggleSliderView
@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginEnd="18dp"
+        android:layout_marginEnd="8dp"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_qs_brightness_auto_off"
         android:contentDescription="@null"
