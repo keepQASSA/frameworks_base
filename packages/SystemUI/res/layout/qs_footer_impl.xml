@@ -46,7 +46,7 @@
                 android:id="@android:id/edit"
                 android:layout_width="@dimen/qs_footer_action_button_size"
                 android:layout_height="@dimen/qs_footer_action_button_size"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:background="?android:attr/actionBarItemBackground"
                 android:clickable="true"
                 android:clipToPadding="false"
                 android:contentDescription="@string/accessibility_quick_settings_edit"
