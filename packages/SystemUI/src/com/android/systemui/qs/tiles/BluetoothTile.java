@@ -45,6 +45,7 @@ import com.android.systemui.qs.QSDetailItems;
 import com.android.systemui.qs.QSDetailItems.Item;
 import com.android.systemui.qs.QSHost;
 import com.android.systemui.qs.tileimpl.QSTileImpl;
+import com.android.systemui.qs.tiles.dialog.BluetoothDialogFactory;
 import com.android.systemui.statusbar.policy.BluetoothController;
 import com.android.systemui.statusbar.policy.KeyguardMonitor;
 
@@ -58,23 +59,27 @@ import javax.inject.Inject;
 public class BluetoothTile extends QSTileImpl<BooleanState> {
     private static final Intent BLUETOOTH_SETTINGS = new Intent(Settings.Panel.ACTION_BLUETOOTH);
 
+    private final Handler mHandler;
     private final BluetoothController mController;
     private final BluetoothDetailAdapter mDetailAdapter;
     private final ActivityStarter mActivityStarter;
 
     private final KeyguardMonitor mKeyguard;
     private final KeyguardCallback mKeyguardCallback = new KeyguardCallback();
+    private final BluetoothDialogFactory mBluetoothDialogFactory;
 
     @Inject
     public BluetoothTile(QSHost host,
             BluetoothController bluetoothController,
-            ActivityStarter activityStarter) {
+            ActivityStarter activityStarter, BluetoothDialogFactory bluetoothDialogFactory) {
         super(host);
         mController = bluetoothController;
         mActivityStarter = activityStarter;
+        mHandler = mainHandler;
         mDetailAdapter = (BluetoothDetailAdapter) createDetailAdapter();
         mController.observe(getLifecycle(), mCallback);
         mKeyguard = Dependency.get(KeyguardMonitor.class);
+        mBluetoothDialogFactory = bluetoothDialogFactory;
     }
 
     @Override
@@ -84,7 +89,9 @@ public class BluetoothTile extends QSTileImpl<BooleanState> {
 
     @Override
     public BooleanState newTileState() {
-        return new BooleanState();
+        BooleanState s = new BooleanState();
+        s.forceExpandIcon = true;
+        return s;
     }
 
     @Override
@@ -98,11 +105,7 @@ public class BluetoothTile extends QSTileImpl<BooleanState> {
     }
 
     void handleClickInner() {
-        // Secondary clicks are header clicks, just toggle.
-        final boolean isEnabled = mState.value;
-        // Immediately enter transient enabling state when turning bluetooth on.
-        refreshState(isEnabled ? null : ARG_SHOW_TRANSIENT_ENABLING);
-        mController.setBluetoothEnabled(!isEnabled);
+        mHandler.post(() -> mBluetoothDialogFactory.create(true, view));
     }
 
     @Override
