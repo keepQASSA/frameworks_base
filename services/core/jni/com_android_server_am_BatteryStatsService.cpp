@@ -117,7 +117,7 @@ sp<PowerHalDeathRecipient> gDeathRecipient = new PowerHalDeathRecipient();
 class WakeupCallback : public BnSuspendCallback {
    public:
     binder::Status notifyWakeup(bool success) override {
-        ALOGI("In wakeup_callback: %s", success ? "resumed from suspend" : "suspend aborted");
+        ALOGV("In wakeup_callback: %s", success ? "resumed from suspend" : "suspend aborted");
         int ret = sem_post(&wakeup_sem);
         if (ret < 0) {
             char buf[80];
