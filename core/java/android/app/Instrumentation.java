@@ -1161,7 +1161,7 @@ public class Instrumentation {
         Application app = getFactory(context.getPackageName())
                 .instantiateApplication(cl, className);
         app.attach(context);
-        String packageName = app.getPackageName();
+        String packageName = context.getPackageName();
         PixelPropsUtils.setProps(packageName);
         if (SystemProperties.getBoolean(DISGUISE_PROPS_FOR_MUSIC_APP, false)) {
             MeizuPropsUtils.setProps(packageName);
@@ -1183,7 +1183,7 @@ public class Instrumentation {
             ClassNotFoundException {
         Application app = (Application)clazz.newInstance();
         app.attach(context);
-        String packageName = app.getPackageName();
+        String packageName = context.getPackageName();
         PixelPropsUtils.setProps(packageName);
         if (SystemProperties.getBoolean(DISGUISE_PROPS_FOR_MUSIC_APP, false)) {
             MeizuPropsUtils.setProps(packageName);
