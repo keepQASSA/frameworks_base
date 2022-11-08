@@ -136,8 +136,6 @@ public class PixelPropsUtils {
             "barbet",
             "bramble",
             "sunfish",
-            "coral",
-            "flame",
             "bonito",
             "sargo"
     };
