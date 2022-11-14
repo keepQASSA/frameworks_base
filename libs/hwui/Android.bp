@@ -12,6 +12,7 @@ cc_defaults {
     cpp_std: "experimental",
 
     cflags: [
+        "-O3",
         "-DEGL_EGLEXT_PROTOTYPES",
         "-DGL_GLEXT_PROTOTYPES",
         "-DATRACE_TAG=ATRACE_TAG_VIEW",
@@ -81,6 +82,7 @@ cc_defaults {
     name: "hwui_compile_for_perf",
     cflags: [
         "-fno-omit-frame-pointer",
+        "-O3",
     ],
 
     arch: {
@@ -235,7 +237,7 @@ cc_defaults {
     ],
 
     // Allow implicit fallthroughs in HardwareBitmapUploader.cpp until they are fixed.
-    cflags: ["-Wno-implicit-fallthrough"],
+    cflags: ["-Wno-implicit-fallthrough", "-O3"],
 
     proto: {
         export_proto_headers: true,
