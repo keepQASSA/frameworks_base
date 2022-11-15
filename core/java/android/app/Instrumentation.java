@@ -66,7 +66,6 @@ import java.util.List;
 
 import com.android.internal.util.custom.PixelPropsUtils;
 import com.android.internal.util.kscope.MeizuPropsUtils;
-import com.android.internal.util.qassa.AttestationHooks;
 
 /**
  * Base class for implementing application instrumentation code.  When running
@@ -1162,7 +1161,6 @@ public class Instrumentation {
         Application app = getFactory(context.getPackageName())
                 .instantiateApplication(cl, className);
         app.attach(context);
-        AttestationHooks.initApplicationBeforeOnCreate(app);
         String packageName = app.getPackageName();
         PixelPropsUtils.setProps(packageName);
         if (SystemProperties.getBoolean(DISGUISE_PROPS_FOR_MUSIC_APP, false)) {
@@ -1185,7 +1183,6 @@ public class Instrumentation {
             ClassNotFoundException {
         Application app = (Application)clazz.newInstance();
         app.attach(context);
-        AttestationHooks.initApplicationBeforeOnCreate(app);
         String packageName = app.getPackageName();
         PixelPropsUtils.setProps(packageName);
         if (SystemProperties.getBoolean(DISGUISE_PROPS_FOR_MUSIC_APP, false)) {

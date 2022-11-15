@@ -66,7 +66,7 @@ import java.util.Set;
 
 import javax.crypto.SecretKey;
 
-import com.android.internal.util.qassa.AttestationHooks;
+import com.android.internal.util.custom.PixelPropsUtils;
 
 /**
  * A java.security.KeyStore interface for the Android KeyStore. An instance of
@@ -115,7 +115,7 @@ public class AndroidKeyStoreSpi extends KeyStoreSpi {
 
     @Override
     public Certificate[] engineGetCertificateChain(String alias) {
-        AttestationHooks.onEngineGetCertificateChain();
+        PixelPropsUtils.onEngineGetCertificateChain();
 
         if (alias == null) {
             throw new NullPointerException("alias == null");
