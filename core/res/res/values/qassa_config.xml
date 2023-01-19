@@ -411,4 +411,7 @@
 
     <!-- Whether device has warp charging support -->
     <bool name="config_hasWarpCharger">false</bool>
+
+    <!-- Display color inversion availability -->
+    <bool name="config_displayInversionAvailable">true</bool>
 </resources>
