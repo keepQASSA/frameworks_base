@@ -24,25 +24,40 @@ import static com.android.systemui.statusbar.StatusBarIconView.STATE_ICON;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.Rect;
+import android.provider.Settings;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.android.systemui.Dependency;
 import com.android.systemui.R;
 import com.android.systemui.plugins.DarkIconDispatcher.DarkReceiver;
 import com.android.systemui.statusbar.phone.StatusBarSignalPolicy.WifiIconState;
+import com.android.systemui.tuner.TunerService;
 
 /**
  * Start small: StatusBarWifiView will be able to layout from a WifiIconState
  */
 public class StatusBarWifiView extends FrameLayout implements DarkReceiver,
-        StatusIconDisplayable {
+        StatusIconDisplayable,TunerService.Tunable {
     private static final String TAG = "StatusBarWifiView";
+
+    private static final String IDC_WIFI_HEIGHT =
+            "system:" + "IDC_WIFI_HEIGHT";
+    private static final String IDC_WIFI_WIDTH =
+            "system:" + "IDC_WIFI_WIDTH";
+    private static final String IDC_WIFI_TOP =
+            "system:" + "IDC_WIFI_TOP";
+    private static final String IDC_WIFI_CUSTOM_DIMENSION =
+            "system:" + "IDC_WIFI_CUSTOM_DIMENSION";
 
     /// Used to show etc dots
     private StatusBarIconView mDotView;
@@ -57,6 +72,11 @@ public class StatusBarWifiView extends FrameLayout implements DarkReceiver,
     private WifiIconState mState;
     private String mSlot;
     private int mVisibleState = -1;
+
+    private boolean useIdcCustomDimension;
+    private int idcWifiHeight;
+    private int idcWifiWidth;
+    private int idcWifiTop;
 
     public static StatusBarWifiView fromContext(Context context, String slot) {
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -162,6 +182,53 @@ public class StatusBarWifiView extends FrameLayout implements DarkReceiver,
         mInoutContainer = findViewById(R.id.inout_container);
 
         initDotView();
+
+        Dependency.get(TunerService.class).addTunable(this,
+                IDC_WIFI_HEIGHT, IDC_WIFI_WIDTH, IDC_WIFI_CUSTOM_DIMENSION, IDC_WIFI_TOP);
+    }
+
+    private void setMobileWifiDimension(boolean idcganteng) {
+        ViewGroup.LayoutParams p = mWifiIcon.getLayoutParams();
+        if (!idcganteng) {
+            if (!useIdcCustomDimension) {
+                if (p != null) {
+                p.width = mContext.getResources().getDimensionPixelSize(
+                      R.dimen.status_bar_wifi_signal_size);
+                p.height = mContext.getResources().getDimensionPixelSize(
+                      R.dimen.status_bar_wifi_signal_size);
+                mWifiIcon.setPadding(0, 0, 0, 0);
+               } else {
+                p = new ViewGroup.LayoutParams(mContext.getResources().getDimensionPixelSize(
+                      R.dimen.status_bar_wifi_signal_size), mContext.getResources().getDimensionPixelSize(
+                      R.dimen.status_bar_wifi_signal_size));
+                mWifiIcon.setPadding(0, 0, 0, 0);
+               }
+            } else {
+               if (p != null) {
+                p.height = (int) idcWifiHeight;
+                p.width = (int) idcWifiWidth;
+                int paddingtop =  (int) idcWifiTop;
+                mWifiIcon.setPadding(0, paddingtop, 0, 0);
+               } else {
+                mWifiIcon.setPadding(0, 0, 0, 0);
+                p = new ViewGroup.LayoutParams((int) idcWifiWidth, (int) idcWifiHeight);
+               }
+            }
+        } else {
+            if (p != null) {
+            p.width = mContext.getResources().getDimensionPixelSize(
+                      R.dimen.status_bar_icon_size);
+            p.height = mContext.getResources().getDimensionPixelSize(
+                      R.dimen.status_bar_icon_size);
+            mWifiIcon.setPadding(0, 0, 0, 0);
+            } else {
+                mWifiIcon.setPadding(0, 0, 0, 0);
+                p = new ViewGroup.LayoutParams(mContext.getResources().getDimensionPixelSize(
+                      R.dimen.status_bar_wifi_signal_size), mContext.getResources().getDimensionPixelSize(
+                      R.dimen.status_bar_wifi_signal_size));
+            }
+        }
+        mWifiIcon.setLayoutParams(p);
     }
 
     private void initDotView() {
@@ -249,5 +316,31 @@ public class StatusBarWifiView extends FrameLayout implements DarkReceiver,
     @Override
     public String toString() {
         return "StatusBarWifiView(slot=" + mSlot + " state=" + mState + ")";
+    }
+
+    @Override
+    public void onTuningChanged(String key, String newValue) {
+        if (IDC_WIFI_HEIGHT.equals(key)) {
+            int midcWifiHeight = TunerService.parseInteger(newValue, 15);
+            idcWifiHeight = Math.round(TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, midcWifiHeight,
+                getResources().getDisplayMetrics()));
+            setMobileWifiDimension(false);
+        } else if (IDC_WIFI_WIDTH.equals(key)) {
+            int midcWifiWidth = TunerService.parseInteger(newValue, 15);
+            idcWifiWidth = Math.round(TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, midcWifiWidth,
+                getResources().getDisplayMetrics()));
+            setMobileWifiDimension(false);
+        } else if (IDC_WIFI_TOP.equals(key)) {
+            int midcWifiTop = TunerService.parseInteger(newValue, 0);
+            idcWifiTop = Math.round(TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, midcWifiTop,
+                getResources().getDisplayMetrics()));
+            setMobileWifiDimension(false);
+        } else if (IDC_WIFI_CUSTOM_DIMENSION.equals(key)) {
+            useIdcCustomDimension = TunerService.parseIntegerSwitch(newValue, false);
+            setMobileWifiDimension(false);
+        }
     }
 }
