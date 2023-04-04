@@ -105,6 +105,10 @@ public class DisplayWhiteBalanceSettings implements
      * @return Whether the method succeeded or not.
      */
     public boolean setLoggingEnabled(boolean loggingEnabled) {
+        if (mLoggingEnabled == loggingEnabled) {
+            return false;
+        }
+        mLoggingEnabled = loggingEnabled;
         return true;
     }
 

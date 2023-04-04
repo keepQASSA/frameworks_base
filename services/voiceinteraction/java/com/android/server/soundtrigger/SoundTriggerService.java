@@ -92,7 +92,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class SoundTriggerService extends SystemService {
     private static final String TAG = "SoundTriggerService";
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
     final Context mContext;
     private Object mLock;

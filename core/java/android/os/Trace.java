@@ -178,10 +178,6 @@ public final class Trace {
      */
     @UnsupportedAppUsage
     public static boolean isTagEnabled(long traceTag) {
-        if (!Build.IS_DEBUGGABLE) {
-            return false;
-        }
-
         long tags = sEnabledTags;
         if (tags == TRACE_TAG_NOT_READY) {
             tags = cacheEnabledTags();

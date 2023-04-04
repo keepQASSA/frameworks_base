@@ -270,6 +270,15 @@ public class DisplayWhiteBalanceController implements
      * @return Whether the method succeeded or not.
      */
     public boolean setLoggingEnabled(boolean loggingEnabled) {
+        if (mLoggingEnabled == loggingEnabled) {
+            return false;
+        }
+        mLoggingEnabled = loggingEnabled;
+        mBrightnessSensor.setLoggingEnabled(loggingEnabled);
+        mBrightnessFilter.setLoggingEnabled(loggingEnabled);
+        mColorTemperatureSensor.setLoggingEnabled(loggingEnabled);
+        mColorTemperatureFilter.setLoggingEnabled(loggingEnabled);
+        mThrottler.setLoggingEnabled(loggingEnabled);
         return true;
     }
 

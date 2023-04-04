@@ -44,9 +44,9 @@ import java.util.function.Consumer;
     private static final String TAG = "NanoAppStateManager";
 
     /*
-     * Disable verbose debug logs for this class.
+     * Enables verbose debug logs for this class.
      */
-    private static final boolean ENABLE_LOG_DEBUG = false;
+    private static final boolean ENABLE_LOG_DEBUG = true;
 
     /*
      * Service cache maintaining of handle to nanoapp infos.

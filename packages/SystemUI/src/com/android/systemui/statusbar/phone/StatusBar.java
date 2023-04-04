@@ -324,7 +324,7 @@ public class StatusBar extends SystemUI implements DemoMode,
     public static final String TAG = "StatusBar";
     public static final boolean DEBUG = false;
     public static final boolean SPEW = false;
-    public static final boolean DUMPTRUCK = false; // extra dumpsys info
+    public static final boolean DUMPTRUCK = true; // extra dumpsys info
     public static final boolean DEBUG_GESTURES = false;
     public static final boolean DEBUG_MEDIA_FAKE_ARTWORK = false;
     public static final boolean DEBUG_CAMERA_LIFT = false;
@@ -1766,6 +1766,13 @@ public class StatusBar extends SystemUI implements DemoMode,
         final int old2 = mDisabled2;
         final int diff2 = state2 ^ old2;
         mDisabled2 = state2;
+
+        if (DEBUG) {
+            Log.d(TAG, String.format("disable1: 0x%08x -> 0x%08x (diff1: 0x%08x)",
+                old1, state1, diff1));
+            Log.d(TAG, String.format("disable2: 0x%08x -> 0x%08x (diff2: 0x%08x)",
+                old2, state2, diff2));
+        }
 
         StringBuilder flagdbg = new StringBuilder();
         flagdbg.append("disable<");
