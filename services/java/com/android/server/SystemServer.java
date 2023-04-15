@@ -134,6 +134,7 @@ import com.android.server.policy.PermissionPolicyService;
 import com.android.server.policy.PhoneWindowManager;
 import com.android.server.policy.role.LegacyRoleResolutionPolicy;
 import com.android.server.power.PowerManagerService;
+import com.android.server.power.PowerOffAlarmService;
 import com.android.server.power.ShutdownThread;
 import com.android.server.power.ThermalManagerService;
 import com.android.server.restrictions.RestrictionsManagerService;
@@ -1124,6 +1125,10 @@ public final class SystemServer {
 
             traceBeginAndSlog("SignedConfigService");
             SignedConfigService.registerUpdateReceiver(mSystemContext);
+            traceEnd();
+
+            traceBeginAndSlog("StartPowerOffAlarmService");
+            mSystemServiceManager.startService(PowerOffAlarmService.class);
             traceEnd();
         } catch (RuntimeException e) {
             Slog.e("System", "******************************************");
