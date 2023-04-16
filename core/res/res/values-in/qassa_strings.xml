@@ -31,4 +31,7 @@
     <string name="permdesc_fakePackageSignature">Mengizinkan aplikasi berpura-pura menjadi aplikasi yang berbeda. Aplikasi hasad mungkin dapat menggunakan ini untuk mengakses data aplikasi pribadi. Penggunaan yang sah termasuk emulator yang berpura-pura menjadi apa yang ditirunya. Berikan izin ini dengan hati-hati saja!</string>
     <string name="app_clipboard_access_denied">%1$s ditolak akses ke papan klip</string>
     <string name="app_clipboard_access_granted">%1$s diberikan akses ke papan klip</string>
+    <string name="notification_channel_poweroff_alarm">Matikan alarm</string>
+    <string name="poweroff_alarm_title">Matikan alarm set</string>
+    <string name="poweroff_alarm_body">Alarm terdeteksi dan perangkat akan menyala 2 menit sebelum waktunya</string>
 </resources>
