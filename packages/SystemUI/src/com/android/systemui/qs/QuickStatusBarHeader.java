@@ -948,7 +948,8 @@ public class QuickStatusBarHeader extends RelativeLayout implements
             String chipStyleUri = "sb_qs_date_bg" + String.valueOf(mShowQSClockBg);
             int resId = getContext().getResources().getIdentifier(chipStyleUri, "drawable", "com.android.systemui");
             mClockView.setBackgroundResource(resId);
-            mClockView.setPadding(10,5,10,5);
+            mClockView.setPadding(14,2,14,2);
+            mClockView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         } else {
             int clockPaddingStart = getResources().getDimensionPixelSize(
                     R.dimen.status_bar_clock_starting_padding);
@@ -960,6 +961,7 @@ public class QuickStatusBarHeader extends RelativeLayout implements
                     R.dimen.status_bar_left_clock_end_padding);
             mClockView.setBackgroundResource(0);
             mClockView.setPaddingRelative(leftClockPaddingStart, 0, leftClockPaddingEnd, 0);
+            mClockView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
         }
     }
 }
