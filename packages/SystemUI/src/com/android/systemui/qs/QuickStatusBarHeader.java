@@ -190,7 +190,7 @@ public class QuickStatusBarHeader extends RelativeLayout implements
     private boolean mIsQuickQsBrightnessEnabled;
     private boolean mIsQsAutoBrightnessEnabled;
 
-    private boolean mShowQSClockBg;
+    private int mShowQSClockBg;
 
     // Data Usage
     private View mDataUsageLayout;
@@ -935,7 +935,7 @@ public class QuickStatusBarHeader extends RelativeLayout implements
                 break;
             case QUICKSETTINGS_CLOCK_CHIP:
                 mShowQSClockBg =
-                        TunerService.parseIntegerSwitch(newValue, false);
+                        TunerService.parseInteger(newValue, 0);
                 updateQuickSettingsClock();
                 break;
             default:
@@ -944,8 +944,10 @@ public class QuickStatusBarHeader extends RelativeLayout implements
     }
 
    private void updateQuickSettingsClock() {
-        if (mShowQSClockBg) {
-            mClockView.setBackgroundResource(R.drawable.sb_date_bg);
+        if (mShowQSClockBg != 0) {
+            String chipStyleUri = "sb_qs_date_bg" + String.valueOf(mShowQSClockBg);
+            int resId = getContext().getResources().getIdentifier(chipStyleUri, "drawable", "com.android.systemui");
+            mClockView.setBackgroundResource(resId);
             mClockView.setPadding(10,5,10,5);
         } else {
             int clockPaddingStart = getResources().getDimensionPixelSize(
