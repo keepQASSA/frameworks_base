@@ -227,4 +227,7 @@
 
     <color name="system_accent1_300">#5ba2ff</color>
     <color name="system_accent1_600">#0053a3</color>
+    <color name="system_accent2_300">#9aabc0</color>
+    <color name="system_accent3_600">#794183</color>
+    <color name="system_neutral2_50">#e6f1fd</color>
 </resources>
