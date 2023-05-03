@@ -298,7 +298,7 @@ class BatteryExternalStatsWorker implements BatteryStatsImpl.ExternalStatsSync {
         }
     }
 
-    public void shutdown() {
+    public synchronized void shutdown() {
         mExecutorService.shutdownNow();
     }
 
