@@ -413,5 +413,5 @@
     <bool name="config_hasWarpCharger">false</bool>
 
     <!-- Display color inversion availability -->
-    <bool name="config_displayInversionAvailable">true</bool>
+    <bool name="config_displayInversionAvailable">false</bool>
 </resources>
