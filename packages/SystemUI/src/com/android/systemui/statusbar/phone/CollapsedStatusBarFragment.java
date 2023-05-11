@@ -20,12 +20,8 @@ import static android.app.StatusBarManager.DISABLE_SYSTEM_INFO;
 
 import android.annotation.Nullable;
 import android.app.Fragment;
-import android.content.ContentResolver;
-import android.database.ContentObserver;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Parcelable;
-import android.os.UserHandle;
 import android.provider.Settings;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -82,26 +78,7 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     private CommandQueue mCommandQueue;
     private ClockController mClockController;
 
-    private boolean mShowSBClockBg = true;
-    private final Handler mHandler = new Handler();
-
-    private class SettingsObserver extends ContentObserver {
-       SettingsObserver(Handler handler) {
-           super(handler);
-       }
-       void observe() {
-         mContentResolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.STATUSBAR_CLOCK_CHIP),
-                    false, this, UserHandle.USER_ALL);
-       }
-
-       @Override
-       public void onChange(boolean selfChange) {
-           updateSettings(true);
-       }
-    }
-    private SettingsObserver mSettingsObserver;
-    private ContentResolver mContentResolver;
+    private boolean mShowSBClockBg;
 
     private int mTickerEnabled;
     private View mTickerViewFromStub;
@@ -117,6 +94,9 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
             "system:" + Settings.System.STATUS_BAR_SHOW_LYRIC;
 
     private View mBatteryBar;
+
+    private static final String STATUSBAR_CLOCK_CHIP =
+            "system:" + Settings.System.STATUSBAR_CLOCK_CHIP;
 
     private SignalCallback mSignalCallback = new SignalCallback() {
         @Override
@@ -160,8 +140,6 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
                     savedInstanceState.getSparseParcelableArray(EXTRA_PANEL_STATE));
         }
         mDarkIconManager = new DarkIconManager(view.findViewById(R.id.statusIcons));
-        mContentResolver = getContext().getContentResolver();
-        mSettingsObserver = new SettingsObserver(mHandler);
         mDarkIconManager.setShouldLog(true);
         Dependency.get(StatusBarIconController.class).addIconGroup(mDarkIconManager);
         mSystemIconArea = mStatusBar.findViewById(R.id.system_icon_area);
@@ -175,8 +153,6 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
         showSystemIconArea(false);
         initEmergencyCryptkeeperText();
         initOperatorName();
-        mSettingsObserver.observe();
-        updateSettings(false);
         Dependency.get(TunerService.class).addTunable(this,
                 STATUS_BAR_SHOW_TICKER);
         Dependency.get(TunerService.class).addTunable(this,
@@ -196,6 +172,7 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
         super.onResume();
         mCommandQueue.addCallback(this);
         mStatusBarStateController.addCallback(this);
+        Dependency.get(TunerService.class).addTunable(this, STATUSBAR_CLOCK_CHIP);
     }
 
     @Override
@@ -227,8 +204,39 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
                 mLyricEnabled = TunerService.parseIntegerSwitch(newValue, false);
                 initLyricView();
                 break;
+            case STATUSBAR_CLOCK_CHIP:
+                mShowSBClockBg =
+                        TunerService.parseIntegerSwitch(newValue, false);
+                updateStatusBarClock();
+                break;
             default:
                 break;
+        }
+    }
+
+    private void updateStatusBarClock() {
+        if (mShowSBClockBg) {
+            mClockView.setBackgroundResource(R.drawable.sb_date_bg);
+            mClockView.setPadding(10,2,10,2);
+            mCenterClockView.setBackgroundResource(R.drawable.sb_date_bg);
+            mCenterClockView.setPadding(10,2,10,2);
+            mRightClockView.setBackgroundResource(R.drawable.sb_date_bg);
+            mRightClockView.setPadding(10,2,10,2);
+        } else {
+            int clockPaddingStart = getResources().getDimensionPixelSize(
+                    R.dimen.status_bar_clock_starting_padding);
+            int clockPaddingEnd = getResources().getDimensionPixelSize(
+                    R.dimen.status_bar_clock_end_padding);
+            int leftClockPaddingStart = getResources().getDimensionPixelSize(
+                    R.dimen.status_bar_left_clock_starting_padding);
+            int leftClockPaddingEnd = getResources().getDimensionPixelSize(
+                    R.dimen.status_bar_left_clock_end_padding);
+            mClockView.setBackgroundResource(0);
+            mClockView.setPaddingRelative(leftClockPaddingStart, 0, leftClockPaddingEnd, 0);
+            mCenterClockView.setBackgroundResource(0);
+            mCenterClockView.setPaddingRelative(0,0,0,0);
+            mRightClockView.setBackgroundResource(0);
+            mRightClockView.setPaddingRelative(clockPaddingStart, 0, clockPaddingEnd, 0);
         }
     }
 
@@ -497,29 +505,6 @@ public class CollapsedStatusBarFragment extends Fragment implements CommandQueue
     @Override
     public void onDozingChanged(boolean isDozing) {
         disable(getContext().getDisplayId(), mDisabled1, mDisabled1, false /* animate */);
-    }
-
-    public void updateSettings(boolean animate) {
-
-        mShowSBClockBg = Settings.System.getIntForUser(mContentResolver,
-                Settings.System.STATUSBAR_CLOCK_CHIP, 1,
-                UserHandle.USER_CURRENT) == 1;
-
-        if (mShowSBClockBg) {
-            mClockView.setBackgroundResource(R.drawable.sb_date_bg);
-            mClockView.setPadding(10,5,10,5);
-            mCenterClockView.setBackgroundResource(R.drawable.sb_date_bg);
-            mCenterClockView.setPadding(10,5,10,5);
-            mRightClockView.setBackgroundResource(R.drawable.sb_date_bg);
-            mRightClockView.setPadding(10,5,10,5);
-        } else {
-            mClockView.setBackgroundResource(0);
-            mClockView.setPadding(0,0,0,0);
-            mCenterClockView.setBackgroundResource(0);
-            mCenterClockView.setPadding(0,0,0,0);
-            mRightClockView.setBackgroundResource(0);
-            mRightClockView.setPadding(0,0,0,0);
-        }
     }
 
     private void initTickerView() {

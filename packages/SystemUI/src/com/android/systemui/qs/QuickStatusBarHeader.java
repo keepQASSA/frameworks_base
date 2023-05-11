@@ -133,6 +133,8 @@ public class QuickStatusBarHeader extends RelativeLayout implements
             "system:" + Settings.System.STATUS_BAR_CLOCK;
     private static final String SHOW_QS_CLOCK =
             "system:" + Settings.System.SHOW_QS_CLOCK;
+    private static final String QUICKSETTINGS_CLOCK_CHIP =
+            "system:" + Settings.System.QUICKSETTINGS_CLOCK_CHIP;
 
     private final Handler mHandler = new Handler();
     private final NextAlarmController mAlarmController;
@@ -188,7 +190,7 @@ public class QuickStatusBarHeader extends RelativeLayout implements
     private boolean mIsQuickQsBrightnessEnabled;
     private boolean mIsQsAutoBrightnessEnabled;
 
-    private boolean mShowQSClockBg = true;
+    private boolean mShowQSClockBg;
 
     // Data Usage
     private View mDataUsageLayout;
@@ -201,21 +203,11 @@ public class QuickStatusBarHeader extends RelativeLayout implements
        }
        void observe() {
          ContentResolver resolver = getContext().getContentResolver();
-         mContentResolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.QUICKSETTINGS_CLOCK_CHIP),
-                    false, this, UserHandle.USER_ALL);
          resolver.registerContentObserver(Settings.System
                     .getUriFor(Settings.System.QS_DATAUSAGE), false,
                     this, UserHandle.USER_ALL);
        }
-
-       @Override
-       public void onChange(boolean selfChange) {
-           updateSettings(true);
-       }
     }
-    private SettingsObserver mSettingsObserver;
-    private ContentResolver mContentResolver;
 
     private final BroadcastReceiver mRingerReceiver = new BroadcastReceiver() {
         @Override
@@ -310,9 +302,6 @@ public class QuickStatusBarHeader extends RelativeLayout implements
         float intensity = getColorIntensity(colorForeground);
         int fillColor = mDualToneHandler.getSingleColor(intensity);
 
-        mContentResolver = getContext().getContentResolver();
-        mSettingsObserver = new SettingsObserver(mHandler);
-
         // Set light text on the header icons because they will always be on a black background
         applyDarkness(R.id.clock, tintArea, 0, DarkIconDispatcher.DEFAULT_ICON_TINT);
 
@@ -344,9 +333,6 @@ public class QuickStatusBarHeader extends RelativeLayout implements
         mDataUsageLayout = findViewById(R.id.daily_data_usage_layout);
         mDataUsageImage = findViewById(R.id.daily_data_usage_icon);
         mDataUsageView = findViewById(R.id.data_sim_usage);
-
-        mSettingsObserver.observe();
-        updateSettings(false);
 
         mPermissionsHubEnabled = PrivacyItemControllerKt.isPermissionsHubEnabled();
         // Change the ignored slots when DeviceConfig flag changes
@@ -655,7 +641,8 @@ public class QuickStatusBarHeader extends RelativeLayout implements
                 QS_BATTERY_LOCATION,
                 QSFooterImpl.QS_SHOW_DRAG_HANDLE,
                 STATUS_BAR_CLOCK,
-                SHOW_QS_CLOCK);
+                SHOW_QS_CLOCK,
+                QUICKSETTINGS_CLOCK_CHIP);
         super.onAttachedToWindow();
         mStatusBarIconController.addIconGroup(mIconManager);
         requestApplyInsets();
@@ -946,23 +933,31 @@ public class QuickStatusBarHeader extends RelativeLayout implements
                         TunerService.parseIntegerSwitch(newValue, true);
                 updateResources();
                 break;
+            case QUICKSETTINGS_CLOCK_CHIP:
+                mShowQSClockBg =
+                        TunerService.parseIntegerSwitch(newValue, false);
+                updateQuickSettingsClock();
+                break;
             default:
                 break;
         }
     }
 
-    public void updateSettings(boolean animate) {
-
-        mShowQSClockBg = Settings.System.getIntForUser(mContentResolver,
-                Settings.System.QUICKSETTINGS_CLOCK_CHIP, 0,
-                UserHandle.USER_CURRENT) == 1;
-
+   private void updateQuickSettingsClock() {
         if (mShowQSClockBg) {
             mClockView.setBackgroundResource(R.drawable.sb_date_bg);
             mClockView.setPadding(10,5,10,5);
         } else {
+            int clockPaddingStart = getResources().getDimensionPixelSize(
+                    R.dimen.status_bar_clock_starting_padding);
+            int clockPaddingEnd = getResources().getDimensionPixelSize(
+                    R.dimen.status_bar_clock_end_padding);
+            int leftClockPaddingStart = getResources().getDimensionPixelSize(
+                    R.dimen.status_bar_left_clock_starting_padding);
+            int leftClockPaddingEnd = getResources().getDimensionPixelSize(
+                    R.dimen.status_bar_left_clock_end_padding);
             mClockView.setBackgroundResource(0);
-            mClockView.setPadding(0,0,0,0);
+            mClockView.setPaddingRelative(leftClockPaddingStart, 0, leftClockPaddingEnd, 0);
         }
     }
 }
