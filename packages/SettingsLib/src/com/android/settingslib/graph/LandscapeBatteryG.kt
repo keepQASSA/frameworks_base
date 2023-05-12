@@ -599,7 +599,7 @@ open class LandscapeBatteryG(private val context: Context, frameColor: Int) : Dr
 
     companion object {
         private const val TAG = "LandscapeBatteryG"
-        private const val WIDTH = 20f
+        private const val WIDTH = 22f
         private const val HEIGHT = 13f
         private const val CRITICAL_LEVEL = 15
         // On a 20x13 grid, how wide to make the fill protection stroke.
