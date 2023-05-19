@@ -1,5 +1,7 @@
 /*
  * Copyright (C) 2020 The Pixel Experience Project
+ *               2021-2023 crDroid Android Project
+ *               2022-2023 QASSA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.internal.util.custom;
+
+package com.android.internal.util.qassa;
 
 import android.app.Application;
 import android.os.Build;
@@ -29,35 +32,45 @@ import java.util.Map;
 
 public class PixelPropsUtils {
 
-    public static final String PACKAGE_GMS = "com.google.android.gms";
-    private static final String DEVICE = "ro.qassa.device";
     private static final String TAG = PixelPropsUtils.class.getSimpleName();
+    private static final String DEVICE = "ro.product.device";
     private static final boolean DEBUG = false;
-
-    private static final String SAMSUNG = "com.samsung.android.";
 
     private static final Map<String, Object> propsToChange;
     private static final Map<String, Object> propsToChangePixel5;
     private static final Map<String, Object> propsToChangePixel7Pro;
     private static final Map<String, Object> propsToChangePixelXL;
+    private static final Map<String, Object> propsToChangeROG1;
+    private static final Map<String, Object> propsToChangeXP5;
+    private static final Map<String, Object> propsToChangeOP8P;
+    private static final Map<String, Object> propsToChangeOP9P;
+    private static final Map<String, Object> propsToChangeMI11;
     private static final Map<String, ArrayList<String>> propsToKeep;
 
     private static final String[] packagesToChangePixel7Pro = {
             "com.google.android.apps.wallpaper",
-            "com.google.android.apps.privacy.wildlife"
+            "com.google.android.apps.privacy.wildlife",
+            "com.google.android.inputmethod.latin"
     };
 
     private static final String[] packagesToChangePixelXL = {
-            "com.google.android.apps.photos",
-            "com.google.android.inputmethod.latin"
+            "com.samsung.accessory",
+            "com.samsung.accessory.fridaymgr",
+            "com.samsung.accessory.berrymgr",
+            "com.samsung.accessory.neobeanmgr",
+            "com.samsung.android.app.watchmanager",
+            "com.samsung.android.geargplugin",
+            "com.samsung.android.gearnplugin",
+            "com.samsung.android.modenplugin",
+            "com.samsung.android.neatplugin",
+            "com.samsung.android.waterplugin"
     };
 
     private static final String[] extraPackagesToChange = {
             "com.android.chrome",
             "com.android.vending",
             "com.breel.wallpapers20",
-     	    "com.google.android.apps.wallpaper",
-            "com.google.android.gm"
+            "com.nhs.online.nhsonline"
     };
 
     private static final String[] packagesToKeep = {
@@ -83,21 +96,12 @@ public class PixelPropsUtils {
             "com.google.android.apps.wearables.maestro.companion"
     };
 
-    private static final String[] streamingPackagesToChange = {
-            "com.amazon.avod.thirdpartyclient",
-            "com.disney.disneyplus",
-            "com.netflix.mediaclient",
-            "in.startv.hotstar"
-    };
-
-    private static final Map<String, Object> propsToChangeROG1;
     private static final String[] packagesToChangeROG1 = {
             "com.dts.freefireth",
             "com.dts.freefiremax",
             "com.madfingergames.legends"
     };
 
-    private static final Map<String, Object> propsToChangeXP5;
     private static final String[] packagesToChangeXP5 = {
             "com.activision.callofduty.shooter",
             "com.tencent.tmgp.kr.codm",
@@ -105,38 +109,44 @@ public class PixelPropsUtils {
             "com.vng.codmvn"
     };
 
-    private static final Map<String, Object> propsToChangeOP8P;
     private static final String[] packagesToChangeOP8P = {
             "com.tencent.ig",
             "com.pubg.imobile",
             "com.pubg.krmobile",
-            "com.pubg.newstate",
             "com.vng.pubgmobile",
             "com.rekoo.pubgm",
             "com.tencent.tmgp.pubgmhd",
             "com.riotgames.league.wildrift",
             "com.riotgames.league.wildrifttw",
             "com.riotgames.league.wildriftvn",
-            "com.netease.lztgglobal",
+            "com.netease.lztgglobal"
+    };
+
+    private static final String[] packagesToChangeOP9P = {
             "com.epicgames.fortnite",
             "com.epicgames.portal"
     };
 
-    private static final Map<String, Object> propsToChangeMI11;
     private static final String[] packagesToChangeMI11 = {
-            "com.mobile.legends"
+            "com.ea.gp.apexlegendsmobilefps",
+            "com.levelinfinite.hotta.gp",
+            "com.mobile.legends",
+            "com.tencent.tmgp.sgame"
     };
 
     // Codenames for currently supported Pixels by Google
     private static final String[] pixelCodenames = {
+            "cheetah",
+            "panther",
+            "bluejay",
             "oriole",
             "raven",
-            "redfin",
             "barbet",
+            "redfin",
             "bramble",
             "sunfish",
-            "bonito",
-            "sargo"
+            "coral",
+            "flame"
     };
 
     private static volatile boolean sIsGms = false;
@@ -175,6 +185,12 @@ public class PixelPropsUtils {
         propsToChangeOP8P = new HashMap<>();
         propsToChangeOP8P.put("MODEL", "IN2020");
         propsToChangeOP8P.put("MANUFACTURER", "OnePlus");
+        propsToChangeOP9P = new HashMap<>();
+        propsToChangeOP9P.put("BRAND", "OnePlus");
+        propsToChangeOP9P.put("MANUFACTURER", "OnePlus");
+        propsToChangeOP9P.put("DEVICE", "OnePlus9Pro");
+        propsToChangeOP9P.put("PRODUCT", "OnePlus9Pro_EEA");
+        propsToChangeOP9P.put("MODEL", "LE2123");
         propsToChangeMI11 = new HashMap<>();
         propsToChangeMI11.put("BRAND", "Xiaomi");
         propsToChangeMI11.put("MANUFACTURER", "Xiaomi");
@@ -187,35 +203,28 @@ public class PixelPropsUtils {
         if (packageName == null || packageName.isEmpty()) {
             return;
         }
-        if (packageName.equals(PACKAGE_GMS)) {
-            sIsGms = true;
+        if (Arrays.asList(packagesToKeep).contains(packageName)) {
+            return;
         }
-        boolean isPixelDevice = Arrays.asList(pixelCodenames).contains(SystemProperties.get(DEVICE));
-        if (!isPixelDevice &&
-            ((packageName.startsWith("com.google.") && !Arrays.asList(packagesToKeep).contains(packageName))
-                || packageName.startsWith(SAMSUNG)
-                || Arrays.asList(extraPackagesToChange).contains(packageName)
-                || Arrays.asList(streamingPackagesToChange).contains(packageName))) {
+        if (packageName.startsWith("com.google.")
+                || Arrays.asList(extraPackagesToChange).contains(packageName)) {
+
+            boolean isPixelDevice = Arrays.asList(pixelCodenames).contains(SystemProperties.get(DEVICE));
 
             if (packageName.equals("com.google.android.apps.photos")) {
-                if (!SystemProperties.getBoolean("persist.sys.pixelprops.gphotos", true))
-                    return;
-            }
-
-            if (Arrays.asList(streamingPackagesToChange).contains(packageName)) {
-                if (!SystemProperties.getBoolean("persist.sys.pixelprops.streaming", true))
-                    return;
-            }
-
-            if (packageName.equals("com.google.android.apps.photos")) {
-                propsToChange.putAll(propsToChangePixelXL);
+                if (SystemProperties.getBoolean("persist.sys.pixelprops.gphotos", true)) {
+                    propsToChange.putAll(propsToChangePixelXL);
+                } else {
+                    if (isPixelDevice) return;
+                    propsToChange.putAll(propsToChangePixel5);
+                }
+            } else if (isPixelDevice) {
+                return;
             } else if (packageName.equals("com.android.vending")) {
                 sIsFinsky = true;
                 return;
             } else {
-                if ((Arrays.asList(packagesToChangePixel7Pro).contains(packageName))
-                        || packageName.startsWith(SAMSUNG)
-                        || Arrays.asList(extraPackagesToChange).contains(packageName)) {
+                if (Arrays.asList(packagesToChangePixel7Pro).contains(packageName)) {
                     propsToChange.putAll(propsToChangePixel7Pro);
                 } else if (Arrays.asList(packagesToChangePixelXL).contains(packageName)) {
                     propsToChange.putAll(propsToChangePixelXL);
@@ -239,7 +248,8 @@ public class PixelPropsUtils {
                 final String processName = Application.getProcessName();
                 if (processName.equals("com.google.android.gms.unstable")) {
                     sIsGms = true;
-                    spoofBuildGms();
+                    setPropValue("FINGERPRINT", "google/angler/angler:6.0/MDB08L/2343525:user/release-keys");
+                    setPropValue("MODEL", "angler");
                 }
                 return;
             }
@@ -273,6 +283,13 @@ public class PixelPropsUtils {
                     Object value = prop.getValue();
                     setPropValue(key, value);
                 }
+            } else if (Arrays.asList(packagesToChangeOP9P).contains(packageName)) {
+                if (DEBUG) Log.d(TAG, "Defining props for: " + packageName);
+                for (Map.Entry<String, Object> prop : propsToChangeOP9P.entrySet()) {
+                    String key = prop.getKey();
+                    Object value = prop.getValue();
+                    setPropValue(key, value);
+                }
             } else if (Arrays.asList(packagesToChangeMI11).contains(packageName)) {
                 if (DEBUG) Log.d(TAG, "Defining props for: " + packageName);
                 for (Map.Entry<String, Object> prop : propsToChangeMI11.entrySet()) {
@@ -296,56 +313,19 @@ public class PixelPropsUtils {
         }
     }
 
-    private static void setBuildField(String key, String value) {
-        try {
-            // Unlock
-            Field field = Build.class.getDeclaredField(key);
-            field.setAccessible(true);
-
-            // Edit
-            field.set(null, value);
-
-            // Lock
-            field.setAccessible(false);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            Log.e(TAG, "Failed to spoof Build." + key, e);
-        }
-    }
-
-    private static void setVersionField(String key, Integer value) {
-        try {
-            // Unlock
-            Field field = Build.VERSION.class.getDeclaredField(key);
-            field.setAccessible(true);
-
-            // Edit
-            field.set(null, value);
-
-            // Lock
-            field.setAccessible(false);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            Log.e(TAG, "Failed to spoof Build." + key, e);
-        }
-    }
-
-    private static void spoofBuildGms() {
-        // Alter model name and fingerprint to avoid hardware attestation enforcement
-        setBuildField("FINGERPRINT", "google/marlin/marlin:7.1.2/NJH47F/4146041:user/release-keys");
-        setBuildField("PRODUCT", "marlin");
-        setBuildField("DEVICE", "marlin");
-        setBuildField("MODEL", "Pixel XL");
-        setVersionField("DEVICE_INITIAL_SDK_INT", Build.VERSION_CODES.N_MR1);
-    }
-
     private static boolean isCallerSafetyNet() {
-        return sIsGms && Arrays.stream(Thread.currentThread().getStackTrace())
+        return Arrays.stream(Thread.currentThread().getStackTrace())
                 .anyMatch(elem -> elem.getClassName().contains("DroidGuard"));
     }
 
     public static void onEngineGetCertificateChain() {
-        // Check stack for SafetyNet or Play Integrity
-        if (isCallerSafetyNet() || sIsFinsky) {
-            Log.i(TAG, "Blocked key attestation sIsGms=" + sIsGms + " sIsFinsky=" + sIsFinsky);
+        // Check stack for SafetyNet
+        if (sIsGms && isCallerSafetyNet()) {
+            throw new UnsupportedOperationException();
+        }
+
+        // Check stack for PlayIntegrity
+        if (sIsFinsky) {
             throw new UnsupportedOperationException();
         }
     }

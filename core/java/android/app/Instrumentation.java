@@ -64,8 +64,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.android.internal.util.custom.PixelPropsUtils;
 import com.android.internal.util.kscope.MeizuPropsUtils;
+import com.android.internal.util.qassa.PixelPropsUtils;
 
 /**
  * Base class for implementing application instrumentation code.  When running
@@ -1162,10 +1162,10 @@ public class Instrumentation {
                 .instantiateApplication(cl, className);
         app.attach(context);
         String packageName = context.getPackageName();
-        PixelPropsUtils.setProps(packageName);
         if (SystemProperties.getBoolean(DISGUISE_PROPS_FOR_MUSIC_APP, false)) {
             MeizuPropsUtils.setProps(packageName);
         }
+        PixelPropsUtils.setProps(packageName);
         return app;
     }
     
@@ -1184,10 +1184,10 @@ public class Instrumentation {
         Application app = (Application)clazz.newInstance();
         app.attach(context);
         String packageName = context.getPackageName();
-        PixelPropsUtils.setProps(packageName);
         if (SystemProperties.getBoolean(DISGUISE_PROPS_FOR_MUSIC_APP, false)) {
             MeizuPropsUtils.setProps(packageName);
         }
+        PixelPropsUtils.setProps(packageName);
         return app;
     }
 
