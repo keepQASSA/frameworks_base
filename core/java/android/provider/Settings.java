@@ -6443,6 +6443,12 @@ public final class Settings {
         public static final String SEEK_BAR_BATTERY_CHARGE_LEVEL_SOUND = "battery_level_charge_seek_bar";
 
         /**
+         * Whether to add top padding on statusbar
+         * @hide
+         */
+        public static final String TOP_PADDING = "statusbar_top_padding";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
