@@ -30,7 +30,6 @@
 
         <com.android.systemui.BatteryMeterView
             android:id="@id/battery"
-            android:background="@drawable/mm_mouth3"
             android:paddingLeft="5.0dip"
             android:paddingRight="5.0dip"
             android:clipChildren="false"
