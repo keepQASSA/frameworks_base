@@ -838,49 +838,6 @@ public final class DefaultPermissionGrantPolicy {
 
         // Google Markup
         grantSystemFixedPermissionsToSystemPackage("com.google.android.markup", userId, STORAGE_PERMISSIONS);
-
-        // Mediascanner
-        grantSystemFixedPermissionsToSystemPackage(
-                getDefaultProviderAuthorityPackage("com.android.providers.media.MediaProvider", userId), userId,
-                STORAGE_PERMISSIONS);
-
-        // Android Setup
-        grantSystemFixedPermissionsToSystemPackage("com.google.android.apps.restore", userId,
-                PHONE_PERMISSIONS, CONTACTS_PERMISSIONS, SMS_PERMISSIONS);
-
-        // Carrier Setup
-        grantSystemFixedPermissionsToSystemPackage("com.google.android.carriersetup", userId,
-                PHONE_PERMISSIONS, SMS_PERMISSIONS);
-
-        // Device Personalization Services
-        grantSystemFixedPermissionsToSystemPackage("com.google.android.as", userId,
-                CALENDAR_PERMISSIONS, CAMERA_PERMISSIONS, CONTACTS_PERMISSIONS, ALWAYS_LOCATION_PERMISSIONS,
-                MICROPHONE_PERMISSIONS, PHONE_PERMISSIONS, SMS_PERMISSIONS);
-
-        // Google Sound Picker
-        grantSystemFixedPermissionsToSystemPackage("com.google.android.soundpicker", userId,
-                STORAGE_PERMISSIONS);
-
-        // Google Wallpapers
-        grantSystemFixedPermissionsToSystemPackage("com.google.android.apps.wallpaper", userId,
-                PHONE_PERMISSIONS, STORAGE_PERMISSIONS);
-
-        // Google Photos
-        grantSystemFixedPermissionsToSystemPackage("com.google.android.apps.photos", userId,
-                CONTACTS_PERMISSIONS, PHONE_PERMISSIONS, STORAGE_PERMISSIONS, ALWAYS_LOCATION_PERMISSIONS);
-
-        // Google Recorder
-        grantSystemFixedPermissionsToSystemPackage("com.google.android.apps.recorder", userId,
-                MICROPHONE_PERMISSIONS, ALWAYS_LOCATION_PERMISSIONS);
-
-        // SafetyHub
-        grantSystemFixedPermissionsToSystemPackage("com.google.android.apps.safetyhub", userId,
-                SENSORS_PERMISSIONS, CONTACTS_PERMISSIONS, ALWAYS_LOCATION_PERMISSIONS,
-                MICROPHONE_PERMISSIONS, PHONE_PERMISSIONS);
-
-        // Settings Services
-        grantSystemFixedPermissionsToSystemPackage("com.google.android.settings.intelligence", userId,
-                PHONE_PERMISSIONS, ALWAYS_LOCATION_PERMISSIONS);
     }
 
     private String getDefaultSystemHandlerActivityPackageForCategory(String category, int userId) {
