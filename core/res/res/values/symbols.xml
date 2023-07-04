@@ -3349,6 +3349,12 @@
   <java-symbol type="string" name="config_batterymeterAirooPowersavePath" />
   <java-symbol type="string" name="config_batterymeterAirooErrorPerimeterPath" />
 
+  <java-symbol type="string" name="config_batterymeterLandPerimeterPathiOS15" />
+  <java-symbol type="string" name="config_batterymeterLandFillMaskiOS15" />
+  <java-symbol type="string" name="config_batterymeterLandBoltPathiOS15" />
+  <java-symbol type="string" name="config_batterymeterLandPowersavePathiOS15" />
+  <java-symbol type="string" name="config_batterymeterLandErrorPerimeterPathiOS15" />
+
   <java-symbol type="bool" name="config_debugEnableAutomaticSystemServerHeapDumps" />
   <java-symbol type="integer" name="config_debugSystemServerPssThresholdBytes" />
 
