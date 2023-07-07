@@ -50,6 +50,7 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -577,6 +578,9 @@ public class AppIdleHistory {
                     }
                 }
             }
+        } catch (FileNotFoundException e) {
+            // Expected on first boot
+            Slog.d(TAG, "App idle file for user " + userId + " does not exist");
         } catch (IOException | XmlPullParserException e) {
             Slog.e(TAG, "Unable to read app idle file for user " + userId, e);
         } finally {
