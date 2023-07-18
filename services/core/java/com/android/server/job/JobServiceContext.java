@@ -265,6 +265,7 @@ public final class JobServiceContext implements ServiceConnection {
                 if (DEBUG) {
                     Slog.d(TAG, job.getServiceComponent().getShortClassName() + " unavailable.");
                 }
+                mContext.unbindService(this);
                 mRunningJob = null;
                 mRunningCallback = null;
                 mParams = null;
