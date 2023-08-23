@@ -96,6 +96,8 @@ public class StatusBarWindowController implements Callback, Dumpable, Configurat
 
     private final SysuiColorExtractor mColorExtractor = Dependency.get(SysuiColorExtractor.class);
 
+    private View mQSBlurScrim;
+
     @Inject
     public StatusBarWindowController(Context context,
             StatusBarStateController statusBarStateController,
@@ -190,6 +192,7 @@ public class StatusBarWindowController implements Callback, Dumpable, Configurat
         mBarHeight = barHeight;
         mWindowManager.addView(mStatusBarView, mLp);
         mLpChanged.copyFrom(mLp);
+        mQSBlurScrim = mStatusBarView.findViewById(R.id.qs_blur_scrim);
         onThemeChanged();
     }
 
@@ -199,6 +202,12 @@ public class StatusBarWindowController implements Callback, Dumpable, Configurat
 
     public void setDozeScreenBrightness(int value) {
         mScreenBrightnessDoze = value / 255f;
+    }
+
+    public void updateQSBlurScrim(float expansion) {
+        if (mQSBlurScrim != null) {
+            mQSBlurScrim.setAlpha(expansion);
+        }
     }
 
     private void setKeyguardDark(boolean dark) {
@@ -641,6 +650,14 @@ public class StatusBarWindowController implements Callback, Dumpable, Configurat
         final boolean useDarkText = mColorExtractor.getNeutralColors().supportsDarkText();
         // Make sure we have the correct navbar/statusbar colors.
         setKeyguardDark(useDarkText);
+    }
+
+    @Override
+    public void onUiModeChanged() {
+        if (mQSBlurScrim == null) {
+            return;
+        }
+        mQSBlurScrim.setBackgroundColor(mContext.getColor(R.color.qs_blur_scrim));
     }
 
     /**
