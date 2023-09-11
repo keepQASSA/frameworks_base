@@ -158,7 +158,7 @@ public class PowerOffAlarmService extends SystemService {
         final NotificationChannel channel = new NotificationChannel(TAG /* channel id */,
                 mContext.getText(R.string.notification_channel_poweroff_alarm),
                 NotificationManager.IMPORTANCE_LOW);
-        //channel.setBlockable(true);
+        channel.setBlockableSystem(true);
         mNotificationManager.createNotificationChannel(channel);
         mNotification = new Notification.Builder(mContext, TAG /* channel id */)
                 .setContentTitle(mContext.getText(R.string.poweroff_alarm_title))
