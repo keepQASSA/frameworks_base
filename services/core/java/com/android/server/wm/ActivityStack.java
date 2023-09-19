@@ -2851,6 +2851,9 @@ public class ActivityStack extends ConfigurationContainer {
         // to ignore it when computing the desired screen orientation.
         boolean anim = true;
         final DisplayContent dc = display.mDisplayContent;
+        if (mPerf == null) {
+            mPerf = new BoostFramework();
+        }
         if (prev != null) {
             if (prev.finishing) {
                 if (DEBUG_TRANSITION) Slog.v(TAG_TRANSITION,
