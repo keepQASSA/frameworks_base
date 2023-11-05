@@ -30,7 +30,6 @@ import android.util.SparseArray;
 import android.view.DisplayCutout;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
 import android.view.WindowInsets;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.ImageView;
@@ -64,8 +63,7 @@ public class QSDetail extends LinearLayout {
 
     protected View mQsDetailHeader;
     protected TextView mQsDetailHeaderTitle;
-    private ViewStub mQsDetailHeaderSwitchStub;
-    private Switch mQsDetailHeaderSwitch;
+    protected Switch mQsDetailHeaderSwitch;
     protected ImageView mQsDetailHeaderProgress;
     protected View mQsDetailTopSpace;
 
@@ -112,7 +110,7 @@ public class QSDetail extends LinearLayout {
 
         mQsDetailHeader = findViewById(R.id.qs_detail_header);
         mQsDetailHeaderTitle = (TextView) mQsDetailHeader.findViewById(android.R.id.title);
-        mQsDetailHeaderSwitchStub = mQsDetailHeader.findViewById(R.id.toggle_stub);
+        mQsDetailHeaderSwitch = (Switch) mQsDetailHeader.findViewById(android.R.id.toggle);
         mQsDetailHeaderProgress = findViewById(R.id.qs_detail_header_progress);
         mQsDetailTopSpace = findViewById(R.id.qs_detail_top_space);
 
@@ -280,12 +278,9 @@ public class QSDetail extends LinearLayout {
         mQsDetailHeaderTitle.setText(adapter.getTitle());
         final Boolean toggleState = adapter.getToggleState();
         if (toggleState == null) {
-            if (mQsDetailHeaderSwitch != null) mQsDetailHeaderSwitch.setVisibility(INVISIBLE);
+            mQsDetailHeaderSwitch.setVisibility(INVISIBLE);
             mQsDetailHeader.setClickable(false);
         } else {
-            if (mQsDetailHeaderSwitch == null) {
-                mQsDetailHeaderSwitch = (Switch) mQsDetailHeaderSwitchStub.inflate();
-            }
             mQsDetailHeaderSwitch.setVisibility(VISIBLE);
             handleToggleStateChanged(toggleState, adapter.getToggleEnabled());
             mQsDetailHeader.setClickable(true);
@@ -305,9 +300,9 @@ public class QSDetail extends LinearLayout {
         if (mAnimatingOpen) {
             return;
         }
-        if (mQsDetailHeaderSwitch != null) mQsDetailHeaderSwitch.setChecked(state);
+        mQsDetailHeaderSwitch.setChecked(state);
         mQsDetailHeader.setEnabled(toggleEnabled);
-        if (mQsDetailHeaderSwitch != null) mQsDetailHeaderSwitch.setEnabled(toggleEnabled);
+        mQsDetailHeaderSwitch.setEnabled(toggleEnabled);
     }
 
     private void handleScanStateChanged(boolean state) {
