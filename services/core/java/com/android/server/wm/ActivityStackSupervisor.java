@@ -996,10 +996,6 @@ public class ActivityStackSupervisor implements RecentTasks.Callbacks {
         boolean knownToBeDead = false;
         if (wpc != null && wpc.hasThread()) {
             try {
-                if (mPerfBoost != null) {
-                    Slog.i(TAG, "The Process " + r.processName + " Already Exists in BG. So sending its PID: " + wpc.getPid());
-                    mPerfBoost.perfHint(BoostFramework.VENDOR_HINT_FIRST_LAUNCH_BOOST, r.processName, wpc.getPid(), BoostFramework.Launch.TYPE_START_APP_FROM_BG);
-                }
                 realStartActivityLocked(r, wpc, andResume, checkConfig);
                 return;
             } catch (RemoteException e) {
@@ -1019,20 +1015,8 @@ public class ActivityStackSupervisor implements RecentTasks.Callbacks {
             r.notifyUnknownVisibilityLaunched();
         }
 
-        try {
-            if (Trace.isTagEnabled(TRACE_TAG_ACTIVITY_MANAGER)) {
-                Trace.traceBegin(TRACE_TAG_ACTIVITY_MANAGER, "dispatchingStartProcess:"
-                        + r.processName);
-            }
-            // Post message to start process to avoid possible deadlock of calling into AMS with the
-            // ATMS lock held.
-            final Message msg = PooledLambda.obtainMessage(
-                    ActivityManagerInternal::startProcess, mService.mAmInternal, r.processName,
-                    r.info.applicationInfo, knownToBeDead, "activity", r.intent.getComponent());
-            mService.mH.sendMessage(msg);
-        } finally {
-            Trace.traceEnd(TRACE_TAG_ACTIVITY_MANAGER);
-        }
+        final boolean isTop = andResume && r.isTopRunningActivity();
+        mService.startProcessAsync(r, knownToBeDead, isTop, isTop ? "top-activity" : "activity");
     }
 
     boolean checkStartAnyActivityPermission(Intent intent, ActivityInfo aInfo, String resultWho,
