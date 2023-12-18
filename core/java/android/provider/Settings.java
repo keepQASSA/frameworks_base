@@ -6552,12 +6552,6 @@ public final class Settings {
         public static final String STATUSBAR_COLORED_ICONS = "statusbar_colored_icons";
 
         /**
-         * Whether should the icons on notification headers have the app color
-         * @hide
-         */
-        public static final String HEADER_ICONS_STYLE = "headers_icons_style";
-
-        /**
          * Toggle between stock and color coded battery icon
          * @hide
          */
@@ -6781,7 +6775,6 @@ public final class Settings {
             PRIVATE_SETTINGS.add(FOD_GESTURE);
             PRIVATE_SETTINGS.add(POCKET_JUDGE);
             PRIVATE_SETTINGS.add(AUTO_BRIGHTNESS_MIN_VALUE);
-            PRIVATE_SETTINGS.add(HEADER_ICONS_STYLE);
             PRIVATE_SETTINGS.add(QS_BLUR_RADIUS);
             PRIVATE_SETTINGS.add(ENABLE_CONDITIONS);
             PRIVATE_SETTINGS.add(ENABLE_SUGGESTIONS);
