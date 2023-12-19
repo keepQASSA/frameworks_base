@@ -64,6 +64,8 @@ public class ThemesUtils {
         "com.qassa.systemui.signalbar_ad",
         "com.qassa.systemui.signalbar_ae",
         "com.qassa.systemui.signalbar_af",
+        "com.qassa.systemui.signalbar_ag",
+        "com.qassa.systemui.signalbar_ah",
     };
 
     // Statusbar Wifi icons
@@ -81,5 +83,6 @@ public class ThemesUtils {
         "com.qassa.systemui.wifibar_k",
         "com.qassa.systemui.wifibar_l",
         "com.qassa.systemui.wifibar_m",
+        "com.qassa.systemui.wifibar_n",
     };
 }
