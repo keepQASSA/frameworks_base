@@ -225,8 +225,6 @@ public class UserManagerService extends IUserManager.Stub {
 
     private static final int USER_VERSION = 7;
 
-    private static final int MAX_USER_STRING_LENGTH = 500;
-
     private static final long EPOCH_PLUS_30_YEARS = 30L * 365 * 24 * 60 * 60 * 1000L; // ms
 
     // Maximum number of managed profiles permitted per user is 1. This cannot be increased
@@ -2420,16 +2418,18 @@ public class UserManagerService extends IUserManager.Stub {
         if (userData.persistSeedData) {
             if (userData.seedAccountName != null) {
                 serializer.attribute(null, ATTR_SEED_ACCOUNT_NAME,
-                        truncateString(userData.seedAccountName));
+                        truncateString(userData.seedAccountName,
+                                UserManager.MAX_ACCOUNT_STRING_LENGTH));
             }
             if (userData.seedAccountType != null) {
                 serializer.attribute(null, ATTR_SEED_ACCOUNT_TYPE,
-                        truncateString(userData.seedAccountType));
+                        truncateString(userData.seedAccountType,
+                                UserManager.MAX_ACCOUNT_STRING_LENGTH));
             }
         }
         if (userInfo.name != null) {
             serializer.startTag(null, TAG_NAME);
-            serializer.text(truncateString(userInfo.name));
+            serializer.text(truncateString(userInfo.name, UserManager.MAX_USER_NAME_LENGTH));
             serializer.endTag(null, TAG_NAME);
         }
         synchronized (mRestrictionsLock) {
@@ -2470,11 +2470,11 @@ public class UserManagerService extends IUserManager.Stub {
         serializer.endDocument();
     }
 
-    private String truncateString(String original) {
-        if (original == null || original.length() <= MAX_USER_STRING_LENGTH) {
+    private String truncateString(String original, int limit) {
+        if (original == null || original.length() <= limit) {
             return original;
         }
-        return original.substring(0, MAX_USER_STRING_LENGTH);
+        return original.substring(0, limit);
     }
 
     /*
@@ -2817,15 +2817,30 @@ public class UserManagerService extends IUserManager.Stub {
     }
 
     private UserInfo createUserInternalUncheckedNoTracing(@Nullable String name,
-            @UserInfoFlag int flags, @UserIdInt int parentId, boolean preCreate,
-            @Nullable String[] disallowedPackages, @NonNull TimingsTraceLog t) {
-        String truncatedName = truncateString(name);
-        // First try to use a pre-created user (if available).
-        // NOTE: currently we don't support pre-created managed profiles
-        if (!preCreate && (parentId < 0 && !UserInfo.isManagedProfile(flags))) {
-            final UserData preCreatedUserData;
-            synchronized (mUsersLock) {
-                preCreatedUserData = getPreCreatedUserLU(flags);
+            @NonNull String userType, @UserInfoFlag int flags, @UserIdInt int parentId,
+            boolean preCreate, @Nullable String[] disallowedPackages,
+            @NonNull TimingsTraceAndSlog t) throws UserManager.CheckedUserOperationException {
+        String truncatedName = truncateString(name, UserManager.MAX_USER_NAME_LENGTH);
+        final UserTypeDetails userTypeDetails = mUserTypes.get(userType);
+        if (userTypeDetails == null) {
+            Slog.e(LOG_TAG, "Cannot create user of invalid user type: " + userType);
+            return null;
+        }
+        userType = userType.intern(); // Now that we know it's valid, we can intern it.
+        flags |= userTypeDetails.getDefaultUserInfoFlags();
+        if (!checkUserTypeConsistency(flags)) {
+            Slog.e(LOG_TAG, "Cannot add user. Flags (" + Integer.toHexString(flags)
+                    + ") and userTypeDetails (" + userType +  ") are inconsistent.");
+            return null;
+        }
+        if ((flags & UserInfo.FLAG_SYSTEM) != 0) {
+            Slog.e(LOG_TAG, "Cannot add user. Flags (" + Integer.toHexString(flags)
+                    + ") indicated SYSTEM user, which cannot be created.");
+            return null;
+        }
+        synchronized (mUsersLock) {
+            if (mForceEphemeralUsers) {
+                flags |= UserInfo.FLAG_EPHEMERAL;
             }
             if (preCreatedUserData != null) {
                 final UserInfo preCreatedUser = preCreatedUserData.info;
@@ -3877,9 +3892,14 @@ public class UserManagerService extends IUserManager.Stub {
                     Slog.e(LOG_TAG, "No such user for settings seed data u=" + userId);
                     return;
                 }
-                userData.seedAccountName = truncateString(accountName);
-                userData.seedAccountType = truncateString(accountType);
-                userData.seedAccountOptions = accountOptions;
+                userData.seedAccountName = truncateString(accountName,
+                        UserManager.MAX_ACCOUNT_STRING_LENGTH);
+                userData.seedAccountType = truncateString(accountType,
+                        UserManager.MAX_ACCOUNT_STRING_LENGTH);
+                if (accountOptions != null && accountOptions.isBundleContentsWithinLengthLimit(
+                        UserManager.MAX_ACCOUNT_OPTIONS_LENGTH)) {
+                    userData.seedAccountOptions = accountOptions;
+                }
                 userData.persistSeedData = persist;
             }
             if (persist) {

@@ -76,6 +76,104 @@ public class UserManager {
     private final Context mContext;
 
     private Boolean mIsManagedProfileCached;
+    private Boolean mIsProfileCached;
+
+    /** Maximum length of username.
+     * @hide
+     */
+    public static final int MAX_USER_NAME_LENGTH = 100;
+
+    /** Maximum length of user property String value.
+     * @hide
+     */
+    public static final int MAX_ACCOUNT_STRING_LENGTH = 500;
+
+    /** Maximum length of account options String values.
+     * @hide
+     */
+    public static final int MAX_ACCOUNT_OPTIONS_LENGTH = 1000;
+
+    /**
+     * User type representing a {@link UserHandle#USER_SYSTEM system} user that is a human user.
+     * This type of user cannot be created; it can only pre-exist on first boot.
+     * @hide
+     */
+    @SystemApi
+    public static final String USER_TYPE_FULL_SYSTEM = "android.os.usertype.full.SYSTEM";
+
+    /**
+     * User type representing a regular non-profile non-{@link UserHandle#USER_SYSTEM system} human
+     * user.
+     * This is sometimes called an ordinary 'secondary user'.
+     * @hide
+     */
+    @SystemApi
+    public static final String USER_TYPE_FULL_SECONDARY = "android.os.usertype.full.SECONDARY";
+
+    /**
+     * User type representing a guest user that may be transient.
+     * @hide
+     */
+    public static final String USER_TYPE_FULL_GUEST = "android.os.usertype.full.GUEST";
+
+    /**
+     * User type representing a user for demo purposes only, which can be removed at any time.
+     * @hide
+     */
+    public static final String USER_TYPE_FULL_DEMO = "android.os.usertype.full.DEMO";
+
+    /**
+     * User type representing a "restricted profile" user, which is a full user that is subject to
+     * certain restrictions from a parent user. Note, however, that it is NOT technically a profile.
+     * @hide
+     */
+    public static final String USER_TYPE_FULL_RESTRICTED = "android.os.usertype.full.RESTRICTED";
+
+    /**
+     * User type representing a managed profile, which is a profile that is to be managed by a
+     * device policy controller (DPC).
+     * The intended purpose is for work profiles, which are managed by a corporate entity.
+     * @hide
+     */
+    @SystemApi
+    public static final String USER_TYPE_PROFILE_MANAGED = "android.os.usertype.profile.MANAGED";
+
+    /**
+     * User type representing a {@link UserHandle#USER_SYSTEM system} user that is <b>not</b> a
+     * human user.
+     * This type of user cannot be created; it can only pre-exist on first boot.
+     * @hide
+     */
+    @SystemApi
+    public static final String USER_TYPE_SYSTEM_HEADLESS = "android.os.usertype.system.HEADLESS";
+
+    /**
+     * Flag passed to {@link #requestQuietModeEnabled} to request disabling quiet mode only if
+     * there is no need to confirm the user credentials. If credentials are required to disable
+     * quiet mode, {@link #requestQuietModeEnabled} will do nothing and return {@code false}.
+     */
+    public static final int QUIET_MODE_DISABLE_ONLY_IF_CREDENTIAL_NOT_REQUIRED = 0x1;
+
+    /**
+     * Flag passed to {@link #requestQuietModeEnabled} to request disabling quiet mode without
+     * asking for credentials. This is used when managed profile password is forgotten. It starts
+     * the user in locked state so that a direct boot aware DPC could reset the password.
+     * Should not be used together with
+     * {@link #QUIET_MODE_DISABLE_ONLY_IF_CREDENTIAL_NOT_REQUIRED} or an exception will be thrown.
+     * @hide
+     */
+    public static final int QUIET_MODE_DISABLE_DONT_ASK_CREDENTIAL = 0x2;
+
+    /**
+     * List of flags available for the {@link #requestQuietModeEnabled} method.
+     * @hide
+     */
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef(flag = true, prefix = { "QUIET_MODE_" }, value = {
+            QUIET_MODE_DISABLE_ONLY_IF_CREDENTIAL_NOT_REQUIRED,
+            QUIET_MODE_DISABLE_DONT_ASK_CREDENTIAL})
+    public @interface QuietModeFlag {}
+
 
     /**
      * @hide
@@ -2199,15 +2297,15 @@ public class UserManager {
      * time, the preferred user name and account information are used by the setup process for that
      * user.
      *
-     * @param userName Optional name to assign to the user.
+     * @param userName Optional name to assign to the user. Character limit is 100.
      * @param accountName Optional account name that will be used by the setup wizard to initialize
-     *                    the user.
+     *                    the user. Character limit is 500.
      * @param accountType Optional account type for the account to be created. This is required
-     *                    if the account name is specified.
+     *                    if the account name is specified. Character limit is 500.
      * @param accountOptions Optional bundle of data to be passed in during account creation in the
      *                       new user via {@link AccountManager#addAccount(String, String, String[],
      *                       Bundle, android.app.Activity, android.accounts.AccountManagerCallback,
-     *                       Handler)}.
+     *                       Handler)}. Character limit is 1000.
      * @return An Intent that can be launched from an Activity.
      * @see #USER_CREATION_FAILED_NOT_PERMITTED
      * @see #USER_CREATION_FAILED_NO_MORE_USERS
