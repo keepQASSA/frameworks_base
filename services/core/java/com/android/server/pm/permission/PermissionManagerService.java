@@ -1016,6 +1016,7 @@ public class PermissionManagerService {
                 // TODO: switch this back to SecurityException
                 Slog.wtf(TAG, "Not allowed to modify non-dynamic permission "
                         + permName);
+                return;
             }
             mSettings.removePermissionLocked(permName);
             if (callback != null) {
