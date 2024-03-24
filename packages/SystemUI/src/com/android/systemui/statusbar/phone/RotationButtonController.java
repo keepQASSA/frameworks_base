@@ -23,9 +23,12 @@ import android.annotation.StyleRes;
 import android.app.StatusBarManager;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.database.ContentObserver;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.RemoteException;
+import android.os.UserHandle;
 import android.provider.Settings;
 import android.view.IRotationWatcher.Stub;
 import android.view.MotionEvent;
@@ -72,6 +75,7 @@ public class RotationButtonController implements TunerService.Tunable {
     private boolean mListenersRegistered = false;
     private boolean mIsNavigationBarShowing;
     private boolean mShowRotationButton = true;
+    private boolean mButtonEnabled = true;
 
     private final Runnable mRemoveRotationProposal =
             () -> setRotateSuggestionButtonState(false /* visible */);
@@ -134,6 +138,21 @@ public class RotationButtonController implements TunerService.Tunable {
 
         final TunerService tunerService = Dependency.get(TunerService.class);
         tunerService.addTunable(this, SHOW_ROTATION_BUTTON);
+
+        mButtonEnabled = Settings.System.getIntForUser(mContext.getContentResolver(),
+            Settings.System.ENABLE_ROTATION_BUTTON, 1, UserHandle.USER_CURRENT) == 1;
+        mContext.getContentResolver().registerContentObserver(
+            Settings.System.getUriFor(Settings.System.ENABLE_ROTATION_BUTTON), false,
+            new ContentObserver(mMainThreadHandler) {
+                @Override
+                public void onChange(boolean selfChange, Uri uri) {
+                    if (uri.getLastPathSegment().equals(Settings.System.ENABLE_ROTATION_BUTTON)) {
+                        mButtonEnabled = Settings.System.getIntForUser(mContext.getContentResolver(),
+                            Settings.System.ENABLE_ROTATION_BUTTON, 1, UserHandle.USER_CURRENT) == 1;
+                    }
+                }
+            }
+        );
     }
 
     void registerListeners() {
@@ -256,7 +275,7 @@ public class RotationButtonController implements TunerService.Tunable {
     }
 
     void onRotationProposal(int rotation, int windowRotation, boolean isValid) {
-        if (!mRotationButton.acceptRotationProposal()) {
+        if (!mButtonEnabled || !mRotationButton.acceptRotationProposal()) {
             return;
         }
 

@@ -6569,6 +6569,12 @@ public final class Settings {
         public static final String MAX_VISIBLE_NOTIFICATION_ICONS = "max_visible_notification_icons";
 
         /**
+         * Whether to show rotation suggestion
+         * @hide
+         */
+        public static final String ENABLE_ROTATION_BUTTON = "enable_rotation_button";
+
+        /**
          * Keys we no longer back up under the current schema, but want to continue to
          * process when restoring historical backup datasets.
          *
