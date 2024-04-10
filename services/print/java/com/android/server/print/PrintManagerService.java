@@ -269,8 +269,7 @@ public final class PrintManagerService extends SystemService {
         private Icon validateIconUserBoundary(Icon icon) {
             // Refer to Icon#getUriString for context. The URI string is invalid for icons of
             // incompatible types.
-            if (icon != null && (icon.getType() == Icon.TYPE_URI
-                    || icon.getType() == Icon.TYPE_URI_ADAPTIVE_BITMAP)) {
+            if (icon != null && (icon.getType() == Icon.TYPE_URI)) {
                 String encodedUser = icon.getUri().getEncodedUserInfo();
 
                 // If there is no encoded user, the URI is calling into the calling user space
