@@ -2817,30 +2817,15 @@ public class UserManagerService extends IUserManager.Stub {
     }
 
     private UserInfo createUserInternalUncheckedNoTracing(@Nullable String name,
-            @NonNull String userType, @UserInfoFlag int flags, @UserIdInt int parentId,
-            boolean preCreate, @Nullable String[] disallowedPackages,
-            @NonNull TimingsTraceAndSlog t) throws UserManager.CheckedUserOperationException {
-        String truncatedName = truncateString(name, UserManager.MAX_USER_NAME_LENGTH);
-        final UserTypeDetails userTypeDetails = mUserTypes.get(userType);
-        if (userTypeDetails == null) {
-            Slog.e(LOG_TAG, "Cannot create user of invalid user type: " + userType);
-            return null;
-        }
-        userType = userType.intern(); // Now that we know it's valid, we can intern it.
-        flags |= userTypeDetails.getDefaultUserInfoFlags();
-        if (!checkUserTypeConsistency(flags)) {
-            Slog.e(LOG_TAG, "Cannot add user. Flags (" + Integer.toHexString(flags)
-                    + ") and userTypeDetails (" + userType +  ") are inconsistent.");
-            return null;
-        }
-        if ((flags & UserInfo.FLAG_SYSTEM) != 0) {
-            Slog.e(LOG_TAG, "Cannot add user. Flags (" + Integer.toHexString(flags)
-                    + ") indicated SYSTEM user, which cannot be created.");
-            return null;
-        }
-        synchronized (mUsersLock) {
-            if (mForceEphemeralUsers) {
-                flags |= UserInfo.FLAG_EPHEMERAL;
+    @UserInfoFlag int flags, @UserIdInt int parentId, boolean preCreate,
+    @Nullable String[] disallowedPackages, @NonNull TimingsTraceLog t) {
+String truncatedName = truncateString(name, UserManager.MAX_USER_NAME_LENGTH);
+// First try to use a pre-created user (if available).
+// NOTE: currently we don't support pre-created managed profiles
+if (!preCreate && (parentId < 0 && !UserInfo.isManagedProfile(flags))) {
+    final UserData preCreatedUserData;
+    synchronized (mUsersLock) {
+        preCreatedUserData = getPreCreatedUserLU(flags);
             }
             if (preCreatedUserData != null) {
                 final UserInfo preCreatedUser = preCreatedUserData.info;
