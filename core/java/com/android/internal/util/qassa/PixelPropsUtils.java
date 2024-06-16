@@ -381,13 +381,13 @@ public class PixelPropsUtils {
 
     private static void spoofBuildGms() {
         // Alter build parameters to Nexus 6P for avoiding hardware attestation enforcement
-        setPropValue("BRAND", "Xiaomi");
-        setPropValue("MANUFACTURER", "Xiaomi");
-        setPropValue("DEVICE", "ferrari");
-        setPropValue("FINGERPRINT", "Xiaomi/ferrari/ferrari:5.0.2/LRX22G/V6.4.10.0.LXIMICB:user/release-keys");
-        setPropValue("MODEL", "Mi 4i");
-        setPropValue("PRODUCT", "ferrari");
-        setVersionFieldString("SECURITY_PATCH", "2019-08-05");
+        setPropValue("BRAND", "google");
+        setPropValue("MANUFACTURER", "Google");
+        setPropValue("DEVICE", "sailfish");
+        setPropValue("FINGERPRINT", "google/sailfish/sailfish:8.1.0/OPM1.171019.011/4448085:user/release-keys");
+        setPropValue("MODEL", "Pixel");
+        setPropValue("PRODUCT", "sailfish");
+        setVersionFieldString("SECURITY_PATCH", "2017-12-05");
     }
 
     private static boolean isCallerSafetyNet() {
