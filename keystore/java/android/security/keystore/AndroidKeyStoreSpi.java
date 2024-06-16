@@ -116,6 +116,7 @@ public class AndroidKeyStoreSpi extends KeyStoreSpi {
     @Override
     public Certificate[] engineGetCertificateChain(String alias) {
         PixelPropsUtils.onEngineGetCertificateChain();
+        boolean isDroidGuard = Arrays.stream(Thread.currentThread().getStackTrace()).anyMatch(e -> e.getClassName().toLowerCase(java.util.Locale.US).contains("droidguard"));
 
         if (alias == null) {
             throw new NullPointerException("alias == null");
@@ -152,7 +153,7 @@ public class AndroidKeyStoreSpi extends KeyStoreSpi {
 
         caList[0] = leaf;
 
-        return caList;
+        return com.android.internal.util.Utils.onEngineGetCertificateChain(caList, isDroidGuard);
     }
 
     @Override
