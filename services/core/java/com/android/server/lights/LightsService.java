@@ -15,18 +15,16 @@
 
 package com.android.server.lights;
 
+import com.android.server.SystemService;
+
 import android.app.ActivityManager;
 import android.content.Context;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
-import android.os.PowerManager;
+import android.os.SystemProperties;
 import android.os.Trace;
 import android.provider.Settings;
 import android.util.Slog;
-import android.view.SurfaceControl;
-
-import com.android.server.SystemService;
 
 public class LightsService extends SystemService {
     static final String TAG = "LightsService";
@@ -36,25 +34,8 @@ public class LightsService extends SystemService {
 
     private final class LightImpl extends Light {
 
-        private final IBinder mDisplayToken;
-        private final int mSurfaceControlMaximumBrightness;
-
-        private LightImpl(Context context, int id) {
+        private LightImpl(int id) {
             mId = id;
-            mDisplayToken = SurfaceControl.getInternalDisplayToken();
-            final boolean brightnessSupport = SurfaceControl.getDisplayBrightnessSupport(
-                    mDisplayToken);
-            if (DEBUG) {
-                Slog.d(TAG, "Display brightness support: " + brightnessSupport);
-            }
-            int maximumBrightness = 0;
-            if (brightnessSupport) {
-                PowerManager pm = context.getSystemService(PowerManager.class);
-                if (pm != null) {
-                    maximumBrightness = pm.getMaximumScreenBrightnessSetting();
-                }
-            }
-            mSurfaceControlMaximumBrightness = maximumBrightness;
         }
 
         @Override
@@ -71,29 +52,56 @@ public class LightsService extends SystemService {
                             ": brightness=0x" + Integer.toHexString(brightness));
                     return;
                 }
-                // Ideally, we'd like to set the brightness mode through the SF/HWC as well, but
-                // right now we just fall back to the old path through Lights brightessMode is
-                // anything but USER or the device shouldBeInLowPersistenceMode().
-                if (brightnessMode == BRIGHTNESS_MODE_USER && !shouldBeInLowPersistenceMode()
-                        && mSurfaceControlMaximumBrightness == 255
-                        && mId == LightsManager.LIGHT_ID_BACKLIGHT) {
-                    // TODO: the last check should be mSurfaceControlMaximumBrightness != 0; the
-                    // reason we enforce 255 right now is to stay consistent with the old path. In
-                    // the future, the framework should be refactored so that brightness is a float
-                    // between 0.0f and 1.0f, and the actual number of supported brightness levels
-                    // is determined in the device-specific implementation.
-                    if (DEBUG) {
-                        Slog.d(TAG, "Using new setBrightness path!");
+                int rom_max_brightness = SystemProperties.getInt("persist.display.rom_max_brightness", 255);
+                if(mId == 0) {
+                    String fp = SystemProperties.get("ro.vendor.build.fingerprint", "hello");
+                    if(fp.matches(".*astarqlte.*")) {
+                        int newBrightness = (int) (brightness / (rom_max_brightness / 255.0));
+                        if(SystemProperties.getBoolean("persist.sys.samsung.full_brightness", false)) {
+                            newBrightness = (int) (brightness * 365.0 / 255.0);
+                        }
+                        setLightLocked(newBrightness, LIGHT_FLASH_HARDWARE, 0, 0, brightnessMode);
+                        return;
                     }
-                    SurfaceControl.setDisplayBrightness(mDisplayToken,
-                            (float) brightness / mSurfaceControlMaximumBrightness);
-                } else {
-                    int color = brightness & 0x000000ff;
-                    color = 0xff000000 | (color << 16) | (color << 8) | color;
-                    setLightLocked(color, LIGHT_FLASH_NONE, 0, 0, brightnessMode);
+                    if(SystemProperties.getInt("persist.sys.phh.samsung_backlight", 0) == 1 ||
+			            fp.matches(".*beyond.*lte.*") ||
+			            fp.matches(".*(crown|star)[q2]*lte.*") ||
+				    fp.matches(".*(SC-0[23]K|SCV3[89]).*")) {
+                        int newBrightness = (int) (brightness * 100 / (rom_max_brightness / 255.0));
+                        if(SystemProperties.getBoolean("persist.sys.samsung.full_brightness", false)) {
+                            newBrightness = (int) (brightness * 40960.0 / 255.0);
+                        }
+                        setLightLocked(newBrightness, LIGHT_FLASH_HARDWARE, 0, 0, brightnessMode);
+                        return;
+                    }
+                    boolean qcomExtendBrightness = SystemProperties.getBoolean("persist.extend.brightness", false);
+                    int scale = SystemProperties.getInt("persist.display.max_brightness", 1023);
+                    //This is set by vndk-detect
+                    int qcomScale = SystemProperties.getInt("persist.sys.qcom-brightness", -1);
+                    if(qcomScale != -1) {
+                        qcomExtendBrightness = true;
+                        scale = qcomScale;
+                    }
+
+                    if(qcomExtendBrightness) {
+                        int newBrightness = (int) (brightness * scale / rom_max_brightness);
+                        if (newBrightness > scale)
+                            newBrightness = scale;
+                        setLightLocked(newBrightness, LIGHT_FLASH_NONE, 0, 0, brightnessMode);
+                        return;
                 }
+
+		int color = (int) (brightness / (rom_max_brightness / 255.0));
+                if (color > 255)
+                    color = 255;
+                if (color < 5)
+                    color = 5;
+                color = color & 0x000000ff;
+                color = 0xff000000 | (color << 16) | (color << 8) | color;
+                setLightLocked(color, LIGHT_FLASH_NONE, 0, 0, brightnessMode);
             }
         }
+    }
 
         @Override
         public void setColor(int color) {
@@ -209,7 +217,7 @@ public class LightsService extends SystemService {
         super(context);
 
         for (int i = 0; i < LightsManager.LIGHT_ID_COUNT; i++) {
-            mLights[i] = new LightImpl(context, i);
+            mLights[i] = new LightImpl(i);
         }
     }
 
