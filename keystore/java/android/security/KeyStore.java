@@ -65,6 +65,8 @@ import java.util.concurrent.ExecutionException;
 import sun.security.util.ObjectIdentifier;
 import sun.security.x509.AlgorithmId;
 
+import com.android.internal.util.qassa.KeyboxImitationHooks;
+
 /**
  * @hide This should not be made public in its present form because it
  * assumes that private and secret key bytes are available and would
