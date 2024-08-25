@@ -1127,9 +1127,11 @@ public final class SystemServer {
             SignedConfigService.registerUpdateReceiver(mSystemContext);
             traceEnd();
 
-            traceBeginAndSlog("StartPowerOffAlarmService");
-            mSystemServiceManager.startService(PowerOffAlarmService.class);
-            traceEnd();
+            if (context.getResources().getBoolean(R.bool.config_powerOffAlarmEnabled)) {
+                traceBeginAndSlog("StartPowerOffAlarmService");
+                mSystemServiceManager.startService(PowerOffAlarmService.class);
+                traceEnd();
+            }
         } catch (RuntimeException e) {
             Slog.e("System", "******************************************");
             Slog.e("System", "************ Failure starting core service", e);
