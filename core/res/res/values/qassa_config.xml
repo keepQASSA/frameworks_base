@@ -427,4 +427,7 @@
     <!-- True if the notification's dynamic app icon and text tint should be optimised for dark
          backgrounds -->
     <bool name="config_useDarkBgNotificationIconTextTinting">false</bool>
+
+    <!-- PowerOffAlarmService -->
+    <bool name="config_powerOffAlarmEnabled">false</bool>
 </resources>
