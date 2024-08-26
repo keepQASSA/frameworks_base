@@ -1166,7 +1166,6 @@ public class Instrumentation {
             MeizuPropsUtils.setProps(packageName);
         }
         PixelPropsUtils.setProps(packageName);
-        com.android.internal.util.Utils.onNewApplication(context);
         return app;
     }
     
@@ -1189,7 +1188,6 @@ public class Instrumentation {
             MeizuPropsUtils.setProps(packageName);
         }
         PixelPropsUtils.setProps(packageName);
-        com.android.internal.util.Utils.onNewApplication(context);
         return app;
     }
 
