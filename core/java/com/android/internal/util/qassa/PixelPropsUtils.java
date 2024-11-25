@@ -46,8 +46,7 @@ public final class PixelPropsUtils {
     private static final String SPOOF_PIXEL_NETFLIX = "persist.sys.pixelprops.netflix";
 
     private static final Map<String, Object> propsToChangeGeneric;
-    private static final Map<String, Object> propsToChangePixel5a;
-    private static final Map<String, Object> propsToChangePixel9Pro;
+    private static final Map<String, Object> propsToChangePixel9ProXL;
     private static final Map<String, Object> propsToChangePixelTablet;
     private static final Map<String, Object> propsToChangePixelXL;
     private static final Map<String, Object> propsToChangeROG6;
@@ -58,7 +57,6 @@ public final class PixelPropsUtils {
     private static final Map<String, Object> propsToChangeMI13P;
     private static final Map<String, Object> propsToChangeF5;
     private static final Map<String, Object> propsToChangeBS4;
-    private static final Map<String, ArrayList<String>> propsToKeep;
 
     private static final String[] pTensorCodenames = {
             "comet",
@@ -78,59 +76,30 @@ public final class PixelPropsUtils {
             "raven"
     };
 
-    // Packages to Spoof as Pixel 8 Pro
-    private static final String[] packagesToChangePixel9Pro = {
+    // Packages to Spoof as the most recent Pixel device
+    private static final String[] packagesToChangeRecentPixel = {
+            "com.android.vending",
+            "com.google.android.aicore",
             "com.google.android.apps.aiwallpapers",
             "com.google.android.apps.bard",
             "com.google.android.apps.customization.pixel",
             "com.google.android.apps.emojiwallpaper",
             "com.google.android.apps.nexuslauncher",
+            "com.google.android.apps.photos",
+            "com.google.android.apps.pixel.agent",
+            "com.google.android.apps.pixel.creativeassistant",
+            "com.google.android.apps.pixel.support",
             "com.google.android.apps.privacy.wildlife",
             "com.google.android.apps.wallpaper",
             "com.google.android.apps.wallpaper.pixel",
+            "com.google.android.apps.weather",
+            "com.google.android.gms",
             "com.google.android.googlequicksearchbox",
+            "com.google.android.settings.intelligence",
             "com.google.android.wallpaper.effects",
-            "com.google.pixel.livewallpaper"
-    };
-
-    // Packages to Spoof as Pixel 5a
-    private static final String[] packagesToChangePixel5a = {
-            "com.android.chrome",
-            "com.android.vending",
-            "com.breel.wallpapers20",
-            "com.nhs.online.nhsonline",
-            "com.netflix.mediaclient"
-    };
-
-    // Packages to Keep with original device
-    private static final String[] packagesToKeep = {
-            "com.google.android.MTCL83",
-            "com.google.android.UltraCVM",
-            "com.google.android.apps.cameralite",
-            "com.google.android.apps.dreamlinerupdater",
-            "com.google.android.apps.dreamliner",
-            "com.google.android.apps.miphone.aiai.AiaiApplication",
-            "com.google.android.apps.motionsense.bridge",
-            "com.google.android.apps.pixelmigrate",
-            "com.google.android.apps.recorder",
-            "com.google.android.apps.restore",
-            "com.google.android.apps.subscriptions.red",
-            "com.google.android.apps.tachyon",
-            "com.google.android.apps.tips",
-            "com.google.android.apps.tycho",
-            "com.google.android.apps.wearables.maestro.companion",
-            "com.google.android.apps.youtube.kids",
-            "com.google.android.apps.youtube.music",
-            "com.google.android.as",
-            "com.google.android.backup",
-            "com.google.android.backuptransport",
-            "com.google.android.dialer",
-            "com.google.android.euicc",
-            "com.google.android.setupwizard",
-            "com.google.android.youtube",
-            "com.google.ar.core",
-            "com.google.intelligence.sense",
-            "com.google.oslo"
+            "com.google.pixel.livewallpaper",
+            "com.netflix.mediaclient",
+            "com.nhs.online.nhsonline"
     };
 
     // Packages to Spoof as ROG Phone 6
@@ -201,23 +170,20 @@ public final class PixelPropsUtils {
     };
 
     private static volatile boolean sIsFinsky = false;
-    private static volatile boolean sIsExcluded = false;
 
     static {
-        propsToKeep = new HashMap<>();
-        propsToKeep.put("com.google.android.settings.intelligence", new ArrayList<>(Collections.singletonList("FINGERPRINT")));
         propsToChangeGeneric = new HashMap<>();
         propsToChangeGeneric.put("TYPE", "user");
         propsToChangeGeneric.put("TAGS", "release-keys");
-        propsToChangePixel9Pro = new HashMap<>();
-        propsToChangePixel9Pro.put("BRAND", "google");
-        propsToChangePixel9Pro.put("MANUFACTURER", "Google");
-        propsToChangePixel9Pro.put("DEVICE", "caiman");
-        propsToChangePixel9Pro.put("PRODUCT", "caiman");
-        propsToChangePixel9Pro.put("HARDWARE", "caiman");
-        propsToChangePixel9Pro.put("MODEL", "Pixel 9 Pro");
-        propsToChangePixel9Pro.put("ID", "AD1A.240530.047.U1");
-        propsToChangePixel9Pro.put("FINGERPRINT", "google/caiman/caiman:14/AD1A.240530.047.U1/12150698:user/release-keys");
+        propsToChangePixel9ProXL = new HashMap<>();
+        propsToChangePixel9ProXL.put("BRAND", "google");
+        propsToChangePixel9ProXL.put("MANUFACTURER", "Google");
+        propsToChangePixel9ProXL.put("DEVICE", "komodo");
+        propsToChangePixel9ProXL.put("PRODUCT", "komodo");
+        propsToChangePixel9ProXL.put("HARDWARE", "komodo");
+        propsToChangePixel9ProXL.put("MODEL", "Pixel 9 Pro XL");
+        propsToChangePixel9ProXL.put("ID", "AP3A.241105.008");
+        propsToChangePixel9ProXL.put("FINGERPRINT", "google/komodo/komodo:15/AP3A.241105.008/12485168:user/release-keys");
         propsToChangePixelTablet = new HashMap<>();
         propsToChangePixelTablet.put("BRAND", "google");
         propsToChangePixelTablet.put("MANUFACTURER", "Google");
@@ -225,17 +191,8 @@ public final class PixelPropsUtils {
         propsToChangePixelTablet.put("PRODUCT", "tangorpro");
         propsToChangePixelTablet.put("HARDWARE", "tangorpro");
         propsToChangePixelTablet.put("MODEL", "Pixel Tablet");
-        propsToChangePixelTablet.put("ID", "AP2A.240805.005");
-        propsToChangePixelTablet.put("FINGERPRINT", "google/tangorpro/tangorpro:14/AP2A.240805.005/12025142:user/release-keys");
-        propsToChangePixel5a = new HashMap<>();
-        propsToChangePixel5a.put("BRAND", "google");
-        propsToChangePixel5a.put("MANUFACTURER", "Google");
-        propsToChangePixel5a.put("DEVICE", "barbet");
-        propsToChangePixel5a.put("PRODUCT", "barbet");
-        propsToChangePixel5a.put("HARDWARE", "barbet");
-        propsToChangePixel5a.put("MODEL", "Pixel 5a");
-        propsToChangePixel5a.put("ID", "AP2A.240805.005");
-        propsToChangePixel5a.put("FINGERPRINT", "google/barbet/barbet:14/AP2A.240805.005/12025142:user/release-keys");
+        propsToChangePixelTablet.put("ID", "AP3A.241105.007");
+        propsToChangePixelTablet.put("FINGERPRINT", "google/tangorpro/tangorpro:15/AP3A.241105.007/12470370:user/release-keys");
         propsToChangePixelXL = new HashMap<>();
         propsToChangePixelXL.put("BRAND", "google");
         propsToChangePixelXL.put("MANUFACTURER", "Google");
@@ -275,22 +232,14 @@ public final class PixelPropsUtils {
     }
 
     public static void setProps(Context context) {
-        propsToChangeGeneric.forEach((k, v) -> setPropValue(k, v));
-
         final String packageName = context.getPackageName();
         if (packageName == null || packageName.isEmpty()) {
             return;
         }
-        if (packageName.startsWith("com.google.")
-                || packageName.startsWith("com.samsung.")
-                || Arrays.asList(packagesToChangePixel9Pro).contains(packageName)
-                || Arrays.asList(packagesToChangePixel5a).contains(packageName)) {
 
-            if (Arrays.asList(packagesToKeep).contains(packageName) ||
-                    packageName.startsWith("com.google.android.GoogleCamera")) {
-                sIsExcluded = true;
-                return;
-            }
+        propsToChangeGeneric.forEach((k, v) -> setPropValue(k, v));
+
+        if (Arrays.asList(packagesToChangeRecentPixel).contains(packageName)) {
 
             Map<String, Object> propsToChange = new HashMap<>();
 
@@ -298,55 +247,37 @@ public final class PixelPropsUtils {
                 if (SystemProperties.getBoolean(SPOOF_PIXEL_GPHOTOS, true)) {
                     propsToChange.putAll(propsToChangePixelXL);
                 }
-            } else if (packageName.equals("com.netflix.mediaclient") && 
+            } else if (packageName.equals("com.netflix.mediaclient") &&
                         !SystemProperties.getBoolean(SPOOF_PIXEL_NETFLIX, false)) {
                     if (DEBUG) Log.d(TAG, "Netflix spoofing disabled by system prop");
                     return;
             } else if (packageName.equals("com.android.vending")) {
                 sIsFinsky = true;
-                propsToChange.putAll(propsToChangePixel5a);
+                return;
             } else if (packageName.equals("com.google.android.gms")) {
-                setPropValue("TIME", System.currentTimeMillis());
                 final String processName = Application.getProcessName().toLowerCase();
                 if (processName.contains("unstable")) {
                     spoofBuildGms();
                     return;
                 }
-                boolean isTensorDevice = Arrays.asList(pTensorCodenames).contains(SystemProperties.get(DEVICE));
-                if (!isTensorDevice && (processName.contains("gapps")
-                        || processName.contains("gservice")
-                        || processName.contains("learning")
-                        || processName.contains("persistent"))) {
-                    propsToChange.putAll(propsToChangePixel5a);
-                } else if (isDeviceTablet(context.getApplicationContext())) {
-                    propsToChange.putAll(propsToChangePixelTablet);
-                } else {
-                    propsToChange.putAll(propsToChangePixel9Pro);
-                }
-            } else if (Arrays.asList(packagesToChangePixel9Pro).contains(packageName)) {
+                return;
+            } else if (packageName.equals("com.google.android.settings.intelligence")) {
+                setPropValue("FINGERPRINT", Build.VERSION.INCREMENTAL);
+                return;
+            } else {
                 if (isDeviceTablet(context.getApplicationContext())) {
                     propsToChange.putAll(propsToChangePixelTablet);
                 } else {
-                    propsToChange.putAll(propsToChangePixel9Pro);
+                    propsToChange.putAll(propsToChangePixel9ProXL);
                 }
-            } else {
-                propsToChange.putAll(propsToChangePixel5a);
             }
 
             if (DEBUG) Log.d(TAG, "Defining props for: " + packageName);
             for (Map.Entry<String, Object> prop : propsToChange.entrySet()) {
                 String key = prop.getKey();
                 Object value = prop.getValue();
-                if (propsToKeep.containsKey(packageName) && propsToKeep.get(packageName).contains(key)) {
-                    if (DEBUG) Log.d(TAG, "Not defining " + key + " prop for: " + packageName);
-                    continue;
-                }
                 if (DEBUG) Log.d(TAG, "Defining " + key + " prop for: " + packageName);
                 setPropValue(key, value);
-            }
-            // Set proper indexing fingerprint
-            if (packageName.equals("com.google.android.settings.intelligence")) {
-                setPropValue("FINGERPRINT", Build.VERSION.INCREMENTAL);
             }
         } else {
 
@@ -479,7 +410,7 @@ public final class PixelPropsUtils {
         if (!SystemProperties.getBoolean(SPOOF_PIXEL_PI, true))
             return;
         // Check stack for SafetyNet or Play Integrity
-        if ((isCallerSafetyNet() || sIsFinsky) && !sIsExcluded) {
+        if (isCallerSafetyNet() || sIsFinsky) {
             Log.i(TAG, "Blocked key attestation");
             throw new UnsupportedOperationException();
         }
