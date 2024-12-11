@@ -19,6 +19,9 @@ package com.android.internal.util.qassa;
 import android.content.Context;
 import android.content.om.IOverlayManager;
 import android.content.om.OverlayInfo;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
@@ -171,6 +174,33 @@ public class qassaUtils {
         public List<OverlayInfo> getOverlayInfosForTarget(String target, int userId)
                 throws RemoteException {
             return mService.getOverlayInfosForTarget(target, userId);
+        }
+    }
+
+    public static boolean isPackageInstalled(Context context, String packageName, boolean ignoreState) {
+        if (packageName != null) {
+            try {
+                PackageInfo pi = context.getPackageManager().getPackageInfo(packageName, 0);
+                if (!pi.applicationInfo.enabled && !ignoreState) {
+                    return false;
+                }
+            } catch (PackageManager.NameNotFoundException e) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isPackageInstalled(Context context, String packageName) {
+        return isPackageInstalled(context, packageName, true);
+    }
+
+    public static boolean isPackageEnabled(Context context, String packageName) {
+        try {
+            PackageInfo pi = context.getPackageManager().getPackageInfo(packageName, 0);
+            return pi.applicationInfo.enabled;
+        } catch (PackageManager.NameNotFoundException notFound) {
+            return false;
         }
     }
 }
