@@ -70,7 +70,7 @@ public final class PixelPropsUtils {
     private static final Map<String, Object> propsToChangeMI13P;
     private static final Map<String, Object> propsToChangeF5;
     private static final Map<String, Object> propsToChangeBS4;
-    private static final Map<String, Object> propsToChangeK70;
+    private static final Map<String, Object> propsToChangeS24U;
 
     // Packages to Spoof as the most recent Pixel device
     private static final String[] packagesToChangeRecentPixel = {
@@ -159,8 +159,8 @@ public final class PixelPropsUtils {
             "com.proximabeta.mf.uamo"
     };
 
-    // Packages to Spoof as Redmi K70
-    private static final String[] packagesToChangeK70 = {
+    // Packages to Spoof as Samsung S24 Ultra
+    private static final String[] packagesToChangeS24U = {
             "com.pubg.imobile",
             "com.pubg.krmobile",
             "com.rekoo.pubgm",
@@ -230,11 +230,12 @@ public final class PixelPropsUtils {
         propsToChangeBS4 = new HashMap<>();
         propsToChangeBS4.put("MODEL", "2SM-X706B");
         propsToChangeBS4.put("MANUFACTURER", "blackshark");
-        propsToChangeK70 = new HashMap<>();
-        propsToChangeK70.put("BRAND", "Xiaomi");
-        propsToChangeK70.put("DEVICE", "manet");
-        propsToChangeK70.put("MANUFACTURER", "Xiaomi");
-        propsToChangeK70.put("MODEL", "23117RK66C");
+        propsToChangeS24U = new HashMap<>();
+        propsToChangeS24U.put("BRAND", "SAMSUNG");
+        propsToChangeS24U.put("DEVICE", "S24 ULTRA");
+        propsToChangeS24U.put("MANUFACTURER", "SM-S928B");
+        propsToChangeS24U.put("MODEL", "SM-S928B");
+        
     }
 
     public static void setProps(Context context) {
@@ -346,9 +347,9 @@ public final class PixelPropsUtils {
                     Object value = prop.getValue();
                     setPropValue(key, value);
                 }
-            } else if (Arrays.asList(packagesToChangeK70).contains(packageName)) {
+            } else if (Arrays.asList(packagesToChangeS24U).contains(packageName)) {
                 if (DEBUG) Log.d(TAG, "Defining props for: " + packageName);
-                for (Map.Entry<String, Object> prop : propsToChangeK70.entrySet()) {
+                for (Map.Entry<String, Object> prop : propsToChangeS24U.entrySet()) {
                     String key = prop.getKey();
                     Object value = prop.getValue();
                     setPropValue(key, value);
