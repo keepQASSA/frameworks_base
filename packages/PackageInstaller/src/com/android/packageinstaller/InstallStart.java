@@ -18,6 +18,7 @@ package com.android.packageinstaller;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ActivityTaskManager;
 import android.app.ActivityManager;
 import android.app.AppGlobals;
 import android.content.ContentResolver;
@@ -53,7 +54,12 @@ public class InstallStart extends Activity {
         super.onCreate(savedInstanceState);
         mIPackageManager = AppGlobals.getPackageManager();
         Intent intent = getIntent();
-        String callingPackage = getCallingPackage();
+        String callingPackage;
+        try {
+            callingPackage = ActivityTaskManager.getService().getLaunchedFromPackage(getActivityToken());
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
 
         final boolean isSessionInstall =
                 PackageInstaller.ACTION_CONFIRM_INSTALL.equals(intent.getAction());
