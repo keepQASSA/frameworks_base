@@ -718,13 +718,9 @@ public class ShortcutService extends IShortcutService.Stub {
         mMaxShortcuts = Math.max(0, (int) parser.getLong(
                 ConfigConstants.KEY_MAX_SHORTCUTS, DEFAULT_MAX_SHORTCUTS_PER_APP));
 
-        final int iconDimensionDp = Math.max(1, injectIsLowRamDevice()
-                ? (int) parser.getLong(
+        final int iconDimensionDp = Math.max(1, (int) parser.getLong(
                 ConfigConstants.KEY_MAX_ICON_DIMENSION_DP_LOWRAM,
-                DEFAULT_MAX_ICON_DIMENSION_LOWRAM_DP)
-                : (int) parser.getLong(
-                ConfigConstants.KEY_MAX_ICON_DIMENSION_DP,
-                DEFAULT_MAX_ICON_DIMENSION_DP));
+                DEFAULT_MAX_ICON_DIMENSION_LOWRAM_DP));
 
         mMaxIconDimension = injectDipToPixel(iconDimensionDp);
 
