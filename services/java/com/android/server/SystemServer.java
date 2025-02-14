@@ -137,7 +137,6 @@ import com.android.server.power.PowerManagerService;
 import com.android.server.power.PowerOffAlarmService;
 import com.android.server.power.ShutdownThread;
 import com.android.server.power.ThermalManagerService;
-import com.android.server.qassa.AttestationService;
 import com.android.server.restrictions.RestrictionsManagerService;
 import com.android.server.role.RoleManagerService;
 import com.android.server.rollback.RollbackManagerService;
@@ -1897,11 +1896,6 @@ public final class SystemServer {
                 mSystemServiceManager.startService(LiveDisplayService.class);
                 traceEnd();
             }
-
-            // AttestationService
-            traceBeginAndSlog("AttestationService");
-            mSystemServiceManager.startService(AttestationService.class);
-            traceEnd();
         }
 
         if (!isWatch) {
