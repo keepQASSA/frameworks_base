@@ -387,7 +387,7 @@ public final class PixelPropsUtils {
         // Alter build parameters to avoid hardware attestation enforcement
         setPropValue("MANUFACTURER", "Google");
         setPropValue("MODEL", "Pixel 6");
-        setPropValue("FINGERPRINT", "google/oriole_beta/oriole:15/BP11.241121.013/12873528:user/release-keys");
+        setPropValue("FINGERPRINT", "google/oriole_beta/oriole:Baklava/BP22.250124.009/13034193:user/release-keys");
         setPropValue("BRAND", "google");
         setPropValue("PRODUCT", "oriole_beta");
         setPropValue("DEVICE", "oriole");
@@ -396,7 +396,7 @@ public final class PixelPropsUtils {
         setPropValue("VERSION.INCREMENTAL", "12873528");
         setPropValue("TYPE", "user");
         setPropValue("TAGS", "release-keys");
-        setPropValue("VERSION.SECURITY_PATCH", "2024-12-05");
+        setPropValue("VERSION.SECURITY_PATCH", "2025-02-05");
         setPropValue("VERSION.DEVICE_INITIAL_SDK_INT", "21");
     }
 
