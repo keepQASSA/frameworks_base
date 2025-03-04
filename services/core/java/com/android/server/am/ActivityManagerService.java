@@ -14653,7 +14653,7 @@ public class ActivityManagerService extends IActivityManager.Stub
                             + " (pid=" + Binder.getCallingPid()
                             + ") when registering receiver " + receiver);
                 }
-                if (callerApp.info.uid != SYSTEM_UID &&
+                if (!UserHandle.isCore(callerApp.info.uid) &&
                         !callerApp.pkgList.containsKey(callerPackage) &&
                         !"android".equals(callerPackage)) {
                     throw new SecurityException("Given caller package " + callerPackage
