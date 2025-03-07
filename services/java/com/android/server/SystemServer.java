@@ -402,6 +402,7 @@ public final class SystemServer {
 
     private void run() {
         try {
+            Process.setThreadGroupAndCpuset(myPid(), Process.THREAD_GROUP_TOP_APP);
             traceBeginAndSlog("InitBeforeStartServices");
 
             // Record the process start information in sys props.
