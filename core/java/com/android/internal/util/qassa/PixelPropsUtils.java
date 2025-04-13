@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2020 The Pixel Experience Project
- *               2021-2024 crDroid Android Project
+ *               2021-2025 crDroid Android Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -169,8 +169,8 @@ public final class PixelPropsUtils {
         propsToChangePixel9ProXL.put("PRODUCT", "komodo");
         propsToChangePixel9ProXL.put("HARDWARE", "komodo");
         propsToChangePixel9ProXL.put("MODEL", "Pixel 9 Pro XL");
-        propsToChangePixel9ProXL.put("ID", "AP3A.241105.008");
-        propsToChangePixel9ProXL.put("FINGERPRINT", "google/komodo/komodo:15/AP3A.241105.008/12485168:user/release-keys");
+        propsToChangePixel9ProXL.put("ID", "BP1A.250405.007");
+        propsToChangePixel9ProXL.put("FINGERPRINT", "google/komodo/komodo:15/BP1A.250405.007/13240079:user/release-keys");
         propsToChangePixelTablet = new HashMap<>();
         propsToChangePixelTablet.put("BRAND", "google");
         propsToChangePixelTablet.put("MANUFACTURER", "Google");
@@ -178,8 +178,8 @@ public final class PixelPropsUtils {
         propsToChangePixelTablet.put("PRODUCT", "tangorpro");
         propsToChangePixelTablet.put("HARDWARE", "tangorpro");
         propsToChangePixelTablet.put("MODEL", "Pixel Tablet");
-        propsToChangePixelTablet.put("ID", "AP3A.241105.007");
-        propsToChangePixelTablet.put("FINGERPRINT", "google/tangorpro/tangorpro:15/AP3A.241105.007/12470370:user/release-keys");
+        propsToChangePixelTablet.put("ID", "BP1A.250405.007");
+        propsToChangePixelTablet.put("FINGERPRINT", "google/tangorpro/tangorpro:15/BP1A.250405.007/13240079:user/release-keys");
         propsToChangePixelXL = new HashMap<>();
         propsToChangePixelXL.put("BRAND", "google");
         propsToChangePixelXL.put("MANUFACTURER", "Google");
@@ -221,7 +221,7 @@ public final class PixelPropsUtils {
         propsToChangeS24U.put("DEVICE", "S24 ULTRA");
         propsToChangeS24U.put("MANUFACTURER", "SM-S928B");
         propsToChangeS24U.put("MODEL", "SM-S928B");
-        
+
     }
 
     public static void setProps(Context context) {
