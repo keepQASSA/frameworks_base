@@ -179,4 +179,7 @@
     <dimen name="qs_brightness_thiccbar_height">22dp</dimen>
 
     <dimen name="floating_card_elevation">9dp</dimen>
+
+    <dimen name="status_bar_battery_icon_height_landscape_oneui7">12.0dip</dimen>
+    <dimen name="status_bar_battery_icon_width_landscape_oneui7">24.0dip</dimen>
 </resources>
