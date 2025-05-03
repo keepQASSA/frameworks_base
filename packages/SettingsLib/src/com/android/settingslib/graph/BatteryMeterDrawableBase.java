@@ -81,13 +81,14 @@ public class BatteryMeterDrawableBase extends Drawable {
     public static final int BATTERY_STYLE_LANDSCAPEN = 25;
     public static final int BATTERY_STYLE_LANDSCAPEO = 26;
     public static final int BATTERY_STYLE_LANDSCAPE_IOS15 = 22;
-    public static final int BATTERY_STYLE_CIRCLE = 27;
-    public static final int BATTERY_STYLE_BIG_CIRCLE = 28;
-    public static final int BATTERY_STYLE_DOTTED_CIRCLE = 29;
-    public static final int BATTERY_STYLE_BIG_DOTTED_CIRCLE = 30;
-    public static final int BATTERY_STYLE_SOLID = 31;
-    public static final int BATTERY_STYLE_BIG_SOLID = 32;
-    public static final int BATTERY_STYLE_HIDDEN = 33;
+    public static final int BATTERY_STYLE_LANDSCAPE_ONEUI7 = 27;
+    public static final int BATTERY_STYLE_CIRCLE = 28;
+    public static final int BATTERY_STYLE_BIG_CIRCLE = 29;
+    public static final int BATTERY_STYLE_DOTTED_CIRCLE = 30;
+    public static final int BATTERY_STYLE_BIG_DOTTED_CIRCLE = 31;
+    public static final int BATTERY_STYLE_SOLID = 32;
+    public static final int BATTERY_STYLE_BIG_SOLID = 33;
+    public static final int BATTERY_STYLE_HIDDEN = 34;
 
     protected final Context mContext;
     protected final Paint mFramePaint;
