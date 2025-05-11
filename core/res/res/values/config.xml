@@ -4416,4 +4416,8 @@
     <!-- Enable sms authorization framework-->
     <bool name="config_sms_authorization_enabled">false</bool>
 
+    <!-- List of protected packages that require biometric authentication for modification
+         (Disable, force-stop or uninstalling updates). -->
+    <string-array name="config_biometric_protected_package_names" translatable="false" />
+
 </resources>
