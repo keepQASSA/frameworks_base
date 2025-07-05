@@ -52,18 +52,6 @@
 
             <include layout="@layout/heads_up_status_bar_layout" />
 
-            <FrameLayout
-                android:id="@id/lyric_container"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
-                <ViewStub
-                    android:id="@id/lyric_stub"
-                    android:layout="@layout/status_bar_lyric_ticker"
-                    android:inflatedId="@id/lyric"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" />
-            </FrameLayout>
-
             <LinearLayout
                 android:id="@id/status_bar_left_side"
                 android:clipChildren="false"

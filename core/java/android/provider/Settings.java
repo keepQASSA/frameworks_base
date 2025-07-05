@@ -6115,12 +6115,6 @@ public final class Settings {
         public static final String RIGHT_PADDING = "statusbar_right_padding";
 
         /**
-         * Whether to show the lyric on the status bar
-         * @hide
-         */
-        public static final String STATUS_BAR_SHOW_LYRIC = "status_bar_show_lyric";
-
-        /**
          * Whether to show the notification ticker on the status bar
          * @hide
          */
