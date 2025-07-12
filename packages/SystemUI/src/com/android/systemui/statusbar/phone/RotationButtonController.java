@@ -71,7 +71,7 @@ public class RotationButtonController implements TunerService.Tunable {
     private Consumer<Integer> mRotWatcherListener;
     private boolean mListenersRegistered = false;
     private boolean mIsNavigationBarShowing;
-    private boolean mShowRotationButton = true;
+    private boolean mShowRotationButton = false;
 
     private final Runnable mRemoveRotationProposal =
             () -> setRotateSuggestionButtonState(false /* visible */);
@@ -482,7 +482,7 @@ public class RotationButtonController implements TunerService.Tunable {
         switch (key) {
             case SHOW_ROTATION_BUTTON:
                 mShowRotationButton =
-                        TunerService.parseIntegerSwitch(newValue, true);
+                        TunerService.parseIntegerSwitch(newValue, false);
                 break;
             default:
                 break;
