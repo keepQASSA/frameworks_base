@@ -97,7 +97,7 @@ public class NetworkTrafficQS extends TextView {
     private boolean mHideArrow;
     private boolean indicatorUp = false;
     private boolean indicatorDown = false;
-    private String txtFont;
+    private String txtFont;    
     private boolean mScreenOn = true;
     private boolean mTrafficInHeaderView;
 
@@ -399,13 +399,13 @@ public class NetworkTrafficQS extends TextView {
                 Drawable d = getContext().getDrawable(indicatorDrawable);
                 d.setColorFilter(mTintColor, Mode.MULTIPLY);
                 setCompoundDrawablePadding(txtImgPadding);
-                setCompoundDrawablesWithIntrinsicBounds(d, null, null, null);
+                setCompoundDrawablesWithIntrinsicBounds(null, null, d, null);
             } else if (indicatorDown) {
                 indicatorDrawable = R.drawable.stat_sys_network_traffic_down_arrow;
                 Drawable d = getContext().getDrawable(indicatorDrawable);
                 d.setColorFilter(mTintColor, Mode.MULTIPLY);
                 setCompoundDrawablePadding(txtImgPadding);
-                setCompoundDrawablesWithIntrinsicBounds(d, null, null, null);
+                setCompoundDrawablesWithIntrinsicBounds(null, null, d, null);
             } else {
                 setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             }
